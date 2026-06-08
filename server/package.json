@@ -1,0 +1,31 @@
+{
+  "name": "amazon-seller-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MCP server for ethical, citation-backed Amazon FBA/FBM generic product research.",
+  "type": "module",
+  "bin": {
+    "amazon-seller-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsc -w -p tsconfig.json",
+    "research:sample": "node dist/cli/sample.js",
+    "research:daily": "node dist/cli/daily.js",
+    "research:top50": "node dist/cli/top50.js",
+    "images:enrich": "node dist/cli/enrichImages.js",
+    "sources:status": "node dist/cli/sourcesStatus.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
