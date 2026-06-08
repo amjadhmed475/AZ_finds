@@ -14,9 +14,10 @@ import { SupplierComparison } from "./SupplierComparison";
 import { SourcingCommandCenter } from "./SourcingCommandCenter";
 import { LiveDataPanel } from "./LiveDataPanel";
 import { Icon } from "./Icon";
+import { WholesaleFinder } from "./WholesaleFinder";
 import { pct } from "../lib/formatters";
 
-type Tab = "sourcing" | "overview" | "products" | "details" | "suppliers" | "live" | "ppc" | "capital" | "rejected" | "sources";
+type Tab = "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "live" | "ppc" | "capital" | "rejected" | "sources";
 
 export function Dashboard({ data }: { data: DashboardData }) {
   const [tab, setTab] = useState<Tab>("sourcing");
@@ -32,6 +33,7 @@ export function Dashboard({ data }: { data: DashboardData }) {
     ["sourcing", "Sourcing", "target"],
     ["overview", "Overview", "dashboard"],
     ["products", `Products (${data.products.length})`, "grid"],
+    ["wholesale", "Wholesale Finder", "box"],
     ["details", "Product Details", "list"],
     ["suppliers", "Suppliers", "truck"],
     ["live", "Live + Store", "activity"],
@@ -101,6 +103,8 @@ export function Dashboard({ data }: { data: DashboardData }) {
       )}
 
       {tab === "products" && <ProductGrid data={data} onOpen={open} />}
+
+      {tab === "wholesale" && <WholesaleFinder data={data} onOpen={open} />}
 
       {tab === "details" && (
         <section>
