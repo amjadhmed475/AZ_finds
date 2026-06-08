@@ -22,6 +22,7 @@ import { generateDailyBatch } from "./services/batchService.js";
 import { enrichProductImages } from "./tools/enrichProductImages.js";
 import { getProductDetailDashboard } from "./tools/getProductDetailDashboard.js";
 import { getApiUsageStatusTool } from "./tools/getApiUsageStatus.js";
+import { getLiveDataIntegrationPlan } from "./tools/getLiveDataIntegrationPlan.js";
 
 const server = new McpServer({ name: "amazon-seller-mcp", version: "1.0.0" });
 
@@ -420,6 +421,20 @@ server.tool(
   async (args) => {
     try { return ok(await getApiUsageStatusTool(args)); }
     catch (e) { return fail(`get_api_usage_status failed: ${(e as Error).message}`); }
+  }
+);
+
+// 19) get_live_data_integration_plan --------------------------------------------
+server.tool(
+  "get_live_data_integration_plan",
+  "Return the official, safe integration plan for live Amazon store data: SP-API, Amazon Ads API, Creator/product data, Keepa, server-side env vars, CSV bridge, and guardrails.",
+  {
+    marketplace: z.string().optional().default("US"),
+    include_csv_bridge: z.boolean().optional().default(true),
+  },
+  async (args) => {
+    try { return ok(getLiveDataIntegrationPlan(args)); }
+    catch (e) { return fail(`get_live_data_integration_plan failed: ${(e as Error).message}`); }
   }
 );
 

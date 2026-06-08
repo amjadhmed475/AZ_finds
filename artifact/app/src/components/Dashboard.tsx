@@ -11,12 +11,15 @@ import { RejectedPanel } from "./RejectedPanel";
 import { ApiUsagePanel } from "./ApiUsagePanel";
 import { BatchHeader } from "./BatchHeader";
 import { SupplierComparison } from "./SupplierComparison";
+import { SourcingCommandCenter } from "./SourcingCommandCenter";
+import { LiveDataPanel } from "./LiveDataPanel";
+import { Icon } from "./Icon";
 import { pct } from "../lib/formatters";
 
-type Tab = "overview" | "products" | "details" | "suppliers" | "ppc" | "capital" | "rejected" | "sources";
+type Tab = "sourcing" | "overview" | "products" | "details" | "suppliers" | "live" | "ppc" | "capital" | "rejected" | "sources";
 
 export function Dashboard({ data }: { data: DashboardData }) {
-  const [tab, setTab] = useState<Tab>("overview");
+  const [tab, setTab] = useState<Tab>("sourcing");
   const [selected, setSelected] = useState<DashProduct | null>(null);
   const [detailId, setDetailId] = useState<string>(data.products[0]?.id ?? "");
 
@@ -25,16 +28,19 @@ export function Dashboard({ data }: { data: DashboardData }) {
   const detailProduct = data.products.find((p) => p.id === detailId) ?? data.products[0];
 
   const s = data.summary;
-  const tabs: Array<[Tab, string]> = [
-    ["overview", "Overview"],
-    ["products", `Products (${data.products.length})`],
-    ["details", "Product Details"],
-    ["suppliers", "Suppliers"],
-    ["ppc", "PPC Manager"],
-    ["capital", "Capital Planner"],
-    ["rejected", `Rejected (${data.richRejected?.length ?? 0})`],
-    ["sources", "Data Sources"],
+  const tabs: Array<[Tab, string, string]> = [
+    ["sourcing", "Sourcing", "target"],
+    ["overview", "Overview", "dashboard"],
+    ["products", `Products (${data.products.length})`, "grid"],
+    ["details", "Product Details", "list"],
+    ["suppliers", "Suppliers", "truck"],
+    ["live", "Live + Store", "activity"],
+    ["ppc", "PPC Manager", "megaphone"],
+    ["capital", "Capital Planner", "wallet"],
+    ["rejected", `Rejected (${data.richRejected?.length ?? 0})`, "ban"],
+    ["sources", "Data Sources", "database"],
   ];
+  const currentTitle = (tabs.find((t) => t[0] === tab)?.[1] || "Dashboard").replace(/\s*\(.*\)/, "");
 
   const allSuppliers = useMemo(
     () => data.products.flatMap((p) => (p.suppliers ?? []).slice(0, 2).map((sup) => ({ ...sup, _product: p.name }))),
@@ -42,19 +48,42 @@ export function Dashboard({ data }: { data: DashboardData }) {
   );
 
   return (
-    <div className="dash">
-      <header className="dash-header">
-        <div>
-          <h1>Amazon Product Research</h1>
-          <p className="muted">A5–D1 graded opportunities. Estimate-level confidence — verify in Seller Central.</p>
+    <div className="shell">
+      <aside className="sidebar">
+        <div className="sb-brand">
+          <span className="sb-logo">AZ</span>
+          <div><div className="sb-name">AZ Finds</div><div className="sb-sub">Seller Research</div></div>
         </div>
-      </header>
+        <nav className="sb-nav">
+          {tabs.map(([id, label, icon]) => (
+            <button key={id} className={`sb-item${tab === id ? " active" : ""}`} onClick={() => setTab(id)}>
+              <Icon name={icon} size={18} />
+              <span className="sb-label">{label}</span>
+            </button>
+          ))}
+        </nav>
+        <div className="sb-foot">
+          <span className="sb-dot" /> Estimate engine
+          <span className="sb-foot-sub">live sources locked</span>
+        </div>
+      </aside>
 
-      <nav className="dash-tabs">
-        {tabs.map(([id, label]) => (
-          <button key={id} className={`dash-tab${tab === id ? " active" : ""}`} onClick={() => setTab(id)}>{label}</button>
-        ))}
-      </nav>
+      <div className="shell-main">
+        <header className="topbar">
+          <div className="topbar-head">
+            <p className="eyebrow">Amazon seller command center</p>
+            <h1>{currentTitle}</h1>
+          </div>
+          <div className="topbar-right">
+            {data.batch?.batch_date && <span className="batch-chip"><Icon name="box" size={14} /> {data.batch.batch_date}</span>}
+            <span className="batch-chip"><Icon name="grid" size={14} /> {data.products.length} products</span>
+            <span className="batch-chip est"><span className="sb-dot" /> estimate-level</span>
+          </div>
+        </header>
+
+        <main className="content">
+
+      {tab === "sourcing" && <SourcingCommandCenter data={data} onOpen={open} />}
 
       {tab === "overview" && (
         <>
@@ -93,6 +122,7 @@ export function Dashboard({ data }: { data: DashboardData }) {
         </section>
       )}
 
+      {tab === "live" && <LiveDataPanel data={data} />}
       {tab === "ppc" && <PpcManager data={data} />}
       {tab === "capital" && <CapitalPlanner seed={data.capitalPlanner} />}
       {tab === "rejected" && <RejectedPanel rejected={data.richRejected} />}
@@ -104,6 +134,8 @@ export function Dashboard({ data }: { data: DashboardData }) {
           Seller Central checks, the Amazon Revenue Calculator, supplier samples, or live market validation. Fees and gating drift over time.
         </p>
       </footer>
+        </main>
+      </div>
 
       <ProductDetailModal product={selected} marketing={selected ? marketingFor(selected.id) : undefined} onClose={() => setSelected(null)} />
     </div>

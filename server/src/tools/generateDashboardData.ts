@@ -130,10 +130,12 @@ export async function buildDashboard(input: DashboardInput): Promise<DashboardJs
     citations: input.citations,
     mode: input.mode,
     dataSources: [
+      { name: "Amazon SP-API", env: "SP_API_REFRESH_TOKEN" },
+      { name: "Amazon Ads API", env: "AMAZON_ADS_REFRESH_TOKEN" },
+      { name: "Amazon Creators API", env: "AMAZON_CREATORS_API_KEY" },
       { name: "Keepa", env: "KEEPA_API_KEY" },
       { name: "SerpAPI", env: "SERPAPI_KEY" },
       { name: "Bing Search", env: "BING_SEARCH_API_KEY" },
-      { name: "Amazon PA-API", env: "AMAZON_PA_API_KEY" },
     ].map((s) => {
       const connected = Boolean(process.env[s.env]);
       return { name: s.name, connected, status: connected ? ("live" as const) : ("locked" as const) };
