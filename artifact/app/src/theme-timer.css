@@ -1,0 +1,22 @@
+/* ── Futuristic refresh timer (sidebar) + Yamari founders badge ── */
+.rtimer{ position:relative; overflow:hidden; margin:4px 2px 8px; padding:14px 14px 12px; border-radius:14px;
+  background:linear-gradient(160deg, rgba(91,140,245,0.12), rgba(245,165,36,0.06)), #0b1422;
+  border:1px solid var(--line-2); box-shadow:inset 0 0 30px rgba(91,140,245,0.08); }
+.rtimer-scan{ position:absolute; left:0; right:0; top:0; height:2px; background:linear-gradient(90deg,transparent,#5b8cf5,transparent); animation:rtscan 3.2s linear infinite; opacity:.65; }
+@keyframes rtscan{ 0%{transform:translateY(0)} 100%{transform:translateY(110px)} }
+.rtimer-label{ font-size:9px; letter-spacing:2px; color:#8fb2ff; text-transform:uppercase; font-weight:700; display:flex; align-items:center; gap:6px; }
+.rtimer-pulse{ width:6px; height:6px; border-radius:50%; background:#5b8cf5; box-shadow:0 0 10px #5b8cf5; animation:rtpulse 1.4s ease-in-out infinite; }
+@keyframes rtpulse{ 0%,100%{opacity:.4;transform:scale(.8)} 50%{opacity:1;transform:scale(1.25)} }
+.rtimer-clock{ display:flex; align-items:baseline; gap:3px; margin:9px 0 2px; justify-content:center; font-family:"JetBrains Mono",monospace; }
+.rt-seg{ font-size:24px; font-weight:700; color:#eaf2ff; letter-spacing:1px; text-shadow:0 0 12px rgba(91,140,245,0.75);
+  background:rgba(255,255,255,0.04); border:1px solid rgba(91,140,245,0.28); border-radius:7px; padding:3px 7px; min-width:38px; text-align:center; }
+.rtimer-clock i{ font-style:normal; color:#5b8cf5; font-size:18px; animation:rtblink 1s step-end infinite; }
+@keyframes rtblink{ 50%{opacity:.25} }
+.rtimer-bar{ height:4px; border-radius:3px; background:rgba(255,255,255,0.06); overflow:hidden; margin-top:9px; }
+.rtimer-bar span{ display:block; height:100%; background:linear-gradient(90deg,#5b8cf5,var(--brand)); box-shadow:0 0 8px rgba(91,140,245,0.6); transition:width 1s linear; }
+.rtimer-sub{ font-size:9px; color:var(--dim); text-align:center; margin-top:7px; letter-spacing:0.3px; }
+
+.founders-badge{ display:inline-flex; flex-direction:column; align-items:flex-end; line-height:1.12; padding:5px 13px; border-radius:11px;
+  background:linear-gradient(135deg, rgba(245,165,36,0.15), rgba(245,165,36,0.03)); border:1px solid rgba(245,165,36,0.32); }
+.fb-label{ font-size:8px; letter-spacing:1.6px; text-transform:uppercase; color:var(--dim); }
+.founders-badge b{ font-family:"Manrope",sans-serif; font-size:13px; color:var(--brand-2); letter-spacing:-0.01em; }

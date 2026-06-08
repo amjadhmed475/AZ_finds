@@ -15,7 +15,8 @@
     "research:daily": "node dist/cli/daily.js",
     "research:top50": "node dist/cli/top50.js",
     "images:enrich": "node dist/cli/enrichImages.js",
-    "sources:status": "node dist/cli/sourcesStatus.js"
+    "sources:status": "node dist/cli/sourcesStatus.js",
+    "research:top5log": "node dist/cli/top5log.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",

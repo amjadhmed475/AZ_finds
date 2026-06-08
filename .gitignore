@@ -15,6 +15,7 @@ reports/
 
 # misc
 *.log
+AZ_Finds_Daily_Top5.csv
 .DS_Store
 .netlify/
 .vscode/

@@ -18,6 +18,8 @@ import { WholesaleFinder } from "./WholesaleFinder";
 import { Widgets } from "./Widgets";
 import { Watchlist } from "./Watchlist";
 import { HelpCenter } from "./HelpCenter";
+import { LogoMark } from "./LogoMark";
+import { RefreshTimer } from "./RefreshTimer";
 import { pct } from "../lib/formatters";
 
 type Tab = "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "live" | "ppc" | "capital" | "watchlist" | "rejected" | "sources" | "help";
@@ -58,7 +60,7 @@ export function Dashboard({ data }: { data: DashboardData }) {
     <div className="shell">
       <aside className="sidebar">
         <div className="sb-brand">
-          <span className="sb-logo">AZ</span>
+          <LogoMark />
           <div><div className="sb-name">AZ Finds</div><div className="sb-sub">Seller Research</div></div>
         </div>
         <nav className="sb-nav">
@@ -69,6 +71,7 @@ export function Dashboard({ data }: { data: DashboardData }) {
             </button>
           ))}
         </nav>
+        <RefreshTimer />
         <div className="sb-foot">
           <span className="sb-dot" /> Estimate engine
           <span className="sb-foot-sub">live sources locked</span>
@@ -78,10 +81,11 @@ export function Dashboard({ data }: { data: DashboardData }) {
       <div className="shell-main">
         <header className="topbar">
           <div className="topbar-head">
-            <p className="eyebrow">Amazon seller command center</p>
+            <p className="eyebrow">Amazon seller command center · by Yamari Group</p>
             <h1>{currentTitle}</h1>
           </div>
           <div className="topbar-right">
+            <span className="founders-badge"><span className="fb-label">Founders</span><b>Yamari Group</b></span>
             {data.batch?.batch_date && <span className="batch-chip"><Icon name="box" size={14} /> {data.batch.batch_date}</span>}
             <span className="batch-chip"><Icon name="grid" size={14} /> {data.products.length} products</span>
             <span className="batch-chip est"><span className="sb-dot" /> estimate-level</span>

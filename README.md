@@ -116,6 +116,28 @@ A polished, investor-ready SaaS UI: sidebar app-shell, refined dark theme (deep 
 - **Help Center** — step-by-step: Getting Started, Connect Seller Central, Amazon Ads/PPC reports, Keepa, Search/Browser MCP, supplier data, CSV uploads, pre-order verification, exports, troubleshooting — plus a **Connect Your Stack** status board.
 - **Charts** — 7 clear panels (grade distribution, top-10 score/ROI/profit with visible names, risk spread, category mix, demand-vs-competition) with plain-English subtitles.
 
+## Daily 8 AM automation + futuristic timer
+
+A Windows Scheduled Task (**"AZ Finds Daily 8AM"**) runs `scripts/daily-8am.ps1` every
+morning at 8:00. Each run:
+1. Appends the previous batch's **top 5** products to `AZ_Finds_Daily_Top5.csv` (a
+   cumulative spreadsheet at the project root — date, grade, ROI, margin, profit,
+   supplier, decision).
+2. Regenerates **50** products (`research:daily --force`).
+3. Attaches real product photos (`images:enrich`, uses `PEXELS_API_KEY` from `.env`).
+4. Rebuilds the dashboard.
+
+The sidebar shows a **futuristic live countdown** to the next 8 AM scan. The dashboard
+is branded **"by Yamari Group"** with a Founders badge at the top.
+
+Manage the task:
+```powershell
+Get-ScheduledTask -TaskName "AZ Finds Daily 8AM"      # view
+Start-ScheduledTask -TaskName "AZ Finds Daily 8AM"    # run now
+Unregister-ScheduledTask -TaskName "AZ Finds Daily 8AM" -Confirm:$false   # remove
+```
+Manual equivalent: `cd server; npm run research:top5log; npm run research:daily -- --force; npm run images:enrich`.
+
 ## A5–D1 grading, images, daily batches & API minimization
 
 - **A5–D1 grades.** Every product is graded best→worst (A5 … D1) from a 100-point

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { Dashboard, DashProduct } from "../lib/types";
-import { applyFilters, DEFAULT_FILTERS, toCSV, type FilterState } from "../lib/filters";
+import { applyFilters, DEFAULT_FILTERS, type FilterState } from "../lib/filters";
+import { downloadProductsCsv, downloadProductsWorkbook } from "../lib/exporters";
 import { ProductCard } from "./ProductCard";
 import { ProductTable } from "./ProductTable";
 
@@ -17,10 +18,8 @@ export function ProductGrid({ data, onOpen }: { data: Dashboard; onOpen: (p: Das
   const pageItems = filtered.slice(page * PAGE, page * PAGE + PAGE);
   const set = (patch: Partial<FilterState>) => { setFilters((f) => ({ ...f, ...patch })); setPage(0); };
 
-  const exportCsv = () => {
-    const blob = new Blob([toCSV(filtered)], { type: "text/csv" });
-    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "amazon-products.csv"; a.click();
-  };
+  const exportCsv = () => downloadProductsCsv(filtered);
+  const exportXlsx = () => downloadProductsWorkbook(data, filtered);
 
   const top = filtered.filter((p) => (p.bucket ?? "top") === "top").length;
   const needs = filtered.length - top;
@@ -52,7 +51,10 @@ export function ProductGrid({ data, onOpen }: { data: Dashboard; onOpen: (p: Das
           <button className={view === "cards" ? "active" : ""} onClick={() => setView("cards")}>Cards</button>
           <button className={view === "table" ? "active" : ""} onClick={() => setView("table")}>Table</button>
         </div>
-        <button className="btn primary" onClick={exportCsv}>Export CSV</button>
+        <div className="export-actions">
+          <button className="btn primary" onClick={exportCsv}>Export CSV</button>
+          <button className="btn" onClick={exportXlsx}>Export XLSX</button>
+        </div>
       </div>
 
       <div className="saved-views">
