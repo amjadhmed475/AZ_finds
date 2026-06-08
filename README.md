@@ -104,6 +104,18 @@ Use web browsing for **public, legal research only**. Do **not** scrape Amazon S
 Central data or bypass site protections. Live browsing results still require **citations
 and confidence labels** — the tool keeps every claim cited and labelled.
 
+## Premium command center (dashboard v2)
+
+A polished, investor-ready SaaS UI: sidebar app-shell, refined dark theme (deep slate + gold/emerald/blue), Manrope/Inter/JetBrains-Mono type, SVG icons, glass surfaces and smooth hover/transition micro-interactions.
+
+- **Overview widget system** — hero KPIs (profit potential, launch capital, best landed, API saved), best-product cards (best overall / ROI / margin / low-risk / supplier / PPC-ready / capital-fit), and analytics panels: **Grade Unlock**, **Restricted Category Shield**, **Risk Radar**, **Sourcing Pulse**, **PPC Readiness**, **Today's Actions**.
+- **Grade Unlock system** — explains the B3 cap honestly. Tiers: Estimate-level → **B3**, Hybrid → **A2**, Live → **A5**, User-verified → **A5**. Every capped product shows a "Why capped?" callout; add live data / verification to earn A-grades (restricted items stay D1).
+- **Wholesale Finder** — type any product, get direct listings across **14 sources** (Alibaba, AliExpress, Global Sources, Made-in-China, DHgate, 1688, HKTDC, IndiaMART, CJ, Faire, Tundra, Abound, Wholesale Central, DollarDays, Kole, Thomasnet, Uline, WebstaurantStore, Zoro, Quill) with filters (US / China / low-MOQ / fast / private-label / lowest-landed) and a best-deal ROI/margin banner.
+- **Watchlist** — save products, add notes (Seller Central result, supplier reply, sample price, MOQ), persisted locally; each shows a **business decision** (Buy sample / Check Seller Central / Contact supplier / Watch / Avoid).
+- **Product drawer actions** — Add to watchlist, mark Seller Central checked / supplier contacted / sample ordered (local persistence) — these raise data confidence toward higher grades.
+- **Help Center** — step-by-step: Getting Started, Connect Seller Central, Amazon Ads/PPC reports, Keepa, Search/Browser MCP, supplier data, CSV uploads, pre-order verification, exports, troubleshooting — plus a **Connect Your Stack** status board.
+- **Charts** — 7 clear panels (grade distribution, top-10 score/ROI/profit with visible names, risk spread, category mix, demand-vs-competition) with plain-English subtitles.
+
 ## A5–D1 grading, images, daily batches & API minimization
 
 - **A5–D1 grades.** Every product is graded best→worst (A5 … D1) from a 100-point

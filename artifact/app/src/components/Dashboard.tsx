@@ -15,9 +15,12 @@ import { SourcingCommandCenter } from "./SourcingCommandCenter";
 import { LiveDataPanel } from "./LiveDataPanel";
 import { Icon } from "./Icon";
 import { WholesaleFinder } from "./WholesaleFinder";
+import { Widgets } from "./Widgets";
+import { Watchlist } from "./Watchlist";
+import { HelpCenter } from "./HelpCenter";
 import { pct } from "../lib/formatters";
 
-type Tab = "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "live" | "ppc" | "capital" | "rejected" | "sources";
+type Tab = "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "live" | "ppc" | "capital" | "watchlist" | "rejected" | "sources" | "help";
 
 export function Dashboard({ data }: { data: DashboardData }) {
   const [tab, setTab] = useState<Tab>("sourcing");
@@ -39,8 +42,10 @@ export function Dashboard({ data }: { data: DashboardData }) {
     ["live", "Live + Store", "activity"],
     ["ppc", "PPC Manager", "megaphone"],
     ["capital", "Capital Planner", "wallet"],
+    ["watchlist", "Watchlist", "star"],
     ["rejected", `Rejected (${data.richRejected?.length ?? 0})`, "ban"],
     ["sources", "Data Sources", "database"],
+    ["help", "Help Center", "help"],
   ];
   const currentTitle = (tabs.find((t) => t[0] === tab)?.[1] || "Dashboard").replace(/\s*\(.*\)/, "");
 
@@ -90,14 +95,7 @@ export function Dashboard({ data }: { data: DashboardData }) {
       {tab === "overview" && (
         <>
           <BatchHeader data={data} />
-          <section className="summary-grid" style={{ marginTop: 16 }}>
-            <SummaryCard label="Displayed" value={data.products.length} />
-            <SummaryCard label="Best score" value={s.bestScore} accent="#16a34a" />
-            <SummaryCard label="Highest ROI" value={pct(s.highestRoi)} accent="#16a34a" />
-            <SummaryCard label="Avg margin" value={pct(s.averageMargin)} />
-            <SummaryCard label="Likely ungated" value={s.likelyUngatedCount} accent="#2563eb" />
-            <SummaryCard label="Rejected" value={data.richRejected?.length ?? 0} accent="#dc2626" />
-          </section>
+          <Widgets data={data} onOpen={open} />
           <section><h2 className="section-title">Visual analysis</h2><ChartsGrid d={data} /></section>
         </>
       )}
@@ -129,8 +127,10 @@ export function Dashboard({ data }: { data: DashboardData }) {
       {tab === "live" && <LiveDataPanel data={data} />}
       {tab === "ppc" && <PpcManager data={data} />}
       {tab === "capital" && <CapitalPlanner seed={data.capitalPlanner} />}
+      {tab === "watchlist" && <Watchlist data={data} onOpen={open} />}
       {tab === "rejected" && <RejectedPanel rejected={data.richRejected} />}
       {tab === "sources" && <ApiUsagePanel data={data} />}
+      {tab === "help" && <HelpCenter data={data} />}
 
       <footer className="dash-footer">
         <p className="muted small">

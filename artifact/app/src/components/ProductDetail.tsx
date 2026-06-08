@@ -10,6 +10,9 @@ import { SupplierComparison } from "./SupplierComparison";
 import { RiskPanel, ManualChecklist } from "./RiskPanel";
 import { SourceCitations } from "./SourceCitations";
 import { ProfitCalculator } from "./ProfitCalculator";
+import { Icon } from "./Icon";
+import { isWatched, toggleWatch, setState } from "../lib/watchlist";
+import { decisionFor } from "../lib/decision";
 
 const TABS = ["Overview", "Profit", "Suppliers", "PPC", "Keywords", "Risk", "Checks", "Citations"] as const;
 type Tab = typeof TABS[number];
@@ -23,6 +26,11 @@ export function ProductDetail({ product, marketing }: { product: DashProduct; ma
   const be = breakEvenAcos(netBeforeAds, p.estimatedSalePrice);
   const tAcos = targetAcos(be, "low");
   const keywords = deriveKeywords(p.name);
+  const [watched, setWatched] = useState(isWatched(p.id));
+  const [, force] = useState(0);
+  const dec = decisionFor(p);
+  const caps = p.grade?.grade_caps_applied ?? [];
+  const mark = (patch: any) => { setState(p.id, patch); force((n) => n + 1); };
 
   return (
     <div className="detail">
@@ -45,6 +53,14 @@ export function ProductDetail({ product, marketing }: { product: DashProduct; ma
         </div>
       </div>
 
+      <div className="detail-actions">
+        <button className={`btn btn-sm${watched ? " primary" : ""}`} onClick={() => { toggleWatch(p.id); setWatched(isWatched(p.id)); }}><Icon name="star" size={14} /> {watched ? "Watchlisted" : "Add to watchlist"}</button>
+        <button className="btn btn-sm" onClick={() => mark({ verified: { seller_central: true }, status: "checked" })}>Mark SC checked</button>
+        <button className="btn btn-sm" onClick={() => mark({ verified: { supplier_quote: true }, status: "supplier_contacted" })}>Supplier contacted</button>
+        <button className="btn btn-sm" onClick={() => mark({ verified: { sample_ordered: true }, status: "sample_ordered" })}>Sample ordered</button>
+        <span className={`mpill ${dec.tone === "good" ? "good" : dec.tone === "bad" ? "bad" : dec.tone === "warn" ? "warn" : "neutral"}`} style={{ marginLeft: "auto" }}>{dec.label}</span>
+      </div>
+
       <div className="detail-tabs">
         {TABS.map((t) => <button key={t} className={`detail-tab${tab === t ? " active" : ""}`} onClick={() => setTab(t)}>{t}</button>)}
       </div>
@@ -63,12 +79,15 @@ export function ProductDetail({ product, marketing }: { product: DashProduct; ma
             <Stat label="Trend" value={p.trend_status} />
             <Stat label="Capital fit" value={`${p.capitalFit ?? 0}/5`} />
           </div>
+          <div className={`decision dec-${dec.tone}`}><Icon name="bolt" size={16} /> <b>{dec.label}</b> — {dec.reason}</div>
+          {caps.length > 0 && (
+            <div className="why-capped"><Icon name="info" size={15} /> <span><b>Capped at {p.grade?.grade}.</b> {caps[0].explanation} Add live data or verification (Help Center → Grade Unlock) to earn A-grade scoring.</span></div>
+          )}
           <div className="detail-section"><GradeBreakdown grade={p.grade} /></div>
           <div className="grid-2 detail-whys">
             <div className="ppc-card"><h3>Why it could work</h3><p className="muted">{p.grade?.reason_summary}</p></div>
             <div className="ppc-card"><h3>Why it could fail</h3><p className="muted">{p.grade?.weakness_summary} {risk ? `Overall risk ${risk.overall_risk}.` : ""}</p></div>
           </div>
-          <p className="reco">Recommendation: {p.recommended_action}</p>
           {marketing && <div className="detail-section ppc-card"><h3>Positioning</h3><p className="muted">{marketing.positioning} Target: {marketing.target_customer}</p></div>}
         </div>
       )}

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import type { Dashboard, DashProduct } from "../lib/types";
-import { findWholesale, matchProduct, estimateDeal } from "../lib/wholesale";
+import { findWholesale, matchProduct, estimateDeal, filterWholesale, type WholesaleFilter } from "../lib/wholesale";
 import { SupplierComparison } from "./SupplierComparison";
 import { Icon } from "./Icon";
 import { money } from "../lib/formatters";
@@ -11,9 +11,12 @@ export function WholesaleFinder({ data, onOpen }: { data: Dashboard; onOpen?: (p
   const [query, setQuery] = useState("");
   const [price, setPrice] = useState<string>("");
 
+  const [filter, setFilter] = useState<WholesaleFilter>({ region: "all", sort: "match" });
   const expected = parseFloat(price) || undefined;
-  const sources = useMemo(() => findWholesale(query, expected), [query, expected]);
+  const allSources = useMemo(() => findWholesale(query, expected), [query, expected]);
+  const sources = useMemo(() => filterWholesale(allSources, filter), [allSources, filter]);
   const match = useMemo(() => matchProduct(query, data.products), [query, data.products]);
+  const tf = (patch: Partial<WholesaleFilter>) => setFilter((f) => ({ ...f, ...patch }));
 
   const cheapest = sources.filter((s) => s.landed != null).sort((a, b) => (a.landed! - b.landed!))[0];
   const deal = expected && cheapest?.landed != null ? estimateDeal(expected, cheapest.landed) : null;
@@ -68,7 +71,18 @@ export function WholesaleFinder({ data, onOpen }: { data: Dashboard; onOpen?: (p
             </div>
           )}
 
-          <h3 className="sub">Wholesale sources for “{query}”</h3>
+          <div className="wf-filters">
+            <h3 className="sub" style={{ margin: 0 }}>Wholesale sources for “{query}” ({sources.length})</h3>
+            <div className="wf-chips">
+              {(["all", "us-wholesale", "china", "business"] as const).map((r) => (
+                <button key={r} className={`wf-fchip${filter.region === r ? " active" : ""}`} onClick={() => tf({ region: r })}>{r === "all" ? "All" : r === "us-wholesale" ? "US wholesale" : r === "china" ? "China/global" : "Business"}</button>
+              ))}
+              <button className={`wf-fchip${filter.lowMoq ? " active" : ""}`} onClick={() => tf({ lowMoq: !filter.lowMoq })}>Low MOQ</button>
+              <button className={`wf-fchip${filter.fast ? " active" : ""}`} onClick={() => tf({ fast: !filter.fast })}>Fast shipping</button>
+              <button className={`wf-fchip${filter.privateLabel ? " active" : ""}`} onClick={() => tf({ privateLabel: !filter.privateLabel })}>Private label</button>
+              <button className={`wf-fchip${filter.sort === "landed" ? " active" : ""}`} onClick={() => tf({ sort: filter.sort === "landed" ? "match" : "landed" })}>Lowest landed</button>
+            </div>
+          </div>
           <div className="table-wrap">
             <table className="data-table">
               <thead><tr>

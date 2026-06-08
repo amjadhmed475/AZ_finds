@@ -16,6 +16,9 @@ const P: Record<string, string> = {
   external: "M14 3h7v7M10 14L21 3M21 14v5a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h5",
   chevron: "M9 6l6 6-6 6",
   refresh: "M21 12a9 9 0 11-3-6.7L21 8M21 3v5h-5",
+  star: "M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 9.4l6.9-.6z",
+  help: "M12 2a10 10 0 100 20 10 10 0 000-20z M9.6 9a2.5 2.5 0 014.6 1.4c0 1.6-2.2 2-2.2 3.3 M12 17h.01",
+  info: "M12 2a10 10 0 100 20 10 10 0 000-20z M12 11v5 M12 7h.01",
 };
 
 export function Icon({ name, size = 18, className = "" }: { name: string; size?: number; className?: string }) {
