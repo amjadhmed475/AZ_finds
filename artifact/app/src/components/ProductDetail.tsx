@@ -12,6 +12,8 @@ import { RiskPanel, ManualChecklist } from "./RiskPanel";
 import { SourceCitations } from "./SourceCitations";
 import { ProfitCalculator } from "./ProfitCalculator";
 import { Icon } from "./Icon";
+import { amazonUrl } from "../lib/amazon";
+import { heliumStats } from "../lib/amazon";
 import { isWatched, toggleWatch, setState } from "../lib/watchlist";
 import { decisionFor } from "../lib/decision";
 
@@ -59,6 +61,7 @@ export function ProductDetail({ product, marketing }: { product: DashProduct; ma
         <button className="btn btn-sm" onClick={() => mark({ verified: { seller_central: true }, status: "checked" })}>Mark SC checked</button>
         <button className="btn btn-sm" onClick={() => mark({ verified: { supplier_quote: true }, status: "supplier_contacted" })}>Supplier contacted</button>
         <button className="btn btn-sm" onClick={() => mark({ verified: { sample_ordered: true }, status: "sample_ordered" })}>Sample ordered</button>
+        <a className="btn btn-sm primary" href={amazonUrl(p)} target="_blank" rel="noopener noreferrer"><Icon name="external" size={13} /> View on Amazon</a>
         <span className={`mpill ${dec.tone === "good" ? "good" : dec.tone === "bad" ? "bad" : dec.tone === "warn" ? "warn" : "neutral"}`} style={{ marginLeft: "auto" }}>{dec.label}</span>
       </div>
 
@@ -68,17 +71,14 @@ export function ProductDetail({ product, marketing }: { product: DashProduct; ma
 
       {tab === "Overview" && (
         <div>
-          <div className="modal-grid">
-            <Stat label="Sale price" value={money(p.estimatedSalePrice)} />
-            <Stat label="Landed cost" value={money(f.landedCost)} />
-            <Stat label="Net profit / unit" value={money(f.netProfit)} accent={f.netProfit >= 0 ? "#16a34a" : "#dc2626"} />
-            <Stat label="ROI" value={pct(f.roi)} accent="#16a34a" />
-            <Stat label="Margin" value={pct(f.margin)} />
-            <Stat label="Monthly sales (est)" value={num(p.estimatedMonthlySales)} />
-            <Stat label="Monthly revenue (est)" value={money(p.estimatedRevenue)} />
-            <Stat label="Sellers" value={String(p.seller_count)} />
-            <Stat label="Trend" value={p.trend_status} />
-            <Stat label="Capital fit" value={`${p.capitalFit ?? 0}/5`} />
+          <div className="hx-head"><span className="hx-title">Product stats</span><span className="muted small">estimate-level · connect Keepa/retailerapi for live</span></div>
+          <div className="helium-grid">
+            {heliumStats(p).map((st) => (
+              <div className="hstat" key={st.label}>
+                <div className="hstat-label">{st.label}</div>
+                <div className={`hstat-value${st.mono ? " mono" : ""}`} style={st.tone === "good" ? { color: "#34d399" } : st.tone === "warn" ? { color: "#fbbf24" } : st.tone === "bad" ? { color: "#fb7185" } : undefined}>{st.value}</div>
+              </div>
+            ))}
           </div>
           <div className={`decision dec-${dec.tone}`}><Icon name="bolt" size={16} /> <b>{dec.label}</b> — {dec.reason}</div>
           {caps.length > 0 && (

@@ -22,6 +22,7 @@ export interface ProductCandidate {
   estimated_sale_price: number;
   estimated_monthly_sales: number;
   estimated_revenue: number;
+  bsr_estimate?: number | null;
   seller_count: number;
   review_count_average: number;
   review_rating_average: number;

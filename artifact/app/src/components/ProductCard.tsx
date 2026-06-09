@@ -1,7 +1,10 @@
 import type { DashProduct } from "../lib/types";
 import { money, pct, riskColor, gatingLabel } from "../lib/formatters";
+import { amazonUrl } from "../lib/amazon";
 import { GradeBadge } from "./GradeBadge";
 import { ProductImage } from "./ProductImage";
+
+const k = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : String(n));
 
 const CHK_ICON: Record<string, string> = { pass: "✓", fail: "✕", pending: "•" };
 
@@ -30,6 +33,12 @@ export function ProductCard({ product, onOpen }: { product: DashProduct; onOpen:
           <Metric label="Margin" value={pct(f.margin)} />
           <Metric label="Profit" value={money(f.netProfit)} color={f.netProfit >= 0 ? "#059669" : "#e11d48"} />
         </div>
+        <div className="pc-stats">
+          <span><b>{k(p.estimatedMonthlySales)}</b> sales/mo</span>
+          <span><b>{money(p.estimatedRevenue)}</b>/mo</span>
+          {p.bsr != null && <span>BSR <b>#{k(p.bsr)}</b></span>}
+          <span><b>{k(p.reviewCount)}</b> rev{p.reviewRating > 0 ? ` · ${p.reviewRating.toFixed(1)}★` : ""}</span>
+        </div>
         <div className="pc-foot">
           <span className={`mpill ${p.risk_level === "low" ? "good" : p.risk_level === "medium" ? "warn" : "bad"}`}>
             <span className="dot" style={{ background: riskColor[p.risk_level] }} /> {p.risk_level} risk
@@ -44,7 +53,10 @@ export function ProductCard({ product, onOpen }: { product: DashProduct; onOpen:
         <div className="pc-checks">
           {keyChecks.map((c, i) => <span key={i} className={`pc-chk ${c.state}`} title={`${c.label}: ${c.state}`}>{CHK_ICON[c.state]}</span>)}
         </div>
-        <button className="btn btn-sm primary pc-view" onClick={(e) => { e.stopPropagation(); onOpen(p); }}>View details →</button>
+        <div className="pc-actions">
+          <button className="btn btn-sm primary pc-view" onClick={(e) => { e.stopPropagation(); onOpen(p); }}>View details →</button>
+          <a className="btn btn-sm pc-amz" href={amazonUrl(p)} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} title="Open on Amazon">Amazon ↗</a>
+        </div>
       </div>
     </div>
   );

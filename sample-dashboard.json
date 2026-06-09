@@ -22,6 +22,13 @@
       "estimatedSalePrice": 19.99,
       "estimatedMonthlySales": 2014,
       "estimatedRevenue": 40259.86,
+      "bsr": 2924,
+      "weight_oz": 5,
+      "dimensions": {
+        "length": 12,
+        "width": 12,
+        "height": 2
+      },
       "reviewRating": 4.7,
       "reviewCount": 2049,
       "profitability": {
@@ -371,7 +378,7 @@
         ],
         "reason_summary": "Base grade A3 (Strong opportunity); strongest on Demand strength and Seller Central / category risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on PPC / marketing viability and Competition quality.",
-        "created_at": "2026-06-09T23:16:42.368Z"
+        "created_at": "2026-06-09T23:42:33.501Z"
       },
       "image": {
         "product_candidate_id": "hanging-closet-organizer-6-shelf",
@@ -447,6 +454,13 @@
       "estimatedSalePrice": 17.99,
       "estimatedMonthlySales": 2080,
       "estimatedRevenue": 37419.2,
+      "bsr": 2141,
+      "weight_oz": 6,
+      "dimensions": {
+        "length": 10,
+        "width": 6,
+        "height": 4
+      },
       "reviewRating": 4.7,
       "reviewCount": 1066,
       "profitability": {
@@ -796,7 +810,7 @@
         ],
         "reason_summary": "Base grade A3 (Strong opportunity); strongest on Demand strength and Seller Central / category risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.358Z"
+        "created_at": "2026-06-09T23:42:33.485Z"
       },
       "image": {
         "product_candidate_id": "garage-wall-storage-hooks-set",
@@ -872,6 +886,13 @@
       "estimatedSalePrice": 22.99,
       "estimatedMonthlySales": 1933,
       "estimatedRevenue": 44439.67,
+      "bsr": 3073,
+      "weight_oz": 8,
+      "dimensions": {
+        "length": 14,
+        "width": 5,
+        "height": 9
+      },
       "reviewRating": 4.3,
       "reviewCount": 1598,
       "profitability": {
@@ -1221,7 +1242,7 @@
         ],
         "reason_summary": "Base grade A2 (Good opportunity); strongest on Demand strength and Seller Central / category risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Competition quality and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.361Z"
+        "created_at": "2026-06-09T23:42:33.491Z"
       },
       "image": {
         "product_candidate_id": "3-tier-countertop-jar-rack",
@@ -1297,6 +1318,13 @@
       "estimatedSalePrice": 24.99,
       "estimatedMonthlySales": 735,
       "estimatedRevenue": 18367.65,
+      "bsr": 9999,
+      "weight_oz": 4.4,
+      "dimensions": {
+        "length": 15,
+        "width": 6,
+        "height": 5
+      },
       "reviewRating": 3.9,
       "reviewCount": 1524,
       "profitability": {
@@ -1646,7 +1674,7 @@
         ],
         "reason_summary": "Base grade A3 (Strong opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Competition quality and Demand strength.",
-        "created_at": "2026-06-09T23:16:42.367Z"
+        "created_at": "2026-06-09T23:42:33.499Z"
       },
       "image": {
         "product_candidate_id": "pantry-storage-bins-4-pack",
@@ -1722,6 +1750,13 @@
       "estimatedSalePrice": 26.99,
       "estimatedMonthlySales": 806,
       "estimatedRevenue": 21753.94,
+      "bsr": 8927,
+      "weight_oz": 7,
+      "dimensions": {
+        "length": 14,
+        "width": 9,
+        "height": 6
+      },
       "reviewRating": 4.7,
       "reviewCount": 2052,
       "profitability": {
@@ -2071,7 +2106,7 @@
         ],
         "reason_summary": "Base grade A2 (Good opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Demand strength and Competition quality.",
-        "created_at": "2026-06-09T23:16:42.357Z"
+        "created_at": "2026-06-09T23:42:33.483Z"
       },
       "image": {
         "product_candidate_id": "clear-stackable-shoe-boxes-6-pack",
@@ -2147,6 +2182,13 @@
       "estimatedSalePrice": 26.99,
       "estimatedMonthlySales": 703,
       "estimatedRevenue": 18973.97,
+      "bsr": 10546,
+      "weight_oz": 6,
+      "dimensions": {
+        "length": 14,
+        "width": 11,
+        "height": 6
+      },
       "reviewRating": 4.6,
       "reviewCount": 871,
       "profitability": {
@@ -2496,7 +2538,7 @@
         ],
         "reason_summary": "Base grade A2 (Good opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Demand strength and Competition quality.",
-        "created_at": "2026-06-09T23:16:42.369Z"
+        "created_at": "2026-06-09T23:42:33.502Z"
       },
       "image": {
         "product_candidate_id": "stackable-storage-cubes-set",
@@ -2572,6 +2614,13 @@
       "estimatedSalePrice": 23.99,
       "estimatedMonthlySales": 727,
       "estimatedRevenue": 17440.73,
+      "bsr": 7714,
+      "weight_oz": 12,
+      "dimensions": {
+        "length": 14,
+        "width": 9,
+        "height": 4
+      },
       "reviewRating": 4,
       "reviewCount": 1839,
       "profitability": {
@@ -2921,7 +2970,7 @@
         ],
         "reason_summary": "Base grade A2 (Good opportunity); strongest on Competition quality and Seller Central / category risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on PPC / marketing viability and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.362Z"
+        "created_at": "2026-06-09T23:42:33.495Z"
       },
       "image": {
         "product_candidate_id": "adjustable-monitor-stand-riser",
@@ -2997,6 +3046,13 @@
       "estimatedSalePrice": 21.99,
       "estimatedMonthlySales": 2040,
       "estimatedRevenue": 44859.6,
+      "bsr": 2878,
+      "weight_oz": 10,
+      "dimensions": {
+        "length": 16,
+        "width": 12,
+        "height": 2
+      },
       "reviewRating": 4.6,
       "reviewCount": 1003,
       "profitability": {
@@ -3346,7 +3402,7 @@
         ],
         "reason_summary": "Base grade A2 (Good opportunity); strongest on Demand strength and Seller Central / category risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Competition quality and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.361Z"
+        "created_at": "2026-06-09T23:42:33.492Z"
       },
       "image": {
         "product_candidate_id": "bamboo-serving-tray",
@@ -3422,6 +3478,13 @@
       "estimatedSalePrice": 22.99,
       "estimatedMonthlySales": 1299,
       "estimatedRevenue": 29864.01,
+      "bsr": 4993,
+      "weight_oz": 3,
+      "dimensions": {
+        "length": 16,
+        "width": 12,
+        "height": 3
+      },
       "reviewRating": 4.6,
       "reviewCount": 1118,
       "profitability": {
@@ -3771,7 +3834,7 @@
         ],
         "reason_summary": "Base grade A2 (Good opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on PPC / marketing viability and Competition quality.",
-        "created_at": "2026-06-09T23:16:42.368Z"
+        "created_at": "2026-06-09T23:42:33.500Z"
       },
       "image": {
         "product_candidate_id": "under-bed-storage-bags-3-pack",
@@ -3847,6 +3910,13 @@
       "estimatedSalePrice": 18.99,
       "estimatedMonthlySales": 638,
       "estimatedRevenue": 12115.62,
+      "bsr": 10444,
+      "weight_oz": 7,
+      "dimensions": {
+        "length": 9,
+        "width": 6,
+        "height": 3
+      },
       "reviewRating": 4.3,
       "reviewCount": 2169,
       "profitability": {
@@ -4196,7 +4266,7 @@
         ],
         "reason_summary": "Base grade A2 (Good opportunity); strongest on Competition quality and Seller Central / category risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.354Z"
+        "created_at": "2026-06-09T23:42:33.478Z"
       },
       "image": {
         "product_candidate_id": "resistance-bands-set-5-pack",
@@ -4272,6 +4342,13 @@
       "estimatedSalePrice": 15.99,
       "estimatedMonthlySales": 2263,
       "estimatedRevenue": 36185.37,
+      "bsr": 2536,
+      "weight_oz": 3.4,
+      "dimensions": {
+        "length": 16,
+        "width": 3,
+        "height": 2
+      },
       "reviewRating": 4.6,
       "reviewCount": 1261,
       "profitability": {
@@ -4621,7 +4698,7 @@
         ],
         "reason_summary": "Base grade A1 (Decent opportunity); strongest on Demand strength and Seller Central / category risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.359Z"
+        "created_at": "2026-06-09T23:42:33.488Z"
       },
       "image": {
         "product_candidate_id": "wall-mount-broom-mop-holder",
@@ -4697,6 +4774,13 @@
       "estimatedSalePrice": 21.99,
       "estimatedMonthlySales": 1111,
       "estimatedRevenue": 24430.89,
+      "bsr": 4600,
+      "weight_oz": 3.4,
+      "dimensions": {
+        "length": 13,
+        "width": 5,
+        "height": 5
+      },
       "reviewRating": 4,
       "reviewCount": 1325,
       "profitability": {
@@ -5046,7 +5130,7 @@
         ],
         "reason_summary": "Base grade A1 (Decent opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on PPC / marketing viability and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.371Z"
+        "created_at": "2026-06-09T23:42:33.504Z"
       },
       "image": {
         "product_candidate_id": "cord-organizer-box",
@@ -5122,6 +5206,13 @@
       "estimatedSalePrice": 19.99,
       "estimatedMonthlySales": 1457,
       "estimatedRevenue": 29125.43,
+      "bsr": 3816,
+      "weight_oz": 9,
+      "dimensions": {
+        "length": 13,
+        "width": 6,
+        "height": 6
+      },
       "reviewRating": 3.9,
       "reviewCount": 1941,
       "profitability": {
@@ -5471,7 +5562,7 @@
         ],
         "reason_summary": "Base grade A2 (Good opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.356Z"
+        "created_at": "2026-06-09T23:42:33.480Z"
       },
       "image": {
         "product_candidate_id": "compact-foam-roller",
@@ -5547,6 +5638,13 @@
       "estimatedSalePrice": 15.99,
       "estimatedMonthlySales": 1699,
       "estimatedRevenue": 27167.01,
+      "bsr": 3597,
+      "weight_oz": 2.8,
+      "dimensions": {
+        "length": 11,
+        "width": 5,
+        "height": 3
+      },
       "reviewRating": 4.5,
       "reviewCount": 2322,
       "profitability": {
@@ -5896,7 +5994,7 @@
         ],
         "reason_summary": "Base grade A1 (Decent opportunity); strongest on Demand strength and Seller Central / category risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Profit strength and Competition quality.",
-        "created_at": "2026-06-09T23:16:42.366Z"
+        "created_at": "2026-06-09T23:42:33.498Z"
       },
       "image": {
         "product_candidate_id": "shoe-slot-organizers-4-pack",
@@ -5972,6 +6070,13 @@
       "estimatedSalePrice": 23.99,
       "estimatedMonthlySales": 1455,
       "estimatedRevenue": 34905.45,
+      "bsr": 4346,
+      "weight_oz": 4,
+      "dimensions": {
+        "length": 14,
+        "width": 10,
+        "height": 2
+      },
       "reviewRating": 4.7,
       "reviewCount": 1271,
       "profitability": {
@@ -6321,7 +6426,7 @@
         ],
         "reason_summary": "Base grade A2 (Good opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Trend strength and Competition quality.",
-        "created_at": "2026-06-09T23:16:42.356Z"
+        "created_at": "2026-06-09T23:42:33.482Z"
       },
       "image": {
         "product_candidate_id": "vacuum-storage-bags-set",
@@ -6397,6 +6502,13 @@
       "estimatedSalePrice": 21.99,
       "estimatedMonthlySales": 943,
       "estimatedRevenue": 20736.57,
+      "bsr": 5622,
+      "weight_oz": 9,
+      "dimensions": {
+        "length": 12,
+        "width": 11,
+        "height": 5
+      },
       "reviewRating": 4.5,
       "reviewCount": 747,
       "profitability": {
@@ -6746,7 +6858,7 @@
         ],
         "reason_summary": "Base grade A2 (Good opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on PPC / marketing viability and Competition quality.",
-        "created_at": "2026-06-09T23:16:42.353Z"
+        "created_at": "2026-06-09T23:42:33.476Z"
       },
       "image": {
         "product_candidate_id": "memory-foam-neck-pillow",
@@ -6822,6 +6934,13 @@
       "estimatedSalePrice": 24.99,
       "estimatedMonthlySales": 974,
       "estimatedRevenue": 24340.26,
+      "bsr": 7093,
+      "weight_oz": 6,
+      "dimensions": {
+        "length": 12,
+        "width": 7,
+        "height": 11
+      },
       "reviewRating": 4,
       "reviewCount": 618,
       "profitability": {
@@ -7171,7 +7290,7 @@
         ],
         "reason_summary": "Base grade A1 (Decent opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Competition quality and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.357Z"
+        "created_at": "2026-06-09T23:42:33.483Z"
       },
       "image": {
         "product_candidate_id": "cereal-storage-containers-4-pack",
@@ -7247,6 +7366,13 @@
       "estimatedSalePrice": 16.99,
       "estimatedMonthlySales": 765,
       "estimatedRevenue": 12997.35,
+      "bsr": 9513,
+      "weight_oz": 4,
+      "dimensions": {
+        "length": 10,
+        "width": 10,
+        "height": 3
+      },
       "reviewRating": 3.9,
       "reviewCount": 838,
       "profitability": {
@@ -7596,7 +7722,7 @@
         ],
         "reason_summary": "Base grade A2 (Good opportunity); strongest on Competition quality and Seller Central / category risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.369Z"
+        "created_at": "2026-06-09T23:42:33.501Z"
       },
       "image": {
         "product_candidate_id": "lazy-susan-turntable-2-pack",
@@ -7672,6 +7798,13 @@
       "estimatedSalePrice": 23.99,
       "estimatedMonthlySales": 1219,
       "estimatedRevenue": 29243.81,
+      "bsr": 5392,
+      "weight_oz": 9,
+      "dimensions": {
+        "length": 15,
+        "width": 5,
+        "height": 7
+      },
       "reviewRating": 4,
       "reviewCount": 1317,
       "profitability": {
@@ -8021,7 +8154,7 @@
         ],
         "reason_summary": "Base grade A1 (Decent opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Competition quality and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.361Z"
+        "created_at": "2026-06-09T23:42:33.491Z"
       },
       "image": {
         "product_candidate_id": "no-drill-bathroom-shelf-organizer",
@@ -8097,6 +8230,13 @@
       "estimatedSalePrice": 18.49,
       "estimatedMonthlySales": 831,
       "estimatedRevenue": 15365.19,
+      "bsr": 8602,
+      "weight_oz": 2.6,
+      "dimensions": {
+        "length": 10,
+        "width": 6,
+        "height": 4
+      },
       "reviewRating": 4.6,
       "reviewCount": 727,
       "profitability": {
@@ -8446,7 +8586,7 @@
         ],
         "reason_summary": "Base grade A1 (Decent opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Profit strength and Competition quality.",
-        "created_at": "2026-06-09T23:16:42.370Z"
+        "created_at": "2026-06-09T23:42:33.502Z"
       },
       "image": {
         "product_candidate_id": "wall-mounted-storage-baskets-3-pack",
@@ -8522,6 +8662,13 @@
       "estimatedSalePrice": 19.99,
       "estimatedMonthlySales": 1488,
       "estimatedRevenue": 29745.12,
+      "bsr": 4228,
+      "weight_oz": 6,
+      "dimensions": {
+        "length": 9,
+        "width": 7,
+        "height": 3
+      },
       "reviewRating": 4.6,
       "reviewCount": 1153,
       "profitability": {
@@ -8871,7 +9018,7 @@
         ],
         "reason_summary": "Base grade A1 (Decent opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on PPC / marketing viability and Competition quality.",
-        "created_at": "2026-06-09T23:16:42.372Z"
+        "created_at": "2026-06-09T23:42:33.506Z"
       },
       "image": {
         "product_candidate_id": "magnetic-jar-tins-12-pack",
@@ -8947,6 +9094,13 @@
       "estimatedSalePrice": 17.99,
       "estimatedMonthlySales": 867,
       "estimatedRevenue": 15597.33,
+      "bsr": 6221,
+      "weight_oz": 4,
+      "dimensions": {
+        "length": 13,
+        "width": 10,
+        "height": 2
+      },
       "reviewRating": 4.1,
       "reviewCount": 1546,
       "profitability": {
@@ -9296,7 +9450,7 @@
         ],
         "reason_summary": "Base grade A1 (Decent opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.351Z"
+        "created_at": "2026-06-09T23:42:33.475Z"
       },
       "image": {
         "product_candidate_id": "compression-packing-bags-set",
@@ -9372,6 +9526,13 @@
       "estimatedSalePrice": 13.99,
       "estimatedMonthlySales": 1690,
       "estimatedRevenue": 23643.1,
+      "bsr": 2759,
+      "weight_oz": 3.5,
+      "dimensions": {
+        "length": 8,
+        "width": 6,
+        "height": 3
+      },
       "reviewRating": 4.4,
       "reviewCount": 1884,
       "profitability": {
@@ -9721,7 +9882,7 @@
         ],
         "reason_summary": "Base grade B5 (Very promising but needs checks); strongest on Demand strength and Seller Central / category risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Competition quality and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.352Z"
+        "created_at": "2026-06-09T23:42:33.475Z"
       },
       "image": {
         "product_candidate_id": "leakproof-travel-bottle-set",
@@ -9797,6 +9958,13 @@
       "estimatedSalePrice": 17.99,
       "estimatedMonthlySales": 1457,
       "estimatedRevenue": 26211.43,
+      "bsr": 4338,
+      "weight_oz": 2.2,
+      "dimensions": {
+        "length": 17,
+        "width": 3,
+        "height": 2
+      },
       "reviewRating": 3.9,
       "reviewCount": 1663,
       "profitability": {
@@ -10146,7 +10314,7 @@
         ],
         "reason_summary": "Base grade A1 (Decent opportunity); strongest on Seller Central / category risk and Product risk. Capped to B3 by: Low demand confidence.",
         "weakness_summary": "Weakest on Competition quality and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.365Z"
+        "created_at": "2026-06-09T23:42:33.497Z"
       },
       "image": {
         "product_candidate_id": "drawer-dividers-adjustable-4-pack",
@@ -10222,6 +10390,13 @@
       "estimatedSalePrice": 12.99,
       "estimatedMonthlySales": 1920,
       "estimatedRevenue": 24940.8,
+      "bsr": 2726,
+      "weight_oz": 4,
+      "dimensions": {
+        "length": 8,
+        "width": 4,
+        "height": 2
+      },
       "reviewRating": 4.7,
       "reviewCount": 851,
       "profitability": {
@@ -10578,7 +10753,7 @@
         ],
         "reason_summary": "Base grade B5 (Very promising but needs checks); strongest on Demand strength and Seller Central / category risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on Competition quality and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.356Z"
+        "created_at": "2026-06-09T23:42:33.481Z"
       },
       "image": {
         "product_candidate_id": "cable-machine-ankle-straps-2-pack",
@@ -10654,6 +10829,13 @@
       "estimatedSalePrice": 16.49,
       "estimatedMonthlySales": 1191,
       "estimatedRevenue": 19639.59,
+      "bsr": 5548,
+      "weight_oz": 4,
+      "dimensions": {
+        "length": 11,
+        "width": 5,
+        "height": 12
+      },
       "reviewRating": 4.3,
       "reviewCount": 873,
       "profitability": {
@@ -11003,7 +11185,7 @@
         ],
         "reason_summary": "Base grade A1 (Decent opportunity); strongest on Seller Central / category risk and Product risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Competition quality.",
-        "created_at": "2026-06-09T23:16:42.362Z"
+        "created_at": "2026-06-09T23:42:33.494Z"
       },
       "image": {
         "product_candidate_id": "cup-drying-rack-stand",
@@ -11079,6 +11261,13 @@
       "estimatedSalePrice": 13.99,
       "estimatedMonthlySales": 1245,
       "estimatedRevenue": 17417.55,
+      "bsr": 5255,
+      "weight_oz": 2.4,
+      "dimensions": {
+        "length": 9,
+        "width": 4,
+        "height": 2
+      },
       "reviewRating": 4.7,
       "reviewCount": 580,
       "profitability": {
@@ -11428,7 +11617,7 @@
         ],
         "reason_summary": "Base grade B5 (Very promising but needs checks); strongest on Seller Central / category risk and Product risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.366Z"
+        "created_at": "2026-06-09T23:42:33.498Z"
       },
       "image": {
         "product_candidate_id": "over-door-hook-rack-5-hooks",
@@ -11504,6 +11693,13 @@
       "estimatedSalePrice": 12.49,
       "estimatedMonthlySales": 782,
       "estimatedRevenue": 9767.18,
+      "bsr": 9274,
+      "weight_oz": 1.9,
+      "dimensions": {
+        "length": 8,
+        "width": 6,
+        "height": 1
+      },
       "reviewRating": 4.3,
       "reviewCount": 1599,
       "profitability": {
@@ -11860,7 +12056,7 @@
         ],
         "reason_summary": "Base grade B5 (Very promising but needs checks); strongest on Competition quality and Seller Central / category risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.371Z"
+        "created_at": "2026-06-09T23:42:33.505Z"
       },
       "image": {
         "product_candidate_id": "silicone-stretch-lids-12-pack",
@@ -11936,6 +12132,13 @@
       "estimatedSalePrice": 14.49,
       "estimatedMonthlySales": 2531,
       "estimatedRevenue": 36674.19,
+      "bsr": 2213,
+      "weight_oz": 6,
+      "dimensions": {
+        "length": 13,
+        "width": 11,
+        "height": 1
+      },
       "reviewRating": 4.7,
       "reviewCount": 2138,
       "profitability": {
@@ -12285,7 +12488,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Demand strength and Seller Central / category risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.361Z"
+        "created_at": "2026-06-09T23:42:33.491Z"
       },
       "image": {
         "product_candidate_id": "sink-protector-mat-2-pack",
@@ -12361,6 +12564,13 @@
       "estimatedSalePrice": 27.99,
       "estimatedMonthlySales": 949,
       "estimatedRevenue": 26562.51,
+      "bsr": 5574,
+      "weight_oz": 14,
+      "dimensions": {
+        "length": 20,
+        "width": 12,
+        "height": 2
+      },
       "reviewRating": 4.2,
       "reviewCount": 1299,
       "profitability": {
@@ -12710,7 +12920,7 @@
         ],
         "reason_summary": "Base grade B5 (Very promising but needs checks); strongest on Seller Central / category risk and Product risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Competition quality and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.364Z"
+        "created_at": "2026-06-09T23:42:33.496Z"
       },
       "image": {
         "product_candidate_id": "laptop-lap-desk-tray",
@@ -12786,6 +12996,13 @@
       "estimatedSalePrice": 13.49,
       "estimatedMonthlySales": 1234,
       "estimatedRevenue": 16646.66,
+      "bsr": 5313,
+      "weight_oz": 2,
+      "dimensions": {
+        "length": 9,
+        "width": 4,
+        "height": 4
+      },
       "reviewRating": 4.2,
       "reviewCount": 2238,
       "profitability": {
@@ -13135,7 +13352,7 @@
         ],
         "reason_summary": "Base grade B5 (Very promising but needs checks); strongest on Competition quality and Seller Central / category risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.372Z"
+        "created_at": "2026-06-09T23:42:33.507Z"
       },
       "image": {
         "product_candidate_id": "kitchen-sink-caddy-organizer",
@@ -13211,6 +13428,13 @@
       "estimatedSalePrice": 15.49,
       "estimatedMonthlySales": 706,
       "estimatedRevenue": 10935.94,
+      "bsr": 7997,
+      "weight_oz": 3.2,
+      "dimensions": {
+        "length": 10,
+        "width": 4,
+        "height": 9
+      },
       "reviewRating": 4.4,
       "reviewCount": 1122,
       "profitability": {
@@ -13560,7 +13784,7 @@
         ],
         "reason_summary": "Base grade B5 (Very promising but needs checks); strongest on Seller Central / category risk and Product risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.370Z"
+        "created_at": "2026-06-09T23:42:33.503Z"
       },
       "image": {
         "product_candidate_id": "magazine-file-holders-4-pack",
@@ -13636,6 +13860,13 @@
       "estimatedSalePrice": 13.99,
       "estimatedMonthlySales": 1466,
       "estimatedRevenue": 20509.34,
+      "bsr": 3280,
+      "weight_oz": 4,
+      "dimensions": {
+        "length": 6,
+        "width": 5,
+        "height": 4
+      },
       "reviewRating": 4.3,
       "reviewCount": 1605,
       "profitability": {
@@ -13985,7 +14216,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.364Z"
+        "created_at": "2026-06-09T23:42:33.496Z"
       },
       "image": {
         "product_candidate_id": "phone-tablet-holder-stand",
@@ -14061,6 +14292,13 @@
       "estimatedSalePrice": 11.99,
       "estimatedMonthlySales": 973,
       "estimatedRevenue": 11666.27,
+      "bsr": 6245,
+      "weight_oz": 4,
+      "dimensions": {
+        "length": 7,
+        "width": 5,
+        "height": 2
+      },
       "reviewRating": 4.7,
       "reviewCount": 1570,
       "profitability": {
@@ -14417,7 +14655,7 @@
         ],
         "reason_summary": "Base grade B5 (Very promising but needs checks); strongest on Seller Central / category risk and Product risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.354Z"
+        "created_at": "2026-06-09T23:42:33.478Z"
       },
       "image": {
         "product_candidate_id": "adjustable-jump-rope",
@@ -14493,6 +14731,13 @@
       "estimatedSalePrice": 27.99,
       "estimatedMonthlySales": 1487,
       "estimatedRevenue": 41621.13,
+      "bsr": 4233,
+      "weight_oz": 8,
+      "dimensions": {
+        "length": 15,
+        "width": 15,
+        "height": 15
+      },
       "reviewRating": 4.2,
       "reviewCount": 2158,
       "profitability": {
@@ -14849,7 +15094,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Competition quality and Seller Central / category risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.370Z"
+        "created_at": "2026-06-09T23:42:33.503Z"
       },
       "image": {
         "product_candidate_id": "foldable-storage-ottoman-bin",
@@ -14925,6 +15170,13 @@
       "estimatedSalePrice": 10.99,
       "estimatedMonthlySales": 1986,
       "estimatedRevenue": 21826.14,
+      "bsr": 2265,
+      "weight_oz": 2,
+      "dimensions": {
+        "length": 6,
+        "width": 4,
+        "height": 1
+      },
       "reviewRating": 4.5,
       "reviewCount": 590,
       "profitability": {
@@ -15281,7 +15533,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Demand strength and Seller Central / category risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on Trend strength and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.353Z"
+        "created_at": "2026-06-09T23:42:33.477Z"
       },
       "image": {
         "product_candidate_id": "passport-holder-cover",
@@ -15357,6 +15609,13 @@
       "estimatedSalePrice": 13.99,
       "estimatedMonthlySales": 697,
       "estimatedRevenue": 9751.03,
+      "bsr": 10670,
+      "weight_oz": 2.6,
+      "dimensions": {
+        "length": 9,
+        "width": 4,
+        "height": 2
+      },
       "reviewRating": 4.4,
       "reviewCount": 1395,
       "profitability": {
@@ -15706,7 +15965,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Trend strength and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.360Z"
+        "created_at": "2026-06-09T23:42:33.489Z"
       },
       "image": {
         "product_candidate_id": "wall-key-holder-organizer",
@@ -15782,6 +16041,13 @@
       "estimatedSalePrice": 12.49,
       "estimatedMonthlySales": 841,
       "estimatedRevenue": 10504.09,
+      "bsr": 8475,
+      "weight_oz": 3,
+      "dimensions": {
+        "length": 6,
+        "width": 5,
+        "height": 3
+      },
       "reviewRating": 4.5,
       "reviewCount": 1200,
       "profitability": {
@@ -16138,7 +16404,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.359Z"
+        "created_at": "2026-06-09T23:42:33.487Z"
       },
       "image": {
         "product_candidate_id": "curtain-clip-rings-40-pack",
@@ -16214,6 +16480,13 @@
       "estimatedSalePrice": 14.99,
       "estimatedMonthlySales": 1426,
       "estimatedRevenue": 21375.74,
+      "bsr": 4455,
+      "weight_oz": 3,
+      "dimensions": {
+        "length": 8,
+        "width": 5,
+        "height": 6
+      },
       "reviewRating": 3.9,
       "reviewCount": 1780,
       "profitability": {
@@ -16563,7 +16836,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.362Z"
+        "created_at": "2026-06-09T23:42:33.493Z"
       },
       "image": {
         "product_candidate_id": "cutting-board-rack",
@@ -16639,6 +16912,13 @@
       "estimatedSalePrice": 14.99,
       "estimatedMonthlySales": 626,
       "estimatedRevenue": 9383.74,
+      "bsr": 10699,
+      "weight_oz": 6,
+      "dimensions": {
+        "length": 7,
+        "width": 5,
+        "height": 3
+      },
       "reviewRating": 4.6,
       "reviewCount": 824,
       "profitability": {
@@ -16988,7 +17268,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.356Z"
+        "created_at": "2026-06-09T23:42:33.481Z"
       },
       "image": {
         "product_candidate_id": "hand-grip-strengthener-set",
@@ -17064,6 +17344,13 @@
       "estimatedSalePrice": 11.99,
       "estimatedMonthlySales": 1261,
       "estimatedRevenue": 15119.39,
+      "bsr": 5173,
+      "weight_oz": 2,
+      "dimensions": {
+        "length": 6,
+        "width": 4,
+        "height": 2
+      },
       "reviewRating": 4.6,
       "reviewCount": 698,
       "profitability": {
@@ -17420,7 +17707,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.359Z"
+        "created_at": "2026-06-09T23:42:33.486Z"
       },
       "image": {
         "product_candidate_id": "adhesive-wall-hooks-20-pack",
@@ -17496,6 +17783,13 @@
       "estimatedSalePrice": 11.49,
       "estimatedMonthlySales": 835,
       "estimatedRevenue": 9594.15,
+      "bsr": 6518,
+      "weight_oz": 2,
+      "dimensions": {
+        "length": 14,
+        "width": 9,
+        "height": 1
+      },
       "reviewRating": 4.1,
       "reviewCount": 1843,
       "profitability": {
@@ -17852,7 +18146,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.351Z"
+        "created_at": "2026-06-09T23:42:33.474Z"
       },
       "image": {
         "product_candidate_id": "travel-shoe-bags-4-pack",
@@ -17928,6 +18222,13 @@
       "estimatedSalePrice": 11.49,
       "estimatedMonthlySales": 757,
       "estimatedRevenue": 8697.93,
+      "bsr": 9635,
+      "weight_oz": 2,
+      "dimensions": {
+        "length": 9,
+        "width": 2,
+        "height": 3
+      },
       "reviewRating": 4.4,
       "reviewCount": 1760,
       "profitability": {
@@ -18284,7 +18585,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.363Z"
+        "created_at": "2026-06-09T23:42:33.496Z"
       },
       "image": {
         "product_candidate_id": "dish-cloth-hanging-rack",
@@ -18360,6 +18661,13 @@
       "estimatedSalePrice": 25.99,
       "estimatedMonthlySales": 716,
       "estimatedRevenue": 18608.84,
+      "bsr": 10326,
+      "weight_oz": 11,
+      "dimensions": {
+        "length": 10,
+        "width": 10,
+        "height": 12
+      },
       "reviewRating": 4.2,
       "reviewCount": 651,
       "profitability": {
@@ -18709,7 +19017,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.361Z"
+        "created_at": "2026-06-09T23:42:33.492Z"
       },
       "image": {
         "product_candidate_id": "metal-plant-stand-set-of-2",
@@ -18785,6 +19093,13 @@
       "estimatedSalePrice": 14.99,
       "estimatedMonthlySales": 896,
       "estimatedRevenue": 13431.04,
+      "bsr": 7853,
+      "weight_oz": 1.8,
+      "dimensions": {
+        "length": 12,
+        "width": 9,
+        "height": 3
+      },
       "reviewRating": 4.4,
       "reviewCount": 1378,
       "profitability": {
@@ -19134,7 +19449,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.370Z"
+        "created_at": "2026-06-09T23:42:33.503Z"
       },
       "image": {
         "product_candidate_id": "sock-drawer-organizer-set",
@@ -19210,6 +19525,13 @@
       "estimatedSalePrice": 25.99,
       "estimatedMonthlySales": 782,
       "estimatedRevenue": 20324.18,
+      "bsr": 9262,
+      "weight_oz": 9,
+      "dimensions": {
+        "length": 16,
+        "width": 12,
+        "height": 9
+      },
       "reviewRating": 4,
       "reviewCount": 1587,
       "profitability": {
@@ -19566,7 +19888,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on Competition quality and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.358Z"
+        "created_at": "2026-06-09T23:42:33.485Z"
       },
       "image": {
         "product_candidate_id": "storage-tote-with-lid-2-pack",
@@ -19642,6 +19964,13 @@
       "estimatedSalePrice": 11.99,
       "estimatedMonthlySales": 797,
       "estimatedRevenue": 9556.03,
+      "bsr": 9056,
+      "weight_oz": 5.5,
+      "dimensions": {
+        "length": 7,
+        "width": 3,
+        "height": 2
+      },
       "reviewRating": 4.1,
       "reviewCount": 981,
       "profitability": {
@@ -19998,7 +20327,7 @@
         ],
         "reason_summary": "Base grade B4 (Promising); strongest on Seller Central / category risk and Product risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on Competition quality and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.371Z"
+        "created_at": "2026-06-09T23:42:33.505Z"
       },
       "image": {
         "product_candidate_id": "stainless-measuring-spoons-set",
@@ -20074,6 +20403,13 @@
       "estimatedSalePrice": 13.99,
       "estimatedMonthlySales": 1122,
       "estimatedRevenue": 15696.78,
+      "bsr": 5246,
+      "weight_oz": 5,
+      "dimensions": {
+        "length": 12,
+        "width": 8,
+        "height": 2
+      },
       "reviewRating": 4.7,
       "reviewCount": 1171,
       "profitability": {
@@ -20423,7 +20759,7 @@
         ],
         "reason_summary": "Base grade B3 (Usable opportunity); strongest on Seller Central / category risk and Product risk. Capped to C4 by: Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.355Z"
+        "created_at": "2026-06-09T23:42:33.480Z"
       },
       "image": {
         "product_candidate_id": "microfiber-gym-towel",
@@ -20499,6 +20835,13 @@
       "estimatedSalePrice": 12.49,
       "estimatedMonthlySales": 657,
       "estimatedRevenue": 8205.93,
+      "bsr": 10079,
+      "weight_oz": 3,
+      "dimensions": {
+        "length": 7,
+        "width": 7,
+        "height": 1
+      },
       "reviewRating": 4.7,
       "reviewCount": 2004,
       "profitability": {
@@ -20855,7 +21198,7 @@
         ],
         "reason_summary": "Base grade B3 (Usable opportunity); strongest on Seller Central / category risk and Product risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on Profit strength and Trend strength.",
-        "created_at": "2026-06-09T23:16:42.355Z"
+        "created_at": "2026-06-09T23:42:33.480Z"
       },
       "image": {
         "product_candidate_id": "core-exercise-sliders-2-pack",
@@ -20931,6 +21274,13 @@
       "estimatedSalePrice": 10.49,
       "estimatedMonthlySales": 1159,
       "estimatedRevenue": 12157.91,
+      "bsr": 4369,
+      "weight_oz": 1.4,
+      "dimensions": {
+        "length": 5,
+        "width": 3,
+        "height": 2
+      },
       "reviewRating": 4.3,
       "reviewCount": 694,
       "profitability": {
@@ -21287,7 +21637,7 @@
         ],
         "reason_summary": "Base grade B3 (Usable opportunity); strongest on Seller Central / category risk and Product risk. Capped to C4 by: ROI under 30%, Margin under 20%.",
         "weakness_summary": "Weakest on PPC / marketing viability and Profit strength.",
-        "created_at": "2026-06-09T23:16:42.360Z"
+        "created_at": "2026-06-09T23:42:33.489Z"
       },
       "image": {
         "product_candidate_id": "under-desk-headphone-hook",
@@ -23239,7 +23589,7 @@
       "reliability_score": 0.55
     }
   ],
-  "mode": "real",
+  "mode": "mock",
   "dataSources": [
     {
       "name": "Amazon SP-API",
@@ -23263,8 +23613,8 @@
     },
     {
       "name": "retailerapi (live price)",
-      "connected": true,
-      "status": "live"
+      "connected": false,
+      "status": "locked"
     },
     {
       "name": "SerpAPI",
@@ -23813,12 +24163,12 @@
   "batch": {
     "batch_id": "batch-2026-06-09",
     "batch_date": "2026-06-09",
-    "batch_source": "hybrid (estimate + live)",
+    "batch_source": "estimate engine (seed catalog)",
     "products_generated": 57,
     "products_passed": 50,
     "products_rejected": 12,
     "top_grade_count": 0,
-    "data_source_status": "one or more live sources connected"
+    "data_source_status": "estimate engine only (sources locked)"
   },
   "apiUsage": {
     "data_mode": "hybrid_low_cost",
@@ -23845,8 +24195,8 @@
       },
       {
         "name": "retailerapi",
-        "connected": true,
-        "status": "live"
+        "connected": false,
+        "status": "locked"
       },
       {
         "name": "SerpAPI",
@@ -23862,11 +24212,12 @@
     "api_calls_used_today": 0,
     "cache_hits": 57,
     "cache_misses": 0,
-    "estimated_calls_saved": 57,
-    "last_refresh": "2026-06-09T23:16:42.373Z",
-    "next_refresh": "2026-06-10T23:16:42.373Z",
+    "estimated_calls_saved": 0,
+    "last_refresh": "2026-06-09T23:42:33.508Z",
+    "next_refresh": "2026-06-10T23:42:33.508Z",
     "max_api_calls": 20,
     "warnings": [
+      "No live sources connected — running on the estimate engine; 0 paid API calls. Connect a key to enable live data.",
       "Hybrid low-cost mode: paid calls are reserved for A-grade / high-B-grade candidates and cached for CACHE_TTL_HOURS."
     ]
   },

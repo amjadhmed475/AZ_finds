@@ -153,6 +153,7 @@ export async function buildCandidate(seed: ProductSeed, opts: BuildOptions = {})
     estimated_sale_price: salePrice,
     estimated_monthly_sales: market.estimated_monthly_sales,
     estimated_revenue: round(salePrice * market.estimated_monthly_sales),
+    bsr_estimate: market.bsr_estimate,
     seller_count: market.number_of_sellers || seed.seller_count_hint,
     review_count_average: Math.round((market.review_count_range[0] + market.review_count_range[1]) / 2),
     review_rating_average: market.review_rating_average,

@@ -94,6 +94,9 @@ export interface DashProduct {
   estimatedSalePrice: number;
   estimatedMonthlySales: number;
   estimatedRevenue: number;
+  bsr?: number | null;
+  weight_oz?: number | null;
+  dimensions?: { length: number; width: number; height: number } | null;
   reviewRating: number;
   reviewCount: number;
   profitability: {

@@ -62,6 +62,9 @@ export async function buildDashboard(input: DashboardInput): Promise<DashboardJs
       estimatedSalePrice: p.estimated_sale_price,
       estimatedMonthlySales: p.estimated_monthly_sales,
       estimatedRevenue: p.estimated_revenue,
+      bsr: p.bsr_estimate ?? null,
+      weight_oz: p.weight_oz ?? null,
+      dimensions: p.dimensions_in ?? null,
       reviewRating: p.review_rating_average,
       reviewCount: p.review_count_average,
       profitability: {
