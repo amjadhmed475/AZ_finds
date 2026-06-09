@@ -14,6 +14,7 @@ export function sourceStatuses(): SourceStatus[] {
     { name: "Amazon Ads API", env: "AMAZON_ADS_REFRESH_TOKEN" },
     { name: "Amazon Creators API", env: "AMAZON_CREATORS_API_KEY" },
     { name: "Keepa", env: "KEEPA_API_KEY" },
+    { name: "retailerapi", env: "RETAILERAPI_KEY" },
     { name: "SerpAPI", env: "SERPAPI_KEY" },
     { name: "Bing Search", env: "BING_SEARCH_API_KEY" },
   ].map((s) => {
