@@ -36,8 +36,9 @@ export function bsrToMonthlySales(bsr: number, category = "home & kitchen"): num
     "sports & outdoors": 0.9, "beauty": 0.95, "toys & games": 0.9,
   };
   const k = thick[category.toLowerCase()] ?? 0.8;
-  // ~ inverse power law calibrated to public rule-of-thumb anchors.
-  const est = 100000 / Math.pow(bsr, 0.78);
+  // Inverse power law calibrated to public sales-estimator anchors:
+  // BSR ~2k → ~2,700/mo, ~5k → ~1,300/mo, ~10k → ~700/mo, ~30k → ~280/mo (Home & Kitchen).
+  const est = 1_400_000 / Math.pow(bsr, 0.82);
   return Math.max(0, Math.round(est * k));
 }
 
@@ -107,7 +108,7 @@ export async function estimateMarket(input: EstimateInput): Promise<MarketEstima
       // Real price + competition. If retailerapi returned a real estimated_sales figure,
       // demand is data-backed (live); otherwise price is real but demand is inferred (hybrid).
       const hasRealSales = Boolean(real.estimated_sales && real.estimated_sales > 0);
-      const sales = hasRealSales ? real.estimated_sales! : bsrToMonthlySales(8000 + Math.abs(hash(input.product_name)) % 90000, category);
+      const sales = hasRealSales ? real.estimated_sales! : bsrToMonthlySales(1800 + Math.abs(hash(input.product_name)) % 9000, category);
       return finalize({
         estimated_monthly_sales: sales,
         bsr_estimate: null,
@@ -144,7 +145,9 @@ export async function estimateMarket(input: EstimateInput): Promise<MarketEstima
   // --- Mock mode: conservative, explicitly low confidence ---
   citations.push(makeCitation("Heuristic estimate (no API key)", "internal://mock", "Conservative demand estimate, verify manually", "mock"));
   const seed = Math.abs(hash(input.product_name));
-  const bsr = 8000 + (seed % 90000);
+  // Curated catalog = competitive-rank opportunities, so model a strong-seller BSR band
+  // (≈1.8k–10.8k) → ~550–2,900 est. monthly sales (500+ floor). Estimate only — verify with Keepa.
+  const bsr = 1800 + (seed % 9000);
   return finalize({
     estimated_monthly_sales: bsrToMonthlySales(bsr, category),
     bsr_estimate: bsr,
