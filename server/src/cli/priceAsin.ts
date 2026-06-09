@@ -17,9 +17,11 @@ async function main() {
   console.error(`  ${r.title ?? ""}`);
   console.error(`  Price:        $${r.price}`);
   if (r.referral_fee != null) console.error(`  Referral fee: $${r.referral_fee}`);
+  if (r.wfs_fee != null) console.error(`  WFS/FBA fee:  $${r.wfs_fee}`);
   if (r.sellers != null) console.error(`  Sellers:      ${r.sellers}`);
+  if (r.estimated_sales != null) console.error(`  Est. sales:   ${r.estimated_sales}/mo${r.is_best_seller ? " (best seller)" : ""}`);
   if (r.rating != null) console.error(`  Rating:       ${r.rating}★ (${r.review_count ?? "?"} reviews)`);
-  if (r.data_quality != null) console.error(`  Data quality: ${r.data_quality}`);
+  if (r.tokens_remaining != null) console.error(`  Free lookups left this month: ${r.tokens_remaining}`);
   console.error("");
 }
 

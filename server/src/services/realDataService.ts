@@ -19,10 +19,13 @@ export interface RealProduct {
   title?: string;
   image?: string;
   referral_fee?: number;
+  wfs_fee?: number;
   sellers?: number;
+  estimated_sales?: number;
+  is_best_seller?: boolean;
   rating?: number;
   review_count?: number;
-  data_quality?: number;
+  tokens_remaining?: number;
   source: "retailerapi";
 }
 
@@ -42,23 +45,28 @@ export async function lookupByCode(identifier: string): Promise<RealProduct | nu
   const authValue = authHeader.toLowerCase() === "authorization" ? `Bearer ${key}` : key;
   try {
     recordApiCall();
-    const url = `${BASE}/lookup_product?identifier=${encodeURIComponent(identifier)}&include_seller_context=true`;
+    // Real endpoint: GET /v1/products/{identifier}. Fees + Bucket-1 facts (estimated_sales)
+    // come free in the base call; include_seller_context adds restriction/WFS state.
+    const url = `${BASE}/products/${encodeURIComponent(identifier)}?include_seller_context=true`;
     const res = await fetch(url, { headers: { [authHeader]: authValue, Accept: "application/json" } as Record<string, string> });
     if (!res.ok) { console.error(`retailerapi ${res.status} for ${identifier}`); return null; }
-    const d: any = await res.json();
-    const p = d?.product ?? d?.data ?? d;
-    const price = n(p?.current_price ?? p?.price ?? p?.buybox_price ?? p?.buy_box_price);
+    const p: any = (await res.json()) ?? {};
+    const sc = p?.seller_context ?? {};
+    const price = n(p?.current_price ?? p?.buybox_price ?? p?.price);
     if (!price) return null;
     return {
       asin: identifier,
       price,
       title: p?.title ?? p?.name,
-      image: p?.image ?? p?.image_url ?? p?.main_image,
-      referral_fee: n(p?.referral_fee ?? p?.fees?.referral_fee ?? p?.fees?.referral),
-      sellers: i(p?.offer_count ?? p?.seller_count ?? p?.sellers_count ?? p?.num_sellers),
-      rating: n(p?.rating ?? p?.review_rating ?? p?.stars),
-      review_count: i(p?.review_count ?? p?.reviews_count ?? p?.ratings_total),
-      data_quality: n(p?.data_quality_score),
+      image: p?.image_url ?? p?.image ?? p?.primary_image,
+      referral_fee: n(p?.referral_fee_usd ?? sc?.referral_fee_usd ?? p?.referral_fee),
+      wfs_fee: n(p?.wfs_fee_usd ?? sc?.wfs_fee_usd),
+      sellers: i(p?.num_offers ?? p?.offers_count ?? p?.offer_count),
+      estimated_sales: i(p?.estimated_sales),
+      is_best_seller: Boolean(p?.is_best_seller),
+      rating: n(p?.average_rating ?? p?.rating ?? p?.review_rating ?? p?.stars),
+      review_count: i(p?.review_count ?? p?.ratings_total ?? p?.reviews_count),
+      tokens_remaining: i(p?.tokens_remaining ?? p?._meta?.tokens_remaining),
       source: "retailerapi",
     };
   } catch (e) {

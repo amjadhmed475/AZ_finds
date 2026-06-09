@@ -102,10 +102,12 @@ export async function estimateMarket(input: EstimateInput): Promise<MarketEstima
   if (input.asin && process.env.RETAILERAPI_KEY) {
     const real = await lookupByCode(input.asin);
     if (real) {
-      citations.push(makeCitation("retailerapi", `https://www.amazon.com/dp/${input.asin}`, "Live price, sellers, reviews, referral fee", "api"));
+      citations.push(makeCitation("retailerapi", `https://www.amazon.com/dp/${input.asin}`, "Live price, sellers, est. sales, referral fee", "api"));
       const sellers = real.sellers ?? 0;
-      // Real price/competition, but demand (sales rank) still inferred — hybrid confidence.
-      const sales = bsrToMonthlySales(8000 + Math.abs(hash(input.product_name)) % 90000, category);
+      // Real price + competition. If retailerapi returned a real estimated_sales figure,
+      // demand is data-backed (live); otherwise price is real but demand is inferred (hybrid).
+      const hasRealSales = Boolean(real.estimated_sales && real.estimated_sales > 0);
+      const sales = hasRealSales ? real.estimated_sales! : bsrToMonthlySales(8000 + Math.abs(hash(input.product_name)) % 90000, category);
       return finalize({
         estimated_monthly_sales: sales,
         bsr_estimate: null,
@@ -113,7 +115,7 @@ export async function estimateMarket(input: EstimateInput): Promise<MarketEstima
         number_of_sellers: sellers,
         review_count_range: [real.review_count ?? 0, real.review_count ?? 0],
         review_rating_average: real.rating ?? 0,
-        confidence: "medium",
+        confidence: hasRealSales ? "high" : "medium",
         price_source: "real",
         referral_fee: real.referral_fee,
         citations,
