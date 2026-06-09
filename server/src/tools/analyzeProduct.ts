@@ -14,6 +14,7 @@ import { analyzeGating } from "./analyzeGating.js";
 import { dedupeCitations } from "../services/citationService.js";
 import { gradeProduct } from "../services/gradingService.js";
 import { buildProductImage } from "../services/imageService.js";
+import { getAsinFor } from "../services/realDataService.js";
 import { slugify, round } from "../utils/normalize.js";
 
 export interface BuiltCandidate {
@@ -41,6 +42,7 @@ export async function buildCandidate(seed: ProductSeed, opts: BuildOptions = {})
     keywords: seed.amazon_keywords,
     category: seed.category,
     marketplace: opts.marketplace,
+    asin: seed.asin ?? getAsinFor(id),
     use_keepa_if_available: opts.use_keepa_if_available,
   });
 
@@ -57,9 +59,9 @@ export async function buildCandidate(seed: ProductSeed, opts: BuildOptions = {})
   });
 
   const best = suppliers[0];
-  // Use a measured price (Keepa, confidence "high") when we have one; otherwise use the
-  // curated realistic price for this product, NOT the hash-based market guess.
-  const salePrice = market.confidence === "high" && market.average_price > 0 ? market.average_price : seed.price_hint;
+  // Use the LIVE price when a real source (Keepa / retailerapi / user) provided one;
+  // otherwise use the curated realistic price, NOT the hash-based market guess.
+  const salePrice = market.price_source === "real" && market.average_price > 0 ? market.average_price : seed.price_hint;
   const unitCost = best ? round((best.unit_cost_min + best.unit_cost_max) / 2) : seed.target_unit_cost;
   // Inbound freight per unit: conservative floor so small-item costs aren't understated.
   const inbound = Math.max(0.5, best ? best.estimated_shipping : round(seed.target_unit_cost * 0.15));
@@ -74,7 +76,7 @@ export async function buildCandidate(seed: ProductSeed, opts: BuildOptions = {})
     inbound_shipping_per_unit: inbound,
     packaging_cost: 0.3,
     prep_cost: 0.2,
-    referral_fee_percent: getReferralFeePercent(seed.category) * 100,
+    referral_fee_percent: market.referral_fee && salePrice > 0 ? round((market.referral_fee / salePrice) * 100, 1) : getReferralFeePercent(seed.category) * 100,
     fba_fee: fbaFee,
     storage_fee_estimate: storage,
     ad_cost_percent: opts.ad_cost_percent ?? 10,
@@ -137,7 +139,7 @@ export async function buildCandidate(seed: ProductSeed, opts: BuildOptions = {})
     fragile_risk: gating.risk.fragile_risk,
     weight_oz: seed.weight_oz,
     restricted: seed.restricted_check?.restricted,
-    data_confidence: "estimate-level",
+    data_confidence: market.confidence === "high" ? "live" : market.price_source === "real" ? "hybrid" : "estimate-level",
   });
 
   const image = buildProductImage(id, seed.name, seed.product_type, seed.category, { use_placeholders: true });

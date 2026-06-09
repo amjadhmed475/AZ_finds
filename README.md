@@ -130,8 +130,15 @@ modelled, not pulled from Amazon, so they will differ from the real listing.
   adds ~$5.99).
 - **Make it real automatically** by connecting a data source (already wired):
   - **Keepa** (`KEEPA_API_KEY`, paid) — real BSR/price/sales-rank; unlocks A-grades.
-  - **retailerapi** (`RETAILERAPI_KEY`, free 1,000 lookups/mo) — real Amazon price/sellers by ASIN.
-  - There is **no** free Helium 10 / Jungle Scout API for ad-hoc lookups (paid subscription only).
+  - **retailerapi** (`RETAILERAPI_KEY`, free 1,000 lookups/mo) — real Amazon price/sellers/fees **by ASIN**
+    (no keyword search). Activate it:
+    1. Get a free key at **retailerapi.com** → add `RETAILERAPI_KEY=rk_live_…` to `.env`.
+    2. Test one product: `cd server; npm run price:asin -- B0XXXXXXXX` (prints live price/fees/sellers).
+    3. To pull live prices into the batch, map product ids → ASINs in `server/data/asins.json`, then
+       `npm run research:daily -- --force`. Those products show the **real price** and rise to **hybrid (A2)** confidence.
+    - MCP tool: `lookup_real_price(identifier)`.
+  - There is **no** free Helium 10 / Jungle Scout API for ad-hoc lookups (paid subscription only); the repo
+    literally named `helium-mcp` is unrelated (news/stocks).
 
 ## Daily 8 AM automation + futuristic timer
 

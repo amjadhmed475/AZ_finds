@@ -1,0 +1,4 @@
+{
+  "_comment": "Map a product id (slug) to a real Amazon ASIN to pull LIVE price/fees via retailerapi (needs RETAILERAPI_KEY). Example: find the product on Amazon, copy its ASIN (B0...), add it here, then run `npm run research:daily -- --force`. Product ids are the slug of the name, e.g. 'resistance-bands-set-5-pack'.",
+  "_example": "B0XXXXXXXX"
+}

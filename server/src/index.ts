@@ -23,6 +23,7 @@ import { enrichProductImages } from "./tools/enrichProductImages.js";
 import { getProductDetailDashboard } from "./tools/getProductDetailDashboard.js";
 import { getApiUsageStatusTool } from "./tools/getApiUsageStatus.js";
 import { getLiveDataIntegrationPlan } from "./tools/getLiveDataIntegrationPlan.js";
+import { lookupByCode, hasRealData } from "./services/realDataService.js";
 
 const server = new McpServer({ name: "amazon-seller-mcp", version: "1.0.0" });
 
@@ -435,6 +436,25 @@ server.tool(
   async (args) => {
     try { return ok(getLiveDataIntegrationPlan(args)); }
     catch (e) { return fail(`get_live_data_integration_plan failed: ${(e as Error).message}`); }
+  }
+);
+
+// 20) lookup_real_price ----------------------------------------------------------
+server.tool(
+  "lookup_real_price",
+  "Look up the LIVE Amazon price, referral fee, seller count and reviews for an ASIN/UPC via retailerapi (free tier, needs RETAILERAPI_KEY). Real data — not an estimate. Returns null-ish guidance if no key or no match.",
+  {
+    identifier: z.string().describe("Amazon ASIN (B0...) or a UPC/EAN/GTIN"),
+  },
+  async (args) => {
+    try {
+      if (!hasRealData()) return ok({ connected: false, note: "RETAILERAPI_KEY not set — add a free key from retailerapi.com to .env to enable live prices." });
+      const r = await lookupByCode(args.identifier);
+      if (!r) return ok({ connected: true, found: false, note: `No live data for ${args.identifier} (bad code, no match, or API error).` });
+      return ok({ connected: true, found: true, ...r });
+    } catch (e) {
+      return fail(`lookup_real_price failed: ${(e as Error).message}`);
+    }
   }
 );
 

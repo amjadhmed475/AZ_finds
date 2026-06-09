@@ -8,6 +8,7 @@ export interface ProductSeed {
   category: string;
   product_type: string;
   amazon_keywords: string[];
+  asin?: string;
   price_hint: number;
   target_unit_cost: number;
   weight_oz: number;

@@ -16,7 +16,8 @@
     "research:top50": "node dist/cli/top50.js",
     "images:enrich": "node dist/cli/enrichImages.js",
     "sources:status": "node dist/cli/sourcesStatus.js",
-    "research:top5log": "node dist/cli/top5log.js"
+    "research:top5log": "node dist/cli/top5log.js",
+    "price:asin": "node dist/cli/priceAsin.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",

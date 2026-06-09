@@ -1,5 +1,6 @@
 import { makeCitation } from "./citationService.js";
 import { recordApiCall } from "./apiUsageService.js";
+import { lookupByCode } from "./realDataService.js";
 import type { Citation } from "../types/citations.js";
 import type { Confidence, DemandConsistency, TrendStatus } from "../types/product.js";
 import { round } from "../utils/normalize.js";
@@ -16,6 +17,8 @@ export interface MarketEstimate {
   trend_status: TrendStatus;
   demand_consistency: DemandConsistency;
   confidence: Confidence;
+  price_source: "real" | "estimate";
+  referral_fee?: number;
   citations: Citation[];
 }
 
@@ -86,11 +89,35 @@ export async function estimateMarket(input: EstimateInput): Promise<MarketEstima
           review_count_range: [p?.stats?.current?.[17] ?? 0, p?.stats?.current?.[17] ?? 0],
           review_rating_average: (p?.stats?.current?.[16] ?? 0) / 10,
           confidence: "high",
+          price_source: "real",
           citations,
         }, category);
       }
     } catch {
-      /* fall through to manual/mock */
+      /* fall through to retailerapi/manual/mock */
+    }
+  }
+
+  // --- Real price mode: retailerapi (free tier) by ASIN/UPC ---
+  if (input.asin && process.env.RETAILERAPI_KEY) {
+    const real = await lookupByCode(input.asin);
+    if (real) {
+      citations.push(makeCitation("retailerapi", `https://www.amazon.com/dp/${input.asin}`, "Live price, sellers, reviews, referral fee", "api"));
+      const sellers = real.sellers ?? 0;
+      // Real price/competition, but demand (sales rank) still inferred — hybrid confidence.
+      const sales = bsrToMonthlySales(8000 + Math.abs(hash(input.product_name)) % 90000, category);
+      return finalize({
+        estimated_monthly_sales: sales,
+        bsr_estimate: null,
+        average_price: real.price,
+        number_of_sellers: sellers,
+        review_count_range: [real.review_count ?? 0, real.review_count ?? 0],
+        review_rating_average: real.rating ?? 0,
+        confidence: "medium",
+        price_source: "real",
+        referral_fee: real.referral_fee,
+        citations,
+      }, category);
     }
   }
 
@@ -107,6 +134,7 @@ export async function estimateMarket(input: EstimateInput): Promise<MarketEstima
       review_count_range: [input.manual.review_count ?? 0, input.manual.review_count ?? 0],
       review_rating_average: input.manual.review_rating ?? 0,
       confidence: "medium",
+      price_source: input.manual.average_price ? "real" : "estimate",
       citations,
     }, category);
   }
@@ -123,6 +151,7 @@ export async function estimateMarket(input: EstimateInput): Promise<MarketEstima
     review_count_range: [50 + (seed % 400), 600 + (seed % 4000)],
     review_rating_average: round(3.9 + (seed % 9) / 10, 1),
     confidence: "low",
+    price_source: "estimate",
     citations,
   }, category);
 }
