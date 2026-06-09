@@ -103,7 +103,12 @@ export function ProductDetail({ product, marketing }: { product: DashProduct; ma
             <Stat label="Margin" value={pct(f.margin)} />
             <Stat label="Break-even price" value={money(f.breakEvenPrice)} />
           </div>
-          <div className="detail-section"><ProfitCalculator initial={{ salePrice: p.estimatedSalePrice, unitCost: f.unitCost, fbaFee: f.fbaFee }} /></div>
+          <div className="price-verify">
+            <Icon name="info" size={15} />
+            <span><b>These are estimates, not live data.</b> The {money(p.estimatedSalePrice)} price is modelled (no Keepa connected) — look up the real Amazon price, type it below, and ROI/margin update instantly and save. FBA fee already covers Amazon's outbound shipping; switch to FBM if you ship it yourself (adds ~$5.99).</span>
+            <a className="btn btn-sm" href={`https://www.amazon.com/s?k=${encodeURIComponent(p.name)}`} target="_blank" rel="noopener noreferrer">Check real price <Icon name="external" size={13} /></a>
+          </div>
+          <div className="detail-section"><ProfitCalculator productId={p.id} initial={{ salePrice: p.estimatedSalePrice, unitCost: f.unitCost, fbaFee: f.fbaFee }} /></div>
         </div>
       )}
 

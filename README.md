@@ -116,6 +116,23 @@ A polished, investor-ready SaaS UI: sidebar app-shell, refined dark theme (deep 
 - **Help Center** — step-by-step: Getting Started, Connect Seller Central, Amazon Ads/PPC reports, Keepa, Search/Browser MCP, supplier data, CSV uploads, pre-order verification, exports, troubleshooting — plus a **Connect Your Stack** status board.
 - **Charts** — 7 clear panels (grade distribution, top-10 score/ROI/profit with visible names, risk spread, category mix, demand-vs-competition) with plain-English subtitles.
 
+## Accuracy & getting real numbers
+
+By default the dashboard runs the **estimate engine** — prices, sales and ROI are
+modelled, not pulled from Amazon, so they will differ from the real listing.
+
+- **Realistic prices.** Each product uses a curated, research-informed price. *(Fixed: the
+  engine previously ignored that curated price in estimate mode and used a hash-based guess —
+  it now uses the real curated price unless live data is connected.)*
+- **Correct the numbers yourself.** Open a product → **Profit** tab → **Check real price**
+  (opens Amazon) → type the real price + your supplier cost. ROI/margin/profit recompute and
+  **save per product**. Pick **FBA** (Amazon ships, fee covers shipping) or **FBM** (you ship —
+  adds ~$5.99).
+- **Make it real automatically** by connecting a data source (already wired):
+  - **Keepa** (`KEEPA_API_KEY`, paid) — real BSR/price/sales-rank; unlocks A-grades.
+  - **retailerapi** (`RETAILERAPI_KEY`, free 1,000 lookups/mo) — real Amazon price/sellers by ASIN.
+  - There is **no** free Helium 10 / Jungle Scout API for ad-hoc lookups (paid subscription only).
+
 ## Daily 8 AM automation + futuristic timer
 
 A Windows Scheduled Task (**"AZ Finds Daily 8AM"**) runs `scripts/daily-8am.ps1` every

@@ -20,3 +20,20 @@
   background:linear-gradient(135deg, rgba(245,165,36,0.15), rgba(245,165,36,0.03)); border:1px solid rgba(245,165,36,0.32); }
 .fb-label{ font-size:8px; letter-spacing:1.6px; text-transform:uppercase; color:var(--dim); }
 .founders-badge b{ font-family:"Manrope",sans-serif; font-size:13px; color:var(--brand-2); letter-spacing:-0.01em; }
+
+/* ── profit calculator: FBA/FBM, real-price verify, saved ── */
+.calc-mode{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; grid-column:1/-1; margin-bottom:4px; }
+.calc-mode-label{ font-size:12px; font-weight:700; color:var(--ink-2); }
+.seg{ display:inline-flex; background:var(--bg-soft); border:1px solid var(--line-2); border-radius:9px; padding:2px; }
+.seg button{ border:none; background:none; color:var(--dim); font-weight:700; font-size:12px; padding:5px 14px; border-radius:7px; cursor:pointer; }
+.seg button.on{ background:linear-gradient(135deg,var(--brand),var(--brand-2)); color:#1a1206; }
+.calc-mode-hint{ flex:1; min-width:160px; }
+.calc-saved{ grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:4px; }
+.calc-saved-on{ font-size:12px; color:#34d399; font-weight:600; }
+.calc-reset{ background:none; border:1px solid var(--line-2); color:var(--dim); border-radius:8px; padding:4px 10px; font-size:11px; cursor:pointer; }
+.calc-reset:hover{ border-color:var(--brand); color:var(--brand-2); }
+.price-verify{ display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap; background:var(--accent-soft); border:1px solid rgba(91,140,245,0.3);
+  color:#bcd2ff; border-radius:12px; padding:12px 14px; font-size:12.5px; line-height:1.55; margin:14px 0 12px; }
+.price-verify svg{ flex:0 0 auto; margin-top:1px; }
+.price-verify span{ flex:1; min-width:220px; }
+.price-verify .btn{ white-space:nowrap; }

@@ -9,6 +9,24 @@ const SECTIONS: Array<{ id: string; title: string; body: React.ReactNode }> = [
       <ul><li>Browse <b>Products</b> for graded opportunities.</li><li>Use <b>Wholesale Finder</b> to find suppliers for any product.</li><li>Open a product to see profit, suppliers, PPC, risk, and a pre-order checklist.</li><li>Save products to your <b>Watchlist</b> and track verification.</li></ul>
     </>
   )},
+  { id: "research", title: "★ Research a product accurately — step by step", body: (
+    <>
+      <p>The dashboard's prices, sales and ROI are <b>estimates</b> (no live Amazon feed by default), so they will differ from the real listing. Here is how to turn any product into a real, confident decision:</p>
+      <ol>
+        <li><b>Open the product</b> and go to the <b>Profit</b> tab.</li>
+        <li><b>Check the real price.</b> Click <b>“Check real price”</b> — it opens Amazon's search for that product. Note the actual selling price (e.g. a yoga strap may list at $22.09, not the estimate).</li>
+        <li><b>Type the real numbers into the calculator.</b> Enter the real Amazon price, your real supplier unit cost (from a Wholesale Finder quote), and pick <b>FBA</b> (Amazon ships — the FBA fee covers outbound shipping) or <b>FBM</b> (you ship — adds ~$5.99). ROI, margin and net profit recompute and <b>save automatically</b> for that product.</li>
+        <li><b>Confirm fees</b> in Amazon's <b>Revenue Calculator</b> (paste the ASIN), then copy the exact referral + FBA fee back into the calculator.</li>
+        <li><b>Check Seller Central</b> eligibility (Add a Product → restrictions) and mark the result on the product.</li>
+        <li><b>Get a supplier quote + sample</b> from the Wholesale Finder links; update unit cost and MOQ.</li>
+        <li><b>Decide:</b> the product's decision line (Buy sample / Check Seller Central / Watch / Avoid) plus your real ROI tells you whether to order a small test batch.</li>
+      </ol>
+      <p className="hc-defs"><b>Want price/sales to be real automatically?</b> The engine is already wired for it:
+        <br />• <b>Keepa</b> (paid, most accurate): set <code>KEEPA_API_KEY</code> → real BSR, price history, sales rank.
+        <br />• <b>retailerapi</b> (free 1,000 lookups/mo): real Amazon price/sellers by ASIN — set <code>RETAILERAPI_KEY</code>.
+        <br />There is <b>no</b> free Helium 10 / Jungle Scout API for ad-hoc lookups; those need their paid subscriptions. With a real source connected, grades can rise above B3.</p>
+    </>
+  )},
   { id: "sc", title: "2. Connect Amazon Seller Central", body: (
     <>
       <p><b>This app cannot and will not bypass Seller Central.</b> You verify eligibility yourself:</p>

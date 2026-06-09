@@ -57,9 +57,12 @@ export async function buildCandidate(seed: ProductSeed, opts: BuildOptions = {})
   });
 
   const best = suppliers[0];
-  const salePrice = market.average_price > 0 ? market.average_price : seed.price_hint;
+  // Use a measured price (Keepa, confidence "high") when we have one; otherwise use the
+  // curated realistic price for this product, NOT the hash-based market guess.
+  const salePrice = market.confidence === "high" && market.average_price > 0 ? market.average_price : seed.price_hint;
   const unitCost = best ? round((best.unit_cost_min + best.unit_cost_max) / 2) : seed.target_unit_cost;
-  const inbound = best ? best.estimated_shipping : round(seed.target_unit_cost * 0.15);
+  // Inbound freight per unit: conservative floor so small-item costs aren't understated.
+  const inbound = Math.max(0.5, best ? best.estimated_shipping : round(seed.target_unit_cost * 0.15));
 
   const fbaFee = estimateFbaFee(seed.weight_oz, seed.dimensions_in);
   const storage = estimateMonthlyStorage(seed.dimensions_in);
