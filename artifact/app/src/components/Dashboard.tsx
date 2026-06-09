@@ -18,11 +18,13 @@ import { WholesaleFinder } from "./WholesaleFinder";
 import { Widgets } from "./Widgets";
 import { Watchlist } from "./Watchlist";
 import { HelpCenter } from "./HelpCenter";
+import { SupplierVerification } from "./SupplierVerification";
+import { LaunchReadiness } from "./LaunchReadiness";
 import { LogoMark } from "./LogoMark";
 import { RefreshTimer } from "./RefreshTimer";
 import { pct } from "../lib/formatters";
 
-type Tab = "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "live" | "ppc" | "capital" | "watchlist" | "rejected" | "sources" | "help";
+type Tab = "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "help";
 
 export function Dashboard({ data }: { data: DashboardData }) {
   const [tab, setTab] = useState<Tab>("sourcing");
@@ -41,9 +43,11 @@ export function Dashboard({ data }: { data: DashboardData }) {
     ["wholesale", "Wholesale Finder", "box"],
     ["details", "Product Details", "list"],
     ["suppliers", "Suppliers", "truck"],
+    ["verify", "Supplier Check", "shield"],
     ["live", "Live + Store", "activity"],
     ["ppc", "PPC Manager", "megaphone"],
     ["capital", "Capital Planner", "wallet"],
+    ["launch", "Launch Readiness", "rocket"],
     ["watchlist", "Watchlist", "star"],
     ["rejected", `Rejected (${data.richRejected?.length ?? 0})`, "ban"],
     ["sources", "Data Sources", "database"],
@@ -128,9 +132,11 @@ export function Dashboard({ data }: { data: DashboardData }) {
         </section>
       )}
 
+      {tab === "verify" && <SupplierVerification data={data} />}
       {tab === "live" && <LiveDataPanel data={data} />}
       {tab === "ppc" && <PpcManager data={data} />}
       {tab === "capital" && <CapitalPlanner seed={data.capitalPlanner} />}
+      {tab === "launch" && <LaunchReadiness data={data} onOpen={open} />}
       {tab === "watchlist" && <Watchlist data={data} onOpen={open} />}
       {tab === "rejected" && <RejectedPanel rejected={data.richRejected} />}
       {tab === "sources" && <ApiUsagePanel data={data} />}

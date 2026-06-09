@@ -19,6 +19,8 @@ const P: Record<string, string> = {
   star: "M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 9.4l6.9-.6z",
   help: "M12 2a10 10 0 100 20 10 10 0 000-20z M9.6 9a2.5 2.5 0 014.6 1.4c0 1.6-2.2 2-2.2 3.3 M12 17h.01",
   info: "M12 2a10 10 0 100 20 10 10 0 000-20z M12 11v5 M12 7h.01",
+  shield: "M12 2l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V5l8-3z M9 12l2 2 4-4",
+  rocket: "M14.5 4.5c3.5-1.5 5 0 5 0s1.5 1.5 0 5l-7.5 7.5-3-3 5.5-9.5z M9 11l-4 1 1 3 M5 15c-1.2 1.2-1.5 4.2-1.5 4.2s3-.3 4.2-1.5",
 };
 
 export function Icon({ name, size = 18, className = "" }: { name: string; size?: number; className?: string }) {

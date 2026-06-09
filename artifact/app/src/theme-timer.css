@@ -37,3 +37,48 @@
 .price-verify svg{ flex:0 0 auto; margin-top:1px; }
 .price-verify span{ flex:1; min-width:220px; }
 .price-verify .btn{ white-space:nowrap; }
+
+/* ── supplier verification + launch readiness ── */
+.mpill.neutral{ background:var(--card-2); border:1px solid var(--line-2); color:var(--ink-2); }
+.sg{ display:inline-block; font-weight:800; font-size:11px; padding:1px 7px; border-radius:6px; }
+.sg-lg{ width:42px; height:42px; flex:0 0 auto; display:grid; place-items:center; font-family:"Manrope"; font-weight:800; font-size:19px; border-radius:11px; border:1px solid; }
+.rec-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+.rec{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:13px 14px; }
+.rec-top{ display:flex; align-items:center; gap:7px; font-size:10.5px; text-transform:uppercase; letter-spacing:0.6px; color:var(--dim); font-weight:700; }
+.rec-name{ display:flex; align-items:center; gap:8px; font-weight:700; font-size:13.5px; margin:8px 0 4px; }
+.rec-note{ font-size:11.5px; color:var(--dim); }
+.sv-sort{ display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin:18px 0 12px; }
+.sv-cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); gap:14px; }
+.sv-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow:var(--shadow-sm); }
+.sv-card.can-best{ border-color:rgba(52,211,153,0.4); box-shadow:0 0 0 1px rgba(52,211,153,0.25), var(--shadow-sm); }
+.sv-head{ display:flex; align-items:center; gap:12px; }
+.sv-name{ flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
+.sv-name b{ font-size:14.5px; }
+.best-star{ color:#34d399; font-weight:700; }
+.sv-score{ text-align:right; display:flex; flex-direction:column; }
+.sv-score-v{ font-family:"JetBrains Mono"; font-size:24px; font-weight:700; }
+.sv-metrics{ display:flex; flex-wrap:wrap; gap:6px; margin:12px 0; }
+.sv-metrics .mpill{ background:var(--bg-soft); border:1px solid var(--line-2); }
+.sv-quality{ font-size:12.5px; color:var(--brand-2); font-weight:600; margin-bottom:10px; }
+.sv-checks{ display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }
+.chk{ font-size:10.5px; padding:3px 8px; border-radius:6px; border:1px solid var(--line-2); }
+.chk-pass{ background:var(--good-soft); border-color:rgba(52,211,153,0.3); color:#9af0c6; }
+.chk-fail{ background:var(--bad-soft); border-color:rgba(251,113,133,0.3); color:#ffb3bd; }
+.chk-unknown{ background:var(--card-2); color:var(--dim); }
+.sv-risks{ list-style:none; display:flex; flex-direction:column; gap:4px; font-size:11.5px; color:#fcd97a; margin-bottom:10px; padding-left:0; }
+.sv-risks li::before{ content:"⚠ "; }
+.sv-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; border-top:1px solid var(--line); padding-top:11px; }
+.sv-action{ font-weight:700; font-size:13px; }
+.sv-action.good{ color:#34d399; } .sv-action.warn{ color:#fbbf24; } .sv-action.bad{ color:#fb7185; }
+
+.lr-summary{ display:flex; flex-wrap:wrap; gap:8px; }
+.lr-chip{ font-size:12.5px; padding:7px 13px; border-radius:999px; border:1px solid var(--line-2); background:var(--card); color:var(--ink-2); }
+.lr-chip b{ font-family:"JetBrains Mono"; margin-right:3px; }
+.lr-chip.good{ background:var(--good-soft); border-color:rgba(52,211,153,0.3); color:#9af0c6; }
+.lr-chip.warn{ background:var(--warn-soft); border-color:rgba(251,191,36,0.3); color:#fcd97a; }
+.lr-chip.bad{ background:var(--bad-soft); border-color:rgba(251,113,133,0.3); color:#ffb3bd; }
+.lr-bar{ display:inline-block; width:80px; height:7px; background:var(--line); border-radius:5px; overflow:hidden; vertical-align:middle; margin-right:8px; }
+.lr-bar span{ display:block; height:100%; border-radius:5px; }
+.lr-score{ font-family:"JetBrains Mono"; font-size:12px; }
+.lr-next{ font-size:12px; color:var(--ink-2); max-width:320px; }
+@media (max-width:900px){ .sv-cards{ grid-template-columns:1fr; } }

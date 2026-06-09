@@ -63,6 +63,38 @@ const SECTIONS: Array<{ id: string; title: string; body: React.ReactNode }> = [
   { id: "supplier", title: "6. Add Supplier Data", body: (
     <p>In the product drawer use <b>Find more suppliers</b>, or paste a supplier quote / product link. A confirmed supplier product-page match raises supplier confidence and can lift the grade.</p>
   )},
+  { id: "alibaba", title: "★ How to vet an Alibaba supplier", body: (
+    <ol>
+      <li>Open the <b>direct product page</b> (not the supplier homepage).</li>
+      <li>Confirm the <b>product title and images</b> match your exact item, pack count and variation.</li>
+      <li>Check <b>MOQ</b> and whether samples are available.</li>
+      <li>Check <b>Trade Assurance</b> / buyer protection, <b>Verified Supplier</b> badge, and <b>years active</b>.</li>
+      <li>Check ratings/reviews, response rate and transaction history if shown.</li>
+      <li>Check the <b>shipping method and delivery estimate</b> — does it fit 2–3 weeks?</li>
+      <li>Message the supplier to confirm landed price, lead time, and stock.</li>
+      <li><b>Order a sample before any bulk order.</b></li>
+    </ol>
+  )},
+  { id: "aliexpress", title: "★ How to vet an AliExpress supplier", body: (
+    <ol>
+      <li>Open the <b>direct product page</b>.</li>
+      <li>Check the <b>number of orders</b> and <b>store rating</b> (avoid low-evidence listings).</li>
+      <li>Read <b>reviews and review photos</b> — do they match the listing?</li>
+      <li>Check the <b>estimated delivery date</b> and <b>ships-from</b> location (prefer US/CA warehouses for speed).</li>
+      <li>Confirm <b>return/refund protection</b>.</li>
+      <li>Avoid listings with poor reviews, mismatched images, or unrealistically low prices.</li>
+      <li><b>Order a sample first.</b></li>
+    </ol>
+  )},
+  { id: "shipping", title: "★ Confirm 2–3 week delivery + message templates", body: (
+    <>
+      <p>The Supplier Check tab flags shipping as <b>Pass (≤21d)</b>, <b>Borderline (22–28d)</b>, <b>Fail (&gt;28d)</b>, or <b>Unknown</b>. Estimates can change — always confirm in writing:</p>
+      <ul><li>Ask for the shipping method, tracking, and whether stock is on hand.</li><li>Ask if private label / custom packaging adds lead time.</li><li>Get written confirmation before ordering.</li></ul>
+      <p className="hc-defs"><b>Alibaba message:</b> “Hi, I'm interested in sourcing [PRODUCT]. Can you confirm unit price for [QTY], MOQ, sample cost, shipping cost to [LOCATION], estimated delivery time, shipping methods, dimensions, material, packaging options, and whether private labeling is available? Is it in stock, and can delivery arrive within 2–3 weeks?”</p>
+      <p className="hc-defs"><b>AliExpress message:</b> “Hi, I'm interested in [PRODUCT]. Can you confirm exact dimensions/material, whether it's in stock, shipping method, estimated delivery time to [LOCATION], tracking availability, and whether delivery can arrive within 2–3 weeks?”</p>
+      <p className="hc-defs"><b>US wholesaler message:</b> “Hi, I'm interested in purchasing [PRODUCT] wholesale. Can you confirm wholesale pricing, MOQ, case-pack quantity, shipping cost to [LOCATION], estimated delivery time, dimensions, material, and whether samples or small test orders are available?”</p>
+    </>
+  )},
   { id: "csv", title: "7. Upload CSV Reports", body: (
     <p>Upload Amazon Ads CSVs in PPC Manager. For Seller Central results, mark them on each product. CSV exports from AZ Finds are <b>raw data only</b> — use <b>Export XLSX Pro</b> for a formatted workbook with images.</p>
   )},

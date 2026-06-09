@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { DashProduct, MarketingStrategy } from "../lib/types";
 import { money, num, pct, gatingLabel, riskColor } from "../lib/formatters";
 import { breakEvenAcos, targetAcos } from "../lib/ppc";
+import { ppcDecisionFor } from "../lib/ppcDecision";
 import { GradeBadge } from "./GradeBadge";
 import { ProductImage } from "./ProductImage";
 import { GradeBreakdown } from "./GradeBreakdown";
@@ -116,6 +117,16 @@ export function ProductDetail({ product, marketing }: { product: DashProduct; ma
 
       {tab === "PPC" && (
         <div>
+          {(() => {
+            const ppc = ppcDecisionFor(p);
+            const tone = ppc.grade === "A" ? "good" : ppc.grade === "B" ? "neutral" : ppc.grade === "C" ? "warn" : "bad";
+            return (
+              <div className={`decision dec-${tone}`} style={{ marginTop: 0 }}>
+                <Icon name="megaphone" size={16} /> <b>PPC {ppc.grade} · {ppc.score}/100 — {ppc.decision}.</b>&nbsp;
+                Break-even ACOS {ppc.breakEvenAcos}% · target {ppc.targetAcos.moderate}% · max CPC {money(ppc.maxCpc)} · needs ~{ppc.requiredCvr}% conversion · test budget {money(ppc.minTestBudget)} (≈{money(ppc.dailyBudget)}/day).
+              </div>
+            );
+          })()}
           <div className="ppc-kpis">
             <Kpi label="Break-even ACOS" value={`${be}%`} />
             <Kpi label="Target ACOS" value={`${tAcos}%`} accent="#16a34a" />
