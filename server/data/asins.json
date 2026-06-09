@@ -1,4 +1,4 @@
 {
-  "_comment": "Map a product id (slug) to a real Amazon ASIN to pull LIVE price/fees via retailerapi (needs RETAILERAPI_KEY). Example: find the product on Amazon, copy its ASIN (B0...), add it here, then run `npm run research:daily -- --force`. Product ids are the slug of the name, e.g. 'resistance-bands-set-5-pack'.",
-  "_example": "B0XXXXXXXX"
+  "_comment": "Map a product id (slug) -> a real Amazon ASIN to pull LIVE price/reviews/sellers via retailerapi (needs RETAILERAPI_KEY). Find the product on Amazon, copy its ASIN (B0...), add it here, then run `npm run research:daily -- --force`. retailerapi free tier is rate-limited and only covers ASINs in its index (some return 404) — add a few at a time.",
+  "pantry-storage-bins-4-pack": "B0CP8D75QP"
 }

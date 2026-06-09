@@ -97,3 +97,6 @@
 .pc-actions .pc-view{ flex:1; }
 .pc-amz{ flex:0 0 auto; display:inline-flex; align-items:center; }
 .detail-actions a.btn{ display:inline-flex; align-items:center; gap:5px; text-decoration:none; }
+.conf-pill.live{ background:var(--good-soft); border:1px solid rgba(52,211,153,0.35); color:#34d399; font-weight:700; }
+.pc-best-link{ color:var(--brand-2); font-weight:600; }
+.pc-best-link:hover{ text-decoration:underline; }

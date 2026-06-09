@@ -1,6 +1,6 @@
 import type { DashProduct } from "../lib/types";
 import { money, pct, riskColor, gatingLabel } from "../lib/formatters";
-import { amazonUrl } from "../lib/amazon";
+import { amazonUrl, validatedSource } from "../lib/amazon";
 import { GradeBadge } from "./GradeBadge";
 import { ProductImage } from "./ProductImage";
 
@@ -8,7 +8,7 @@ const k = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}
 
 const CHK_ICON: Record<string, string> = { pass: "✓", fail: "✕", pending: "•" };
 
-export function ProductCard({ product, onOpen }: { product: DashProduct; onOpen: (p: DashProduct) => void }) {
+export function ProductCard({ product, onOpen }: { product: DashProduct; onOpen: (p: DashProduct, tab?: string) => void }) {
   const p = product;
   const f = p.profitability;
   const best = p.suppliers?.[0];
@@ -43,19 +43,26 @@ export function ProductCard({ product, onOpen }: { product: DashProduct; onOpen:
           <span className={`mpill ${p.risk_level === "low" ? "good" : p.risk_level === "medium" ? "warn" : "bad"}`}>
             <span className="dot" style={{ background: riskColor[p.risk_level] }} /> {p.risk_level} risk
           </span>
-          <span className="conf-pill">{p.grade?.confidence_label ?? "estimate-level"}</span>
+          {validatedSource(p)
+            ? <span className="conf-pill live">✓ Live · {validatedSource(p)}</span>
+            : <span className="conf-pill">{p.grade?.confidence_label ?? "estimate-level"}</span>}
         </div>
         <div className="pc-foot">
           <span className="mpill neutral">{gatingLabel(p.gating_status)}</span>
           <span className="muted small">{best ? `${money(best.estimated_landed_cost)} landed` : ""}</span>
         </div>
-        <div className="pc-supplier muted small">{best ? `Best: ${best.supplier_name}` : "No supplier match"}</div>
+        <div className="pc-supplier muted small">
+          {best ? (
+            <>Best: <a href={best.direct_product_url} target="_blank" rel="noopener noreferrer" className="pc-best-link" onClick={(e) => e.stopPropagation()}>{best.supplier_name} ↗</a> · {best.lead_time}</>
+          ) : "No supplier match"}
+        </div>
         <div className="pc-checks">
           {keyChecks.map((c, i) => <span key={i} className={`pc-chk ${c.state}`} title={`${c.label}: ${c.state}`}>{CHK_ICON[c.state]}</span>)}
         </div>
         <div className="pc-actions">
           <button className="btn btn-sm primary pc-view" onClick={(e) => { e.stopPropagation(); onOpen(p); }}>View details →</button>
           <a className="btn btn-sm pc-amz" href={amazonUrl(p)} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} title="Open on Amazon">Amazon ↗</a>
+          <button className="btn btn-sm pc-amz" onClick={(e) => { e.stopPropagation(); onOpen(p, "Suppliers"); }} title="See all suppliers">Suppliers</button>
         </div>
       </div>
     </div>

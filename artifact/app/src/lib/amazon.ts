@@ -7,6 +7,12 @@ export const amazonUrl = (p: DashProduct) => {
   return asin ? `https://www.amazon.com/dp/${asin}` : amazonSearchUrl(p.name);
 };
 
+/** If a product's data was validated against a live source (retailerapi/Keepa), return its name. */
+export const validatedSource = (p: DashProduct): string | null => {
+  const c = p.citations?.find((x) => /retailerapi|keepa/i.test(x.source_name || ""));
+  return c ? c.source_name.replace(/ API$/i, "") : null;
+};
+
 const num = (n: number) => n.toLocaleString("en-US");
 const money = (n: number) => `$${(Math.round(n * 100) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const dims = (d?: { length: number; width: number; height: number } | null) => (d ? `${d.length}×${d.width}×${d.height} in` : "—");

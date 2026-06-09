@@ -12,19 +12,19 @@ import { RiskPanel, ManualChecklist } from "./RiskPanel";
 import { SourceCitations } from "./SourceCitations";
 import { ProfitCalculator } from "./ProfitCalculator";
 import { Icon } from "./Icon";
-import { amazonUrl } from "../lib/amazon";
-import { heliumStats } from "../lib/amazon";
+import { amazonUrl, heliumStats, validatedSource } from "../lib/amazon";
 import { isWatched, toggleWatch, setState } from "../lib/watchlist";
 import { decisionFor } from "../lib/decision";
 
 const TABS = ["Overview", "Profit", "Suppliers", "PPC", "Keywords", "Risk", "Checks", "Citations"] as const;
 type Tab = typeof TABS[number];
 
-export function ProductDetail({ product, marketing }: { product: DashProduct; marketing?: MarketingStrategy }) {
-  const [tab, setTab] = useState<Tab>("Overview");
+export function ProductDetail({ product, marketing, initialTab }: { product: DashProduct; marketing?: MarketingStrategy; initialTab?: string }) {
+  const [tab, setTab] = useState<Tab>((TABS as readonly string[]).includes(initialTab ?? "") ? (initialTab as Tab) : "Overview");
   const p = product;
   const f = p.profitability;
   const risk = p.risks?.[0];
+  const best = p.suppliers?.[0];
   const netBeforeAds = f.netProfit + p.estimatedSalePrice * 0.1;
   const be = breakEvenAcos(netBeforeAds, p.estimatedSalePrice);
   const tAcos = targetAcos(be, "low");
@@ -62,6 +62,8 @@ export function ProductDetail({ product, marketing }: { product: DashProduct; ma
         <button className="btn btn-sm" onClick={() => mark({ verified: { supplier_quote: true }, status: "supplier_contacted" })}>Supplier contacted</button>
         <button className="btn btn-sm" onClick={() => mark({ verified: { sample_ordered: true }, status: "sample_ordered" })}>Sample ordered</button>
         <a className="btn btn-sm primary" href={amazonUrl(p)} target="_blank" rel="noopener noreferrer"><Icon name="external" size={13} /> View on Amazon</a>
+        {best && <a className="btn btn-sm" href={best.direct_product_url} target="_blank" rel="noopener noreferrer" title={`${best.supplier_name} — ${best.lead_time}`}><Icon name="truck" size={13} /> Best supplier ↗</a>}
+        <button className="btn btn-sm" onClick={() => setTab("Suppliers")}><Icon name="grid" size={13} /> All suppliers ({p.suppliers?.length ?? 0})</button>
         <span className={`mpill ${dec.tone === "good" ? "good" : dec.tone === "bad" ? "bad" : dec.tone === "warn" ? "warn" : "neutral"}`} style={{ marginLeft: "auto" }}>{dec.label}</span>
       </div>
 
@@ -71,7 +73,7 @@ export function ProductDetail({ product, marketing }: { product: DashProduct; ma
 
       {tab === "Overview" && (
         <div>
-          <div className="hx-head"><span className="hx-title">Product stats</span><span className="muted small">estimate-level · connect Keepa/retailerapi for live</span></div>
+          <div className="hx-head"><span className="hx-title">Product stats</span>{validatedSource(p) ? <span className="conf-pill live">✓ Live validated · {validatedSource(p)}</span> : <span className="muted small">estimate-level · connect Keepa/retailerapi for live</span>}</div>
           <div className="helium-grid">
             {heliumStats(p).map((st) => (
               <div className="hstat" key={st.label}>

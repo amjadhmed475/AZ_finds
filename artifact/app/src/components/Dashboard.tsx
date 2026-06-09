@@ -29,10 +29,11 @@ type Tab = "sourcing" | "overview" | "products" | "wholesale" | "details" | "sup
 export function Dashboard({ data }: { data: DashboardData }) {
   const [tab, setTab] = useState<Tab>("sourcing");
   const [selected, setSelected] = useState<DashProduct | null>(null);
+  const [openTab, setOpenTab] = useState<string | undefined>(undefined);
   const [detailId, setDetailId] = useState<string>(data.products[0]?.id ?? "");
 
   const marketingFor = (id: string) => data.marketingStrategies?.find((m) => m.product_candidate_id === id);
-  const open = (p: DashProduct) => setSelected(p);
+  const open = (p: DashProduct, t?: string) => { setSelected(p); setOpenTab(t); };
   const detailProduct = data.products.find((p) => p.id === detailId) ?? data.products[0];
 
   const s = data.summary;
@@ -151,7 +152,7 @@ export function Dashboard({ data }: { data: DashboardData }) {
         </main>
       </div>
 
-      <ProductDetailModal product={selected} marketing={selected ? marketingFor(selected.id) : undefined} onClose={() => setSelected(null)} />
+      <ProductDetailModal product={selected} marketing={selected ? marketingFor(selected.id) : undefined} initialTab={openTab} onClose={() => setSelected(null)} />
     </div>
   );
 }

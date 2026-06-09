@@ -7,11 +7,11 @@ import { lookupByCode, hasRealData } from "../services/realDataService.js";
 
 async function main() {
   const code = process.argv[2];
-  if (!code) { console.error("Usage: npm run price:asin -- <ASIN|UPC>"); process.exit(1); }
-  if (!hasRealData()) { console.error("RETAILERAPI_KEY not set. Get a free key at retailerapi.com and add it to .env."); process.exit(1); }
+  if (!code) { console.error("Usage: npm run price:asin -- <ASIN|UPC>"); process.exitCode = 1; return; }
+  if (!hasRealData()) { console.error("RETAILERAPI_KEY not set. Get a free key at retailerapi.com and add it to .env."); process.exitCode = 1; return; }
 
   const r = await lookupByCode(code);
-  if (!r) { console.error(`No live data for ${code} (bad code, no match, or API error). Falling back to estimates.`); process.exit(2); }
+  if (!r) { console.error(`No live data for ${code} (bad code, no match, rate-limited, or not in index). Falling back to estimates.`); process.exitCode = 2; return; }
 
   console.error(`\n  LIVE Amazon data for ${code} (retailerapi)`);
   console.error(`  ${r.title ?? ""}`);
@@ -25,4 +25,4 @@ async function main() {
   console.error("");
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+main().catch((e) => { console.error(e); process.exitCode = 1; });

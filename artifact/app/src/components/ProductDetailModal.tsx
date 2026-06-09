@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import type { DashProduct, MarketingStrategy } from "../lib/types";
 import { ProductDetail } from "./ProductDetail";
 
-export function ProductDetailModal({ product, marketing, onClose }: { product: DashProduct | null; marketing?: MarketingStrategy; onClose: () => void }) {
+export function ProductDetailModal({ product, marketing, onClose, initialTab }: { product: DashProduct | null; marketing?: MarketingStrategy; onClose: () => void; initialTab?: string }) {
   useEffect(() => {
     if (!product) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -15,7 +15,7 @@ export function ProductDetailModal({ product, marketing, onClose }: { product: D
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose} aria-label="Close">×</button>
-        <ProductDetail product={product} marketing={marketing} />
+        <ProductDetail key={product.id} product={product} marketing={marketing} initialTab={initialTab} />
       </div>
     </div>
   );
