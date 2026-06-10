@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Yamari Group — Daily 8 AM Intelligence Briefing (macOS launchd)
+
+  INSTALL:
+    1. Edit the <string>/path/to/AZ_finds</string> values below to your actual path
+    2. cp scripts/com.azfinds.daily.plist ~/Library/LaunchAgents/
+    3. launchctl load ~/Library/LaunchAgents/com.azfinds.daily.plist
+
+  VERIFY:
+    launchctl list | grep azfinds
+
+  RUN MANUALLY (test without waiting for 8 AM):
+    launchctl start com.azfinds.daily
+
+  UNINSTALL:
+    launchctl unload ~/Library/LaunchAgents/com.azfinds.daily.plist
+    rm ~/Library/LaunchAgents/com.azfinds.daily.plist
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.azfinds.daily</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/path/to/AZ_finds/scripts/daily-8am-mac.sh</string>
+  </array>
+
+  <!-- Fire every day at 08:00 local time -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>   <integer>8</integer>
+    <key>Minute</key> <integer>0</integer>
+  </dict>
+
+  <!-- Do not run immediately on load (only at scheduled time) -->
+  <key>RunAtLoad</key>
+  <false/>
+
+  <!-- Log output -->
+  <key>StandardOutPath</key>
+  <string>/path/to/AZ_finds/logs/launchd-out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/path/to/AZ_finds/logs/launchd-err.log</string>
+
+  <!-- Run even if macOS was asleep at 8 AM (fires on next wake) -->
+  <key>StartInterval</key>
+  <integer>0</integer>
+
+  <!-- Keep alive only if it crashes, not on normal exit -->
+  <key>KeepAlive</key>
+  <dict>
+    <key>Crashed</key>
+    <true/>
+  </dict>
+
+  <!-- Give the job a clean environment -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+    <key>HOME</key>
+    <string>/Users/YOURUSERNAME</string>
+  </dict>
+</dict>
+</plist>

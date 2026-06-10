@@ -1,0 +1,22 @@
+{
+  "name": "az-finds-agents",
+  "version": "1.0.0",
+  "description": "Yamari Group — Intelligence Division Multi-Agent System",
+  "type": "module",
+  "scripts": {
+    "briefing": "tsx src/index.ts",
+    "briefing:dry": "DRY_RUN=true tsx src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.3"
+  },
+  "engines": { "node": ">=18" }
+}
