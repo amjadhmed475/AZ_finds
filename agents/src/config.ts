@@ -33,7 +33,7 @@ export const CONFIG = {
 
   models: {
     orchestrator: process.env.ORCHESTRATOR_MODEL ?? "claude-opus-4-8",
-    maximus:      process.env.MAXIMUS_MODEL      ?? "claude-sonnet-4-6",
+    maximus:      process.env.MAXIMUS_MODEL      ?? "claude-fable-5",
     herald:       process.env.HERALD_MODEL       ?? "claude-haiku-4-5-20251001",
   },
 } as const;
