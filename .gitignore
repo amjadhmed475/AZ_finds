@@ -19,3 +19,8 @@ AZ_Finds_Daily_Top5.csv
 .DS_Store
 .netlify/
 .vscode/
+
+# agent runtime
+logs/*.json
+agents/node_modules/
+agents/.env
