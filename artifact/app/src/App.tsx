@@ -1,18 +1,25 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Dashboard as DashboardData } from "./lib/types";
 import { Dashboard } from "./components/Dashboard";
+import { SplashScreen } from "./components/SplashScreen";
 
 export default function App() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [raw, setRaw] = useState("");
+  const [splashDone, setSplashDone] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
-    // Try the bundled sample produced by `npm run research:sample`.
     fetch("sample-dashboard.json")
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then((d) => setData(d))
       .catch(() => setError("no-sample"));
+  }, []);
+
+  const onSplashDone = useCallback(() => {
+    setSplashDone(true);
+    setTimeout(() => setShowLoader(true), 80);
   }, []);
 
   const loadFromText = (text: string) => {
@@ -30,18 +37,25 @@ export default function App() {
     file.text().then(loadFromText);
   };
 
+  // Show splash until it completes
+  if (!splashDone) {
+    return <SplashScreen onDone={onSplashDone} />;
+  }
+
   if (data) return <Dashboard data={data} />;
+
+  if (!showLoader) return null;
 
   return (
     <div className="loader">
       <div className="loader-card">
-        <h1>Amazon Product Research</h1>
-        <p className="muted">
+        <h1>AZ Finds — Seller Research</h1>
+        <p className="muted" style={{ marginBottom: 16, lineHeight: 1.6 }}>
           Load a dashboard JSON from the MCP tool <code>generate_research_dashboard</code>,
           or run <code>npm run research:sample</code> in <code>/server</code> to generate one.
         </p>
-        {error && error !== "no-sample" && <p className="error">{error}</p>}
-        <div className="loader-actions">
+        {error && error !== "no-sample" && <p className="error" style={{ marginBottom: 12 }}>{error}</p>}
+        <div style={{ marginBottom: 14 }}>
           <label className="btn primary">
             Upload dashboard.json
             <input type="file" accept="application/json" onChange={onFile} hidden />
@@ -53,7 +67,9 @@ export default function App() {
           value={raw}
           onChange={(e) => setRaw(e.target.value)}
         />
-        <button className="btn" onClick={() => loadFromText(raw)} disabled={!raw.trim()}>Load pasted JSON</button>
+        <button className="btn" onClick={() => loadFromText(raw)} disabled={!raw.trim()}>
+          Load pasted JSON
+        </button>
       </div>
     </div>
   );

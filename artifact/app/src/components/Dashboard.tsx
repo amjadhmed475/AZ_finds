@@ -22,12 +22,13 @@ import { SupplierVerification } from "./SupplierVerification";
 import { LaunchReadiness } from "./LaunchReadiness";
 import { LogoMark } from "./LogoMark";
 import { RefreshTimer } from "./RefreshTimer";
+import { KpiDashboard } from "./KpiDashboard";
 import { pct } from "../lib/formatters";
 
 type Tab = "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "help";
 
 export function Dashboard({ data }: { data: DashboardData }) {
-  const [tab, setTab] = useState<Tab>("sourcing");
+  const [tab, setTab] = useState<Tab>("overview");
   const [selected, setSelected] = useState<DashProduct | null>(null);
   const [openTab, setOpenTab] = useState<string | undefined>(undefined);
   const [detailId, setDetailId] = useState<string>(data.products[0]?.id ?? "");
@@ -103,9 +104,11 @@ export function Dashboard({ data }: { data: DashboardData }) {
 
       {tab === "overview" && (
         <>
-          <BatchHeader data={data} />
-          <Widgets data={data} onOpen={open} />
-          <section><h2 className="section-title">Visual analysis</h2><ChartsGrid d={data} /></section>
+          <KpiDashboard data={data} />
+          <section style={{ marginTop: 28 }}>
+            <h2 className="section-title">Detailed charts</h2>
+            <ChartsGrid d={data} />
+          </section>
         </>
       )}
 
