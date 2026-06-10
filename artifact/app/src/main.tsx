@@ -5,6 +5,7 @@ import "./index.css";
 import "./theme-pro.css";
 import "./theme-timer.css";
 import "./theme-redesign.css";
+import "./theme-maximus.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
