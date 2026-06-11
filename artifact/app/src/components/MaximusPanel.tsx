@@ -24,9 +24,10 @@ export function MaximusPanel() {
   const [online,     setOnline]     = useState(false);
   const [arcPhase,   setArcPhase]   = useState(0);
 
-  const endRef   = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-  const abortRef = useRef<AbortController | null>(null);
+  const endRef          = useRef<HTMLDivElement>(null);
+  const inputRef        = useRef<HTMLTextAreaElement>(null);
+  const abortRef        = useRef<AbortController | null>(null);
+  const sendMessageRef  = useRef<((text: string) => void) | null>(null);
 
   /* arc reactor cycling */
   useEffect(() => {
@@ -49,6 +50,17 @@ export function MaximusPanel() {
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
   useEffect(() => { if (open) setTimeout(() => inputRef.current?.focus(), 90); }, [open]);
+
+  /* register once; uses ref so no TDZ or stale-closure issues */
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { query } = (e as CustomEvent<{ query: string }>).detail;
+      setOpen(true);
+      setTimeout(() => sendMessageRef.current?.(query), 150);
+    };
+    window.addEventListener("maximus:query", handler);
+    return () => window.removeEventListener("maximus:query", handler);
+  }, []);
 
   const sendMessage = useCallback(async (text: string) => {
     if (!text.trim() || streaming) return;
@@ -133,6 +145,9 @@ export function MaximusPanel() {
       });
     } finally { setStreaming(false); }
   }, [streaming, online, history]);
+
+  /* keep ref current so the event listener always calls latest version */
+  sendMessageRef.current = sendMessage;
 
   const handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(input); }

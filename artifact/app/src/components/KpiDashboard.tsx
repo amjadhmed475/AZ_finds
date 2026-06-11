@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { use3DTilt } from "../hooks/use3DTilt";
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip,
   CartesianGrid, Cell, PieChart, Pie, Legend, LineChart, Line,
@@ -44,6 +45,7 @@ function KpiCard({
   trend?: string; color?: "gold" | "green" | "blue" | "pink"; index?: number;
 }) {
   const [live, setLive] = useState(false);
+  const tilt = use3DTilt(8, 1.03);
 
   useEffect(() => {
     const base = 8000 + index * 1700;
@@ -55,7 +57,13 @@ function KpiCard({
   }, [index]);
 
   return (
-    <div className={`kpi-card kpi-${color}${live ? " kpi-live" : ""}`} style={{ animationDelay: `${index * 0.08}s` }}>
+    <div
+      ref={tilt.ref}
+      onMouseMove={tilt.onMouseMove}
+      onMouseLeave={tilt.onMouseLeave}
+      className={`kpi-card kpi-${color}${live ? " kpi-live" : ""}`}
+      style={{ animationDelay: `${index * 0.08}s` }}
+    >
       <div className="kpi-live-ring" />
       <div className="kpi-label">{label}</div>
       <div className="kpi-value">

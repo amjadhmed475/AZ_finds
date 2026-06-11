@@ -1,0 +1,525 @@
+/* ════════════════════════════════════════════════════════════
+   THEME-ULTRA  ·  Deep-Space Intelligence Platform
+   Glassmorphism · Neon glow · Command palette · Status bar
+   Toasts · 3-D cards · Starfield · Animated borders
+════════════════════════════════════════════════════════════ */
+
+/* ── Design tokens ──────────────────────────────────────── */
+:root {
+  --u-void:       #000308;
+  --u-deep:       #03080f;
+  --u-navy:       #050d1a;
+  --u-card:       #0a1828;
+  --u-elevated:   #0f2038;
+  --u-border:     #142540;
+  --u-border-hi:  #1e3a60;
+
+  --u-neon-blue:  #00b4ff;
+  --u-neon-cyan:  #00e5ff;
+  --u-neon-gold:  #f5a524;
+  --u-neon-green: #10b981;
+  --u-neon-pink:  #ec4899;
+  --u-neon-violet:#9333ea;
+
+  --u-text:       #e2f0ff;
+  --u-text-2:     #7a9abf;
+  --u-text-3:     #3a5470;
+  --u-text-ghost: #1a2e48;
+
+  --u-glass:      rgba(10, 24, 40, 0.72);
+  --u-glass-hi:   rgba(15, 32, 56, 0.85);
+  --u-blur:       blur(18px);
+}
+
+/* ── Starfield canvas ───────────────────────────────────── */
+.starfield {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+}
+
+/* ── Base shell ─────────────────────────────────────────── */
+.shell {
+  background:
+    radial-gradient(ellipse at 18% 12%, #0d2448 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 85%, #1a0638 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, #020a18 0%, #000308 100%);
+  min-height: 100vh;
+}
+
+/* ── Sidebar — nebula glow ──────────────────────────────── */
+.sidebar {
+  background:
+    linear-gradient(180deg, #030b18 0%, #050d1a 60%, #030812 100%);
+  border-right: 1px solid var(--u-border);
+  position: relative;
+  overflow: hidden;
+}
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 25%, rgba(0,180,255,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 75%, rgba(147,51,234,0.06) 0%, transparent 55%);
+  pointer-events: none;
+  animation: nebulaShift 10s ease-in-out infinite alternate;
+}
+@keyframes nebulaShift {
+  from { opacity: 0.6; transform: scale(1) }
+  to   { opacity: 1;   transform: scale(1.08) }
+}
+
+/* ── Active sidebar item — neon accent ─────────────────── */
+.sb-item {
+  border-radius: 8px;
+  transition: background 0.18s, color 0.18s;
+  position: relative;
+  overflow: hidden;
+}
+.sb-item.active {
+  background: linear-gradient(90deg, rgba(0,180,255,0.12) 0%, rgba(0,180,255,0.04) 100%);
+  border: 1px solid rgba(0,180,255,0.18);
+  box-shadow: inset 0 0 20px rgba(0,180,255,0.06), 0 0 12px rgba(0,180,255,0.08);
+}
+.sb-item.active::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 20%; bottom: 20%;
+  width: 2.5px;
+  background: linear-gradient(180deg, var(--u-neon-blue), var(--u-neon-violet));
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 8px var(--u-neon-blue);
+}
+.sb-item.active .sb-label { color: var(--u-neon-blue) !important; }
+.sb-item:hover:not(.active) {
+  background: rgba(0, 180, 255, 0.06);
+}
+
+/* ── Topbar — glass morphism ────────────────────────────── */
+.topbar {
+  background: rgba(3, 8, 18, 0.8);
+  backdrop-filter: var(--u-blur);
+  border-bottom: 1px solid var(--u-border);
+}
+
+/* ── KPI Cards — glassmorphism + 3-D tilt support ──────── */
+.kpi-card {
+  background: var(--u-glass);
+  backdrop-filter: var(--u-blur);
+  border: 1px solid var(--u-border);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+  transform-style: preserve-3d;
+  will-change: transform;
+  cursor: default;
+  transition: box-shadow 0.3s;
+}
+.kpi-card:hover {
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.07),
+    0 0 0 1px rgba(0,180,255,0.15);
+}
+.kpi-gold  { border-top: 2px solid var(--u-neon-gold);   }
+.kpi-green { border-top: 2px solid var(--u-neon-green);  }
+.kpi-blue  { border-top: 2px solid var(--u-neon-blue);   }
+.kpi-pink  { border-top: 2px solid var(--u-neon-pink);   }
+
+/* ── Product cards — glass + glow ──────────────────────── */
+.product-card,
+.product-row {
+  background: var(--u-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--u-border);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.product-card:hover {
+  border-color: var(--u-border-hi);
+  box-shadow: 0 8px 36px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,180,255,0.1);
+}
+
+/* Animated gradient border on A-grade cards */
+.grade-a5 .product-card,
+.grade-a4 .product-card,
+[data-grade="A5"],
+[data-grade="A4"] {
+  position: relative;
+}
+[data-grade="A5"]::before,
+[data-grade="A4"]::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #00b4ff 0%, #9333ea 50%, #f5a524 100%);
+  background-size: 200% 200%;
+  animation: gradBorder 3s ease infinite;
+  z-index: -1;
+  opacity: 0.7;
+}
+@keyframes gradBorder {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Director badge — enhanced ──────────────────────────── */
+.director-badge {
+  backdrop-filter: blur(14px);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+/* ── Generic cards / panels ─────────────────────────────── */
+.card, .panel, .widget, .dash-section, [class*="card"] {
+  background: var(--u-glass);
+  border-color: var(--u-border);
+}
+
+/* ════════════════════════════════════════════════════════════
+   COMMAND PALETTE
+════════════════════════════════════════════════════════════ */
+.cmd-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 3, 12, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 13vh;
+  animation: cmdFadeIn 0.15s ease forwards;
+}
+@keyframes cmdFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.cmd-modal {
+  width: 600px;
+  max-width: calc(100vw - 40px);
+  background: linear-gradient(145deg, #060f22 0%, #08132a 100%);
+  border: 1px solid var(--u-border-hi);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 32px 100px rgba(0,0,0,0.8),
+    0 0 0 1px rgba(0,180,255,0.1),
+    0 0 60px rgba(0,180,255,0.05);
+  animation: cmdSlideIn 0.18s cubic-bezier(.175,.885,.32,1.275) forwards;
+}
+@keyframes cmdSlideIn {
+  from { opacity: 0; transform: translateY(-12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.cmd-search-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--u-border);
+}
+.cmd-search-icon { width: 16px; height: 16px; color: var(--u-text-3); flex-shrink: 0; }
+.cmd-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--u-text);
+  font-size: 14px;
+  font-family: "Manrope", sans-serif;
+  letter-spacing: 0.01em;
+  caret-color: var(--u-neon-blue);
+}
+.cmd-input::placeholder { color: var(--u-text-3); }
+.cmd-esc {
+  flex-shrink: 0;
+  font-size: 9px;
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: var(--u-border);
+  color: var(--u-text-3);
+  border: 1px solid var(--u-border-hi);
+  letter-spacing: 0.05em;
+}
+.cmd-results {
+  max-height: 380px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--u-border-hi) transparent;
+  padding: 6px;
+}
+.cmd-group { margin-bottom: 4px; }
+.cmd-group-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--u-text-3);
+  text-transform: uppercase;
+  padding: 6px 10px 3px;
+}
+.cmd-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s, border-color 0.12s;
+}
+.cmd-item--on {
+  background: rgba(0,180,255,0.08);
+  border-color: rgba(0,180,255,0.2);
+}
+.cmd-icon {
+  width: 26px; height: 26px;
+  border-radius: 7px;
+  background: var(--u-border);
+  border: 1px solid var(--u-border-hi);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  color: var(--u-text-2);
+  flex-shrink: 0;
+}
+.cmd-icon--maximus {
+  background: linear-gradient(135deg, #1c3880, #2558d4);
+  border-color: #3060c4;
+  color: #90bfff;
+  font-weight: 800;
+  font-size: 11px;
+}
+.cmd-text { flex: 1; min-width: 0; }
+.cmd-label {
+  display: block;
+  font-size: 12.5px;
+  color: var(--u-text);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cmd-sub {
+  display: block;
+  font-size: 10px;
+  color: var(--u-text-3);
+  margin-top: 1px;
+}
+.cmd-group-tag {
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: var(--u-border);
+  color: var(--u-text-3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.cmd-enter {
+  font-size: 10px;
+  color: var(--u-neon-blue);
+  flex-shrink: 0;
+}
+.cmd-empty {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--u-text-3);
+  font-size: 13px;
+}
+.cmd-empty em { color: var(--u-text-2); font-style: normal; }
+.cmd-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--u-border);
+  font-size: 10px;
+  color: var(--u-text-3);
+}
+.cmd-footer kbd {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--u-border);
+  border: 1px solid var(--u-border-hi);
+  color: var(--u-text-2);
+  margin-right: 3px;
+}
+.cmd-footer-right { margin-left: auto; color: var(--u-neon-blue); }
+
+/* ════════════════════════════════════════════════════════════
+   TOAST NOTIFICATIONS
+════════════════════════════════════════════════════════════ */
+.toast-stack {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 99998;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  min-width: 260px;
+  max-width: 380px;
+  background: linear-gradient(135deg, #0a1828e0, #091525e8);
+  border: 1px solid var(--u-border-hi);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  pointer-events: all;
+  animation: toastIn 0.25s cubic-bezier(.175,.885,.32,1.275) forwards;
+  font-size: 12.5px;
+  color: var(--u-text);
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+.toast--info    { border-left: 3px solid #60a5fa; }
+.toast--success { border-left: 3px solid var(--u-neon-green); }
+.toast--warning { border-left: 3px solid var(--u-neon-gold);  }
+.toast--error   { border-left: 3px solid #ef4444; }
+.toast-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.toast--info    .toast-icon { color: #60a5fa; }
+.toast--success .toast-icon { color: var(--u-neon-green); }
+.toast--warning .toast-icon { color: var(--u-neon-gold);  }
+.toast--error   .toast-icon { color: #ef4444; }
+.toast-msg { flex: 1; line-height: 1.4; }
+.toast-x {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: var(--u-text-3);
+  font-size: 9px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.toast-x:hover { color: #ef4444; }
+
+/* ════════════════════════════════════════════════════════════
+   STATUS BAR
+════════════════════════════════════════════════════════════ */
+.status-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 26px;
+  z-index: 9990;
+  background: rgba(2, 6, 14, 0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--u-border);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 0;
+  font-size: 10px;
+  font-family: "Manrope", sans-serif;
+  color: var(--u-text-3);
+  letter-spacing: 0.04em;
+}
+/* push main content up so status bar doesn't overlap */
+.shell-main { padding-bottom: 26px; }
+.sb-seg { padding: 0 10px; white-space: nowrap; }
+.sb-seg b { color: var(--u-text-2); }
+.sb-sep {
+  width: 1px; height: 14px;
+  background: var(--u-border);
+  flex-shrink: 0;
+}
+.sb-dot-mini {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--u-neon-blue);
+  box-shadow: 0 0 6px var(--u-neon-blue);
+  margin-right: 5px;
+  animation: rtpulse 2.2s infinite;
+  vertical-align: middle;
+}
+.sb-mode { color: var(--u-text-2); }
+.sb-spacer { flex: 1; }
+.sb-hint {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--u-text-ghost);
+  font-size: 9.5px;
+}
+.sb-hint kbd {
+  font-size: 8.5px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--u-border);
+  border: 1px solid var(--u-border-hi);
+  color: var(--u-text-3);
+}
+.sb-brand {
+  padding: 0 0 0 10px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(0,180,255,0.3);
+  text-transform: uppercase;
+  border-left: 1px solid var(--u-border);
+  margin-left: 8px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   ENHANCED TOPBAR
+════════════════════════════════════════════════════════════ */
+.topbar {
+  box-shadow: 0 1px 0 var(--u-border), 0 4px 20px rgba(0,0,0,0.3);
+}
+.topbar h1 {
+  background: linear-gradient(90deg, var(--u-text) 0%, rgba(180,220,255,0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Batch chip — glass ─────────────────────────────────── */
+.batch-chip {
+  background: rgba(15, 32, 56, 0.7);
+  border: 1px solid var(--u-border-hi);
+  backdrop-filter: blur(8px);
+}
+
+/* ════════════════════════════════════════════════════════════
+   CUSTOM SCROLLBAR — neon thin
+════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--u-border-hi);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(0,180,255,0.3); }
+* { scrollbar-width: thin; scrollbar-color: var(--u-border-hi) transparent; }
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .cmd-modal { width: calc(100vw - 24px); }
+  .status-bar { display: none; }
+  .shell-main { padding-bottom: 0; }
+}

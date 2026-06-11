@@ -458,6 +458,98 @@ server.tool(
   }
 );
 
+// 21) ask_maximus ---------------------------------------------------------------
+server.tool(
+  "ask_maximus",
+  "Ask MAXIMUS (claude-fable-5, Chief Intelligence Officer) any question about Amazon FBA strategy, product research, suppliers, PPC, or market intelligence. Returns a full analytical response.",
+  {
+    question: z.string().describe("The question or request for MAXIMUS"),
+    context:  z.string().optional().describe("Optional JSON context e.g. a product object or batch summary"),
+  },
+  async (args) => {
+    try {
+      const apiKey = process.env.ANTHROPIC_API_KEY;
+      if (!apiKey) return fail("ANTHROPIC_API_KEY not set — add it to .env");
+
+      const body = {
+        model: "claude-fable-5",
+        max_tokens: 2048,
+        system: "You are MAXIMUS — Chief Intelligence Officer of Yamari Group. You provide sharp, data-driven intelligence on Amazon FBA opportunities, supplier sourcing, PPC strategy, and market dynamics. Be direct, precise, and actionable.",
+        messages: [{
+          role: "user",
+          content: args.context
+            ? `Context:\n${args.context}\n\nQuestion: ${args.question}`
+            : args.question,
+        }],
+      };
+
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method:  "POST",
+        headers: {
+          "Content-Type":      "application/json",
+          "x-api-key":         apiKey,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) return fail(`Anthropic API error ${res.status}: ${await res.text()}`);
+      const data = await res.json() as any;
+      const text: string = data.content?.[0]?.text ?? "No response";
+      return ok({ answer: text, model: "claude-fable-5", tokens: data.usage });
+    } catch (e) {
+      return fail(`ask_maximus failed: ${(e as Error).message}`);
+    }
+  }
+);
+
+// 22) get_intelligence_brief ----------------------------------------------------
+server.tool(
+  "get_intelligence_brief",
+  "Generate a concise executive intelligence brief from MAXIMUS summarising the top opportunities, risks, and recommended actions from the current batch data.",
+  {
+    batch_summary: z.string().describe("JSON string of the batch summary or product list"),
+    focus: z.enum(["opportunities", "risks", "ppc", "suppliers", "full"]).optional().default("full"),
+  },
+  async (args) => {
+    try {
+      const apiKey = process.env.ANTHROPIC_API_KEY;
+      if (!apiKey) return fail("ANTHROPIC_API_KEY not set");
+
+      const focusMap: Record<string, string> = {
+        opportunities: "Focus on the top 3 product opportunities with highest ROI potential.",
+        risks:         "Focus on the most critical risks and what to avoid.",
+        ppc:           "Focus on PPC strategy recommendations for the best products.",
+        suppliers:     "Focus on supplier quality and sourcing recommendations.",
+        full:          "Cover opportunities, risks, supplier notes, and PPC recommendations.",
+      };
+
+      const prompt = `Amazon FBA Batch Data:\n${args.batch_summary}\n\nProvide a concise executive intelligence brief. ${focusMap[args.focus ?? "full"]} Format with clear headers and bullet points. Keep it tight and actionable — max 400 words.`;
+
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method:  "POST",
+        headers: {
+          "Content-Type":      "application/json",
+          "x-api-key":         apiKey,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model:      "claude-fable-5",
+          max_tokens: 1024,
+          system:     "You are MAXIMUS — Chief Intelligence Officer of Yamari Group. Write sharp, executive-level intelligence briefs.",
+          messages:   [{ role: "user", content: prompt }],
+        }),
+      });
+
+      if (!res.ok) return fail(`Anthropic API error ${res.status}: ${await res.text()}`);
+      const data = await res.json() as any;
+      return ok({ brief: data.content?.[0]?.text ?? "", focus: args.focus, model: "claude-fable-5" });
+    } catch (e) {
+      return fail(`get_intelligence_brief failed: ${(e as Error).message}`);
+    }
+  }
+);
+
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);

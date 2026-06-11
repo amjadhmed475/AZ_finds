@@ -26,6 +26,10 @@ import { DirectorBadge } from "./DirectorBadge";
 import { MaximusPanel } from "./MaximusPanel";
 import { useMagnetic } from "../hooks/useMagnetic";
 import { pct } from "../lib/formatters";
+import { StarField } from "./StarField";
+import { CommandPalette } from "./CommandPalette";
+import { NotificationBus } from "./NotificationBus";
+import { StatusBar } from "./StatusBar";
 
 type Tab = "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "help";
 
@@ -86,6 +90,9 @@ export function Dashboard({ data }: { data: DashboardData }) {
 
   return (
     <div className="shell">
+      <StarField />
+      <CommandPalette onTab={(t) => setTab(t as Tab)} />
+      <NotificationBus />
       <aside className="sidebar">
         <div className="sb-brand">
           <LogoMark />
@@ -265,6 +272,7 @@ export function Dashboard({ data }: { data: DashboardData }) {
 
       {/* JARVIS-class floating intelligence panel */}
       <MaximusPanel />
+      <StatusBar data={data} tab={tab} />
     </div>
   );
 }
