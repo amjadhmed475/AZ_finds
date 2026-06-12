@@ -102,11 +102,14 @@ function MarketplaceCard({ status }: { status: MarketplaceStatus }) {
         <StatTile label="Net Profit" value={`$${status.netProfit30d.toLocaleString()}`} sub={status.netProfit30d > 0 ? "profitable" : undefined} />
       </div>
 
-      {!status.connected && status.marketplace !== "amazon" && (
+      {!status.connected && (
         <div style={{ fontSize: 12, color: "var(--u-muted)", background: "var(--u-elevated)", borderRadius: 8, padding: "10px 12px", lineHeight: 1.6 }}>
-          Set <code style={{ color: "var(--u-neon-blue)", fontSize: 11 }}>
-            {status.marketplace === "walmart" ? "WALMART_CLIENT_ID + WALMART_CLIENT_SECRET" : "TIKTOK_APP_KEY + TIKTOK_APP_SECRET + TIKTOK_ACCESS_TOKEN"}
-          </code> in your <code style={{ color: "var(--u-neon-blue)", fontSize: 11 }}>.env</code> to connect.
+          {status.marketplace === "amazon"
+            ? <>Set <code style={{ color: "var(--u-neon-blue)", fontSize: 11 }}>SP_API_REFRESH_TOKEN + LWA_APP_ID + LWA_CLIENT_SECRET</code> in <code style={{ color: "var(--u-neon-blue)", fontSize: 11 }}>.env</code> to pull live Seller Central data.</>
+            : status.marketplace === "walmart"
+            ? <>Set <code style={{ color: "var(--u-neon-blue)", fontSize: 11 }}>WALMART_CLIENT_ID + WALMART_CLIENT_SECRET</code> in your <code style={{ color: "var(--u-neon-blue)", fontSize: 11 }}>.env</code> to connect.</>
+            : <>Set <code style={{ color: "var(--u-neon-blue)", fontSize: 11 }}>TIKTOK_APP_KEY + TIKTOK_APP_SECRET + TIKTOK_ACCESS_TOKEN</code> in your <code style={{ color: "var(--u-neon-blue)", fontSize: 11 }}>.env</code> to connect.</>
+          }
         </div>
       )}
 
@@ -183,9 +186,9 @@ export function MultiMarketplace() {
           ? statuses.map(s => <MarketplaceCard key={s.marketplace} status={s} />)
           : (["amazon", "walmart", "tiktok_shop"] as Marketplace[]).map(mp => (
               <MarketplaceCard key={mp} status={{
-                marketplace: mp, connected: mp === "amazon", activeListings: mp === "amazon" ? 24 : 0,
-                pendingOrders: 0, last30dRevenue: mp === "amazon" ? 18400 : 0, last30dOrders: mp === "amazon" ? 212 : 0,
-                fees30d: mp === "amazon" ? 2800 : 0, netProfit30d: mp === "amazon" ? 4100 : 0,
+                marketplace: mp, connected: false, activeListings: 0,
+                pendingOrders: 0, last30dRevenue: 0, last30dOrders: 0,
+                fees30d: 0, netProfit30d: 0,
               }} />
             ))
         }
