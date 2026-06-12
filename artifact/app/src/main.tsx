@@ -7,6 +7,7 @@ import "./theme-timer.css";
 import "./theme-redesign.css";
 import "./theme-maximus.css";
 import "./theme-ultra.css";
+import "./theme-prime.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

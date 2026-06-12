@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { use3DTilt } from "../hooks/use3DTilt";
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip,
   CartesianGrid, Cell, PieChart, Pie, Legend, LineChart, Line,
@@ -36,7 +35,7 @@ function Counter({ target, prefix = "", suffix = "", decimals = 0 }: { target: n
   );
 }
 
-/* ── KPI card ── */
+/* ── KPI card — clean Bloomberg style ── */
 function KpiCard({
   label, value, prefix = "", suffix = "", decimals = 0,
   trend, color = "gold", index = 0,
@@ -44,33 +43,16 @@ function KpiCard({
   label: string; value: number; prefix?: string; suffix?: string; decimals?: number;
   trend?: string; color?: "gold" | "green" | "blue" | "pink"; index?: number;
 }) {
-  const [live, setLive] = useState(false);
-  const tilt = use3DTilt(8, 1.03);
-
-  useEffect(() => {
-    const base = 8000 + index * 1700;
-    const interval = setInterval(() => {
-      setLive(true);
-      setTimeout(() => setLive(false), 900);
-    }, base);
-    return () => clearInterval(interval);
-  }, [index]);
-
   return (
     <div
-      ref={tilt.ref}
-      onMouseMove={tilt.onMouseMove}
-      onMouseLeave={tilt.onMouseLeave}
-      className={`kpi-card kpi-${color}${live ? " kpi-live" : ""}`}
-      style={{ animationDelay: `${index * 0.08}s` }}
+      className={`kpi-card kpi-${color}`}
+      style={{ animationDelay: `${index * 0.07}s` }}
     >
-      <div className="kpi-live-ring" />
       <div className="kpi-label">{label}</div>
       <div className="kpi-value">
         <Counter target={value} prefix={prefix} suffix={suffix} decimals={decimals} />
       </div>
       {trend && <div className="kpi-trend">{trend}</div>}
-      <div className="kpi-bar-accent" />
     </div>
   );
 }
