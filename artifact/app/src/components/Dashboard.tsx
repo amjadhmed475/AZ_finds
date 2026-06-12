@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Dashboard as DashboardData, DashProduct } from "../lib/types";
 import { SummaryCard } from "./ProductScoreCard";
 import { ChartsGrid } from "./TrendCharts";
@@ -30,13 +30,19 @@ import { StarField } from "./StarField";
 import { CommandPalette } from "./CommandPalette";
 import { NotificationBus } from "./NotificationBus";
 import { StatusBar } from "./StatusBar";
+import { AlertBell } from "./AlertBell";
+import { PnlWarRoom } from "./PnlWarRoom";
+import { SupplierCRM } from "./SupplierCRM";
+import { ApprovalQueue } from "./ApprovalQueue";
+import { useAuth } from "../contexts/AuthContext";
+import { TeamAvatar } from "./TeamAvatar";
 
-type Tab = "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "help";
+type Tab = "warroom" | "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "approvals" | "help";
 
 /* Individual magnetic sidebar button */
 function MagNavItem({
-  id, label, icon, active, onClick,
-}: { id: Tab; label: string; icon: string; active: boolean; onClick: () => void }) {
+  id, label, icon, active, onClick, badge,
+}: { id: Tab; label: string; icon: string; active: boolean; onClick: () => void; badge?: number }) {
   const mag = useMagnetic(0.28, 60);
   return (
     <button
@@ -46,9 +52,13 @@ function MagNavItem({
       onMouseMove={mag.onMouseMove}
       onMouseLeave={mag.onMouseLeave}
       onMouseDown={mag.onMouseDown}
+      style={{ position: "relative" }}
     >
       <Icon name={icon} size={17} />
       <span className="sb-label">{label}</span>
+      {badge !== undefined && badge > 0 && (
+        <span style={{ marginLeft: "auto", minWidth: 18, height: 18, borderRadius: 9, background: "var(--u-neon-blue)", color: "#fff", fontSize: 10, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 4px" }}>{badge}</span>
+      )}
     </button>
   );
 }
@@ -58,29 +68,55 @@ export function Dashboard({ data }: { data: DashboardData }) {
   const [selected, setSelected] = useState<DashProduct | null>(null);
   const [openTab,  setOpenTab]  = useState<string | undefined>(undefined);
   const [detailId, setDetailId] = useState<string>(data.products[0]?.id ?? "");
+  const [pendingTasks, setPendingTasks] = useState(0);
+  const { user, authHeader, can } = useAuth();
+
+  /* listen for navigate:suppliers event fired from ReorderAlerts */
+  useEffect(() => {
+    const h = () => setTab("suppliers");
+    window.addEventListener("navigate:suppliers", h);
+    return () => window.removeEventListener("navigate:suppliers", h);
+  }, []);
+
+  /* poll pending task count for badge */
+  useEffect(() => {
+    const token = authHeader();
+    if (!token["Authorization"]) return;
+    const check = () => {
+      fetch("/api/tasks/pending-count", { headers: token })
+        .then(r => r.ok ? r.json() : { count: 0 })
+        .then(d => setPendingTasks(d.count ?? 0))
+        .catch(() => {});
+    };
+    check();
+    const iv = setInterval(check, 60000);
+    return () => clearInterval(iv);
+  }, [authHeader]);
 
   const marketingFor = (id: string) => data.marketingStrategies?.find((m) => m.product_candidate_id === id);
   const open = (p: DashProduct, t?: string) => { setSelected(p); setOpenTab(t); };
   const detailProduct = data.products.find((p) => p.id === detailId) ?? data.products[0];
-  const s = data.summary;
 
   const tabs: Array<[Tab, string, string]> = [
-    ["overview",   "Overview",                   "dashboard"],
-    ["sourcing",   "Sourcing",                   "target"],
-    ["products",   `Products (${data.products.length})`, "grid"],
-    ["wholesale",  "Wholesale Finder",            "box"],
-    ["details",    "Product Details",             "list"],
-    ["suppliers",  "Suppliers",                   "truck"],
-    ["verify",     "Supplier Check",              "shield"],
-    ["live",       "Live + Store",                "activity"],
-    ["ppc",        "PPC Manager",                 "megaphone"],
-    ["capital",    "Capital Planner",             "wallet"],
-    ["launch",     "Launch Readiness",            "rocket"],
-    ["watchlist",  "Watchlist",                   "star"],
-    ["rejected",   `Rejected (${data.richRejected?.length ?? 0})`, "ban"],
-    ["sources",    "Data Sources",                "database"],
-    ["help",       "Help Center",                 "help"],
+    ["warroom",   "War Room",                   "activity"],
+    ["overview",  "Overview",                   "dashboard"],
+    ["sourcing",  "Sourcing",                   "target"],
+    ["products",  `Products (${data.products.length})`, "grid"],
+    ["wholesale", "Wholesale Finder",            "box"],
+    ["details",   "Product Details",             "list"],
+    ["suppliers", "Suppliers",                   "truck"],
+    ["verify",    "Supplier Check",              "shield"],
+    ["live",      "Live + Store",                "activity"],
+    ["ppc",       "PPC Manager",                 "megaphone"],
+    ["capital",   "Capital Planner",             "wallet"],
+    ["launch",    "Launch Readiness",            "rocket"],
+    ["watchlist", "Watchlist",                   "star"],
+    ["rejected",  `Rejected (${data.richRejected?.length ?? 0})`, "ban"],
+    ["sources",   "Data Sources",                "database"],
+    ["approvals", "Approvals",                   "shield"],
+    ["help",      "Help Center",                 "help"],
   ];
+
   const currentTitle = (tabs.find((t) => t[0] === tab)?.[1] || "Dashboard").replace(/\s*\(.*\)/, "");
 
   const allSuppliers = useMemo(
@@ -100,7 +136,11 @@ export function Dashboard({ data }: { data: DashboardData }) {
         </div>
         <nav className="sb-nav">
           {tabs.map(([id, label, icon]) => (
-            <MagNavItem key={id} id={id} label={label} icon={icon} active={tab === id} onClick={() => setTab(id)} />
+            <MagNavItem
+              key={id} id={id} label={label} icon={icon}
+              active={tab === id} onClick={() => setTab(id)}
+              badge={id === "approvals" ? pendingTasks : undefined}
+            />
           ))}
         </nav>
         <RefreshTimer />
@@ -117,6 +157,13 @@ export function Dashboard({ data }: { data: DashboardData }) {
             <h1>{currentTitle}</h1>
           </div>
           <div className="topbar-right">
+            {user && (
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <TeamAvatar name={user.name} color={user.avatar_color} role={user.role} size="sm" />
+                <span style={{ fontSize: 12, color: "var(--u-muted)" }}>{user.name}</span>
+              </div>
+            )}
+            <AlertBell />
             <span className="founders-badge"><span className="fb-label">Founders</span><b>Yamari Group</b></span>
             {data.batch?.batch_date && <span className="batch-chip"><Icon name="box" size={14} /> {data.batch.batch_date}</span>}
             <span className="batch-chip"><Icon name="grid" size={14} /> {data.products.length} products</span>
@@ -125,6 +172,14 @@ export function Dashboard({ data }: { data: DashboardData }) {
         </header>
 
         <main className="content">
+
+          {/* ── War Room ── */}
+          {tab === "warroom" && (
+            <>
+              <DirectorBadge tab="overview" data={data} />
+              <PnlWarRoom />
+            </>
+          )}
 
           {/* ── Overview ── */}
           {tab === "overview" && (
@@ -178,15 +233,11 @@ export function Dashboard({ data }: { data: DashboardData }) {
             </>
           )}
 
-          {/* ── Suppliers ── */}
+          {/* ── Suppliers — Full CRM ── */}
           {tab === "suppliers" && (
             <>
               <DirectorBadge tab="suppliers" data={data} />
-              <section>
-                <h2 className="section-title">Supplier comparison ({allSuppliers.length})</h2>
-                <p className="muted small" style={{ marginBottom: 10 }}>Top supplier matches across displayed products.</p>
-                <SupplierComparison suppliers={allSuppliers as any} />
-              </section>
+              <SupplierCRM />
             </>
           )}
 
@@ -243,6 +294,14 @@ export function Dashboard({ data }: { data: DashboardData }) {
             <>
               <DirectorBadge tab="sources" data={data} />
               <ApiUsagePanel data={data} />
+            </>
+          )}
+
+          {/* ── Approvals ── */}
+          {tab === "approvals" && (
+            <>
+              <DirectorBadge tab="verify" data={data} />
+              <ApprovalQueue />
             </>
           )}
 
