@@ -29,6 +29,11 @@ import { getReorderRecommendations } from "./services/reorderEngine.js";
 import { draftSupplierEmail } from "./services/emailDrafter.js";
 import { generatePO } from "./services/poGenerator.js";
 import { requireAuth, requireRole, signToken } from "./middleware/auth.js";
+import { startAutonomousScheduler, getSchedulerStatus, triggerTask, getAgentRunHistory } from "./services/autonomousScheduler.js";
+import { runProductDiscovery, getDiscoveredProducts, getDiscoveryStats, getAllCategories } from "./services/liveResearchAgent.js";
+import { auditListing, findKeywordOpportunities, generateSEOReport, monitorYamariGroup, getSEOHistory } from "./services/seoEngine.js";
+import { analyzePPC, applyBidChange, getPPCHistory } from "./services/ppcAutomation.js";
+import { getMarketplaceStatuses, getCrossListingCandidates, listProductOnWalmart, listProductOnTikTok, getMarketplaceListings } from "./services/multiMarketplaceService.js";
 
 const app    = express();
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -462,11 +467,174 @@ app.get("/api/tasks/pending-count", requireAuth, (req, res) => {
   res.json({ count });
 });
 
+/* ── Autonomous Agent ── */
+app.get("/api/agent/status", requireAuth, (_req, res) => {
+  res.json(getSchedulerStatus());
+});
+
+app.post("/api/agent/trigger", requireAuth, async (req, res) => {
+  const { task } = req.body;
+  if (!task) return res.status(400).json({ error: "task required" });
+  try {
+    const result = await triggerTask(task);
+    res.json({ ok: true, result });
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.get("/api/agent/history", requireAuth, (req, res) => {
+  const limit = Number(req.query.limit ?? 20);
+  res.json({ runs: getAgentRunHistory(limit) });
+});
+
+/* ── Live Research (SSE stream) ── */
+app.get("/api/research/stream", requireAuth, async (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders();
+
+  const categories = req.query.categories
+    ? String(req.query.categories).split(",")
+    : getAllCategories();
+
+  let closed = false;
+  req.on("close", () => { closed = true; });
+
+  try {
+    await runProductDiscovery({ categories, maxProducts: 0 }, (product) => {
+      if (!closed) {
+        res.write(`event: product\ndata: ${JSON.stringify(product)}\n\n`);
+      }
+    });
+    const stats = getDiscoveryStats();
+    if (!closed) res.write(`event: stats\ndata: ${JSON.stringify(stats)}\n\n`);
+    if (!closed) res.write(`event: done\ndata: {}\n\n`);
+  } catch (e: any) {
+    if (!closed) res.write(`event: error\ndata: ${JSON.stringify({ message: e.message })}\n\n`);
+  } finally {
+    res.end();
+  }
+});
+
+app.get("/api/research/discovered", requireAuth, (req, res) => {
+  const limit = Number(req.query.limit ?? 200);
+  const minGrade = req.query.minGrade ? String(req.query.minGrade) : undefined;
+  res.json({ products: getDiscoveredProducts(limit, minGrade) });
+});
+
+app.get("/api/research/stats", requireAuth, (_req, res) => {
+  res.json(getDiscoveryStats());
+});
+
+app.get("/api/research/categories", (_req, res) => {
+  res.json({ categories: getAllCategories() });
+});
+
+/* ── SEO Engine ── */
+app.post("/api/seo/audit", requireAuth, async (req, res) => {
+  const { product } = req.body;
+  if (!product) return res.status(400).json({ error: "product required" });
+  try {
+    const report = await generateSEOReport(product);
+    res.json(report);
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.post("/api/seo/listing-audit", requireAuth, (req, res) => {
+  const { product } = req.body;
+  if (!product) return res.status(400).json({ error: "product required" });
+  res.json(auditListing(product));
+});
+
+app.get("/api/seo/keywords", requireAuth, async (req, res) => {
+  const title = String(req.query.title ?? "");
+  const category = String(req.query.category ?? "General");
+  const asin = req.query.asin ? String(req.query.asin) : undefined;
+  if (!title) return res.status(400).json({ error: "title required" });
+  try {
+    const keywords = await findKeywordOpportunities(title, category, asin);
+    res.json({ keywords });
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.get("/api/seo/yamarigroup", requireAuth, async (_req, res) => {
+  try {
+    const data = await monitorYamariGroup();
+    res.json(data);
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.get("/api/seo/history", requireAuth, (req, res) => {
+  const asin = req.query.asin ? String(req.query.asin) : undefined;
+  const limit = Number(req.query.limit ?? 20);
+  res.json({ history: getSEOHistory(asin, limit) });
+});
+
+/* ── PPC Automation ── */
+app.get("/api/ppc/analysis", requireAuth, (_req, res) => {
+  res.json(analyzePPC());
+});
+
+app.post("/api/ppc/apply-bid", requireAuth, (req, res) => {
+  const { keyword, newBid } = req.body;
+  if (!keyword || newBid == null) return res.status(400).json({ error: "keyword and newBid required" });
+  res.json(applyBidChange(keyword, Number(newBid)));
+});
+
+app.get("/api/ppc/history", requireAuth, (req, res) => {
+  const days = Number(req.query.days ?? 30);
+  res.json({ history: getPPCHistory(days) });
+});
+
+/* ── Multi-Marketplace ── */
+app.get("/api/marketplace/status", requireAuth, (_req, res) => {
+  res.json({ statuses: getMarketplaceStatuses() });
+});
+
+app.get("/api/marketplace/cross-listing", requireAuth, (_req, res) => {
+  res.json({ candidates: getCrossListingCandidates() });
+});
+
+app.post("/api/marketplace/walmart/list", requireAuth, async (req, res) => {
+  try {
+    const result = await listProductOnWalmart(req.body);
+    res.json(result);
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.post("/api/marketplace/tiktok/list", requireAuth, async (req, res) => {
+  try {
+    const result = await listProductOnTikTok(req.body);
+    res.json(result);
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.get("/api/marketplace/listings", requireAuth, (req, res) => {
+  const marketplace = req.query.marketplace as any;
+  res.json({ listings: getMarketplaceListings(marketplace) });
+});
+
 const PORT = Number(process.env.MAXIMUS_PORT ?? 3001);
+startAutonomousScheduler();
 app.listen(PORT, () => {
   console.log(`\n[MAXIMUS] Intelligence server → http://localhost:${PORT}`);
   console.log(`[MAXIMUS] Model:  claude-fable-5`);
   console.log(`[MAXIMUS] Chat:   POST  /api/maximus`);
   console.log(`[MAXIMUS] Batch:  GET   /api/batch/latest`);
-  console.log(`[MAXIMUS] Health: GET   /health\n`);
+  console.log(`[MAXIMUS] Health: GET   /health`);
+  console.log(`[MAXIMUS] Agent:  GET   /api/agent/status`);
+  console.log(`[MAXIMUS] SEO:    POST  /api/seo/audit`);
+  console.log(`[MAXIMUS] Mkts:   GET   /api/marketplace/status\n`);
 });

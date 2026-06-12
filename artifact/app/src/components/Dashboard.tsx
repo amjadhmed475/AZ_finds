@@ -36,8 +36,12 @@ import { SupplierCRM } from "./SupplierCRM";
 import { ApprovalQueue } from "./ApprovalQueue";
 import { useAuth } from "../contexts/AuthContext";
 import { TeamAvatar } from "./TeamAvatar";
+import { AgentControlPanel } from "./AgentControlPanel";
+import { SeoCommandCenter } from "./SeoCommandCenter";
+import { MultiMarketplace } from "./MultiMarketplace";
+import { LiveProductFeed } from "./LiveProductFeed";
 
-type Tab = "warroom" | "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "approvals" | "help";
+type Tab = "warroom" | "agent" | "seo" | "markets" | "livefeed" | "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "approvals" | "help";
 
 /* Individual magnetic sidebar button */
 function MagNavItem({
@@ -99,6 +103,10 @@ export function Dashboard({ data }: { data: DashboardData }) {
 
   const tabs: Array<[Tab, string, string]> = [
     ["warroom",   "War Room",                   "activity"],
+    ["agent",     "AI Agent",                   "bolt"],
+    ["seo",       "SEO Engine",                 "target"],
+    ["markets",   "Markets",                    "external"],
+    ["livefeed",  "Live Discovery",             "bolt"],
     ["overview",  "Overview",                   "dashboard"],
     ["sourcing",  "Sourcing",                   "target"],
     ["products",  `Products (${data.products.length})`, "grid"],
@@ -164,6 +172,14 @@ export function Dashboard({ data }: { data: DashboardData }) {
               </div>
             )}
             <AlertBell />
+            <a
+              href="https://yamarigroup.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: 11, fontWeight: 600, color: "var(--u-neon-gold)", textDecoration: "none", padding: "3px 8px", border: "1px solid rgba(234,179,8,0.3)", borderRadius: 6 }}
+            >
+              yamarigroup.com ↗
+            </a>
             <span className="founders-badge"><span className="fb-label">Founders</span><b>Yamari Group</b></span>
             {data.batch?.batch_date && <span className="batch-chip"><Icon name="box" size={14} /> {data.batch.batch_date}</span>}
             <span className="batch-chip"><Icon name="grid" size={14} /> {data.products.length} products</span>
@@ -178,6 +194,38 @@ export function Dashboard({ data }: { data: DashboardData }) {
             <>
               <DirectorBadge tab="overview" data={data} />
               <PnlWarRoom />
+            </>
+          )}
+
+          {/* ── AI Agent ── */}
+          {tab === "agent" && (
+            <>
+              <DirectorBadge tab="overview" data={data} />
+              <AgentControlPanel />
+            </>
+          )}
+
+          {/* ── SEO Engine ── */}
+          {tab === "seo" && (
+            <>
+              <DirectorBadge tab="sourcing" data={data} />
+              <SeoCommandCenter />
+            </>
+          )}
+
+          {/* ── Markets ── */}
+          {tab === "markets" && (
+            <>
+              <DirectorBadge tab="overview" data={data} />
+              <MultiMarketplace />
+            </>
+          )}
+
+          {/* ── Live Discovery ── */}
+          {tab === "livefeed" && (
+            <>
+              <DirectorBadge tab="products" data={data} />
+              <LiveProductFeed />
             </>
           )}
 
