@@ -88,7 +88,7 @@ export function Dashboard({ data }: { data: DashboardData }) {
   const [openTab,     setOpenTab]     = useState<string | undefined>(undefined);
   const [detailId,    setDetailId]    = useState<string>(data.products[0]?.id ?? "");
   const [pendingTasks,setPendingTasks]= useState(0);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { user, authHeader } = useAuth();
 
@@ -154,35 +154,41 @@ export function Dashboard({ data }: { data: DashboardData }) {
   const allTabs = navGroups.flatMap(g => g.items);
   const currentTitle = (allTabs.find(([id]) => id === tab)?.[1] ?? "Dashboard").replace(/\s*\(.*\)/, "");
 
+  const navigate = (id: Tab) => { setTab(id); setSidebarOpen(false); };
+
   return (
-    <div className={`shell${sidebarOpen ? "" : " shell--collapsed"}`}>
+    <div className="shell">
       <CommandPalette onTab={t => setTab(t as Tab)} />
       <NotificationBus />
 
-      {/* ── Sidebar ─────────────────────────────────── */}
-      <aside className={`sidebar${sidebarOpen ? "" : " sidebar--collapsed"}`}>
-        {/* Brand + hamburger */}
+      {/* ── Backdrop ────────────────────────────────── */}
+      <div
+        className={`sidebar-backdrop${sidebarOpen ? " sidebar-backdrop--open" : ""}`}
+        onClick={() => setSidebarOpen(false)}
+      />
+
+      {/* ── Sidebar overlay drawer ──────────────────── */}
+      <aside className={`sidebar${sidebarOpen ? " sidebar--open" : ""}`}>
+        {/* Brand + close */}
         <div className="sb-brand">
-          {/* Logo icon always visible */}
           <div className="sb-logo-icon">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
               <path d="M12 3 L20 20 H4 Z" stroke="var(--p-gold)" strokeWidth="1.8" strokeLinejoin="round"/>
               <path d="M9 15 L12 8 L15 15" stroke="var(--p-blue)" strokeWidth="1.3" strokeLinejoin="round"/>
             </svg>
           </div>
-          {sidebarOpen && (
-            <div className="sb-brand-text">
-              <div className="sb-name">AZ Finds</div>
-              <div className="sb-sub">Seller Intelligence</div>
-            </div>
-          )}
-          {/* Hamburger — always at end */}
+          <div className="sb-brand-text">
+            <div className="sb-name">AZ Finds</div>
+            <div className="sb-sub">Seller Intelligence</div>
+          </div>
           <button
-            className="sb-hamburger"
-            onClick={() => setSidebarOpen(v => !v)}
-            title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+            className="sb-close"
+            onClick={() => setSidebarOpen(false)}
+            title="Close navigation"
           >
-            <HamburgerIcon open={sidebarOpen} />
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
           </button>
         </div>
 
@@ -190,41 +196,45 @@ export function Dashboard({ data }: { data: DashboardData }) {
         <nav className="sb-nav">
           {navGroups.map(group => (
             <div key={group.label} className="sb-group-block">
-              {sidebarOpen && <div className="sb-group">{group.label}</div>}
+              <div className="sb-group">{group.label}</div>
               {group.items.map(([id, label, icon]) => (
                 <NavItem
                   key={id} id={id} label={label} icon={icon}
-                  active={tab === id} onClick={() => setTab(id)}
+                  active={tab === id} onClick={() => navigate(id)}
                   badge={id === "approvals" ? pendingTasks : undefined}
-                  collapsed={!sidebarOpen}
+                  collapsed={false}
                 />
               ))}
             </div>
           ))}
         </nav>
 
-        {sidebarOpen && <RefreshTimer />}
-        <div className="sb-foot" style={!sidebarOpen ? { padding: "10px 0", alignItems: "center" } : {}}>
-          {sidebarOpen ? (
-            <>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span className="sb-dot" />
-                <span>Estimate engine</span>
-              </div>
-              <span className="sb-foot-sub">data updated live</span>
-            </>
-          ) : (
-            <span className="sb-dot" title="Estimate engine — live" />
-          )}
+        <RefreshTimer />
+        <div className="sb-foot">
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span className="sb-dot" />
+            <span>Estimate engine</span>
+          </div>
+          <span className="sb-foot-sub">data updated live</span>
         </div>
       </aside>
 
       {/* ── Main content ─────────────────────────────── */}
       <div className="shell-main">
         <header className="topbar">
-          <div className="topbar-head">
-            <p className="eyebrow">Amazon seller command center · Yamari Group</p>
-            <h1>{currentTitle}</h1>
+          <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
+            {/* Hamburger — always visible in topbar */}
+            <button
+              className="topbar-ham"
+              onClick={() => setSidebarOpen(v => !v)}
+              title="Open navigation"
+            >
+              <HamburgerIcon open={sidebarOpen} />
+            </button>
+            <div className="topbar-head">
+              <p className="eyebrow">Amazon seller command center · Yamari Group</p>
+              <h1>{currentTitle}</h1>
+            </div>
           </div>
           <div className="topbar-right">
             {user && (
