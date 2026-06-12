@@ -33,38 +33,63 @@ import { SeoCommandCenter } from "./SeoCommandCenter";
 import { MultiMarketplace } from "./MultiMarketplace";
 import { LiveProductFeed } from "./LiveProductFeed";
 import { ChartsGrid } from "./TrendCharts";
+import { AgentNetwork } from "./AgentNetwork";
 
 type Tab = "warroom" | "agent" | "seo" | "markets" | "livefeed" | "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "approvals" | "help";
 
-type NavGroup = {
-  label: string;
-  items: Array<[Tab, string, string]>;
-};
+type NavGroup = { label: string; items: Array<[Tab, string, string]> };
 
-function NavItem({ id, label, icon, active, onClick, badge }: {
-  id: Tab; label: string; icon: string; active: boolean; onClick: () => void; badge?: number;
+/* ── Hamburger icon ─────────────────────────────────────── */
+function HamburgerIcon({ open }: { open: boolean }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <rect
+        x="2" y={open ? "7.3" : "3"} width="12" height="1.4" rx="0.7"
+        fill="currentColor"
+        style={{ transition: "transform 0.22s, y 0.22s", transformOrigin: "8px 8px", transform: open ? "rotate(45deg)" : "none" }}
+      />
+      <rect
+        x="2" y="7.3" width="12" height="1.4" rx="0.7"
+        fill="currentColor"
+        style={{ transition: "opacity 0.18s", opacity: open ? 0 : 1 }}
+      />
+      <rect
+        x="2" y={open ? "7.3" : "11.6"} width="12" height="1.4" rx="0.7"
+        fill="currentColor"
+        style={{ transition: "transform 0.22s, y 0.22s", transformOrigin: "8px 8px", transform: open ? "rotate(-45deg)" : "none" }}
+      />
+    </svg>
+  );
+}
+
+/* ── Single nav item ────────────────────────────────────── */
+function NavItem({ id, label, icon, active, onClick, badge, collapsed }: {
+  id: Tab; label: string; icon: string; active: boolean;
+  onClick: () => void; badge?: number; collapsed: boolean;
 }) {
   return (
-    <button className={`sb-item${active ? " active" : ""}`} onClick={onClick}>
+    <button
+      className={`sb-item${active ? " active" : ""}${collapsed ? " sb-item--icon" : ""}`}
+      onClick={onClick}
+      title={collapsed ? label : undefined}
+    >
       <Icon name={icon} size={15} />
-      <span className="sb-label">{label}</span>
-      {badge !== undefined && badge > 0 && (
-        <span style={{
-          marginLeft: "auto", minWidth: 17, height: 17, borderRadius: 9,
-          background: "var(--p-blue)", color: "#fff", fontSize: 9.5, fontWeight: 700,
-          display: "flex", alignItems: "center", justifyContent: "center", padding: "0 4px",
-        }}>{badge}</span>
+      {!collapsed && <span className="sb-label">{label}</span>}
+      {!collapsed && badge !== undefined && badge > 0 && (
+        <span className="sb-badge">{badge}</span>
       )}
     </button>
   );
 }
 
 export function Dashboard({ data }: { data: DashboardData }) {
-  const [tab,      setTab]      = useState<Tab>("overview");
-  const [selected, setSelected] = useState<DashProduct | null>(null);
-  const [openTab,  setOpenTab]  = useState<string | undefined>(undefined);
-  const [detailId, setDetailId] = useState<string>(data.products[0]?.id ?? "");
-  const [pendingTasks, setPendingTasks] = useState(0);
+  const [tab,         setTab]         = useState<Tab>("overview");
+  const [selected,    setSelected]    = useState<DashProduct | null>(null);
+  const [openTab,     setOpenTab]     = useState<string | undefined>(undefined);
+  const [detailId,    setDetailId]    = useState<string>(data.products[0]?.id ?? "");
+  const [pendingTasks,setPendingTasks]= useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
   const { user, authHeader } = useAuth();
 
   useEffect(() => {
@@ -87,35 +112,36 @@ export function Dashboard({ data }: { data: DashboardData }) {
     return () => clearInterval(iv);
   }, [authHeader]);
 
-  const marketingFor = (id: string) => data.marketingStrategies?.find((m) => m.product_candidate_id === id);
+  const marketingFor = (id: string) =>
+    data.marketingStrategies?.find(m => m.product_candidate_id === id);
   const open = (p: DashProduct, t?: string) => { setSelected(p); setOpenTab(t); };
-  const detailProduct = data.products.find((p) => p.id === detailId) ?? data.products[0];
+  const detailProduct = data.products.find(p => p.id === detailId) ?? data.products[0];
 
   const navGroups: NavGroup[] = [
     { label: "Command", items: [
-      ["warroom",  "War Room",      "activity"],
-      ["overview", "Overview",      "dashboard"],
+      ["warroom",  "War Room",  "activity"],
+      ["overview", "Overview",  "dashboard"],
     ]},
     { label: "Research", items: [
-      ["livefeed",  "Live Discovery",             "bolt"],
-      ["sourcing",  "Sourcing",                   "target"],
+      ["livefeed",  "Live Discovery",            "bolt"],
+      ["sourcing",  "Sourcing",                  "target"],
       ["products",  `Products (${data.products.length})`, "grid"],
-      ["wholesale", "Wholesale Finder",            "box"],
-      ["details",   "Product Details",             "list"],
-      ["watchlist", "Watchlist",                   "star"],
+      ["wholesale", "Wholesale Finder",           "box"],
+      ["details",   "Product Details",            "list"],
+      ["watchlist", "Watchlist",                  "star"],
     ]},
     { label: "Intelligence", items: [
-      ["agent",  "AI Agent",      "bolt"],
-      ["seo",    "SEO Engine",    "target"],
-      ["ppc",    "PPC Manager",   "megaphone"],
-      ["markets","Markets",       "external"],
-      ["launch", "Launch",        "rocket"],
+      ["agent",   "AI Agent",       "bolt"],
+      ["seo",     "SEO Engine",     "target"],
+      ["ppc",     "PPC Manager",    "megaphone"],
+      ["markets", "Markets",        "external"],
+      ["launch",  "Launch",         "rocket"],
     ]},
     { label: "Operations", items: [
-      ["suppliers", "Suppliers",        "truck"],
-      ["verify",    "Supplier Check",   "shield"],
-      ["live",      "Live + Store",     "activity"],
-      ["capital",   "Capital Planner",  "wallet"],
+      ["suppliers", "Suppliers",       "truck"],
+      ["verify",    "Supplier Check",  "shield"],
+      ["live",      "Live + Store",    "activity"],
+      ["capital",   "Capital Planner", "wallet"],
     ]},
     { label: "Admin", items: [
       ["rejected",  `Rejected (${data.richRejected?.length ?? 0})`, "ban"],
@@ -129,60 +155,71 @@ export function Dashboard({ data }: { data: DashboardData }) {
   const currentTitle = (allTabs.find(([id]) => id === tab)?.[1] ?? "Dashboard").replace(/\s*\(.*\)/, "");
 
   return (
-    <div className="shell">
-      <CommandPalette onTab={(t) => setTab(t as Tab)} />
+    <div className={`shell${sidebarOpen ? "" : " shell--collapsed"}`}>
+      <CommandPalette onTab={t => setTab(t as Tab)} />
       <NotificationBus />
 
-      {/* ── Sidebar ── */}
-      <aside className="sidebar">
+      {/* ── Sidebar ─────────────────────────────────── */}
+      <aside className={`sidebar${sidebarOpen ? "" : " sidebar--collapsed"}`}>
+        {/* Brand + hamburger */}
         <div className="sb-brand">
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            {/* Clean wordmark — no spinning rings */}
-            <div style={{
-              width: 32, height: 32, borderRadius: 8,
-              background: "var(--p-gold-bg)",
-              border: "1px solid var(--p-gold-bd)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              flexShrink: 0,
-            }}>
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
-                <path d="M12 3 L20 20 H4 Z" stroke="var(--p-gold)" strokeWidth="1.8" strokeLinejoin="round" fill="none"/>
-                <path d="M9 15 L12 8 L15 15" stroke="var(--p-blue)" strokeWidth="1.3" strokeLinejoin="round" fill="none"/>
-              </svg>
-            </div>
-            <div>
+          {/* Logo icon always visible */}
+          <div className="sb-logo-icon">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+              <path d="M12 3 L20 20 H4 Z" stroke="var(--p-gold)" strokeWidth="1.8" strokeLinejoin="round"/>
+              <path d="M9 15 L12 8 L15 15" stroke="var(--p-blue)" strokeWidth="1.3" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          {sidebarOpen && (
+            <div className="sb-brand-text">
               <div className="sb-name">AZ Finds</div>
               <div className="sb-sub">Seller Intelligence</div>
             </div>
-          </div>
+          )}
+          {/* Hamburger — always at end */}
+          <button
+            className="sb-hamburger"
+            onClick={() => setSidebarOpen(v => !v)}
+            title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+          >
+            <HamburgerIcon open={sidebarOpen} />
+          </button>
         </div>
 
-        <nav className="sb-nav" style={{ flex: 1, overflowY: "auto", padding: "6px 0" }}>
-          {navGroups.map((group) => (
-            <div key={group.label}>
-              <div className="sb-group">{group.label}</div>
+        {/* Nav groups */}
+        <nav className="sb-nav">
+          {navGroups.map(group => (
+            <div key={group.label} className="sb-group-block">
+              {sidebarOpen && <div className="sb-group">{group.label}</div>}
               {group.items.map(([id, label, icon]) => (
                 <NavItem
                   key={id} id={id} label={label} icon={icon}
                   active={tab === id} onClick={() => setTab(id)}
                   badge={id === "approvals" ? pendingTasks : undefined}
+                  collapsed={!sidebarOpen}
                 />
               ))}
             </div>
           ))}
         </nav>
 
-        <RefreshTimer />
-        <div className="sb-foot">
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span className="sb-dot" />
-            <span>Estimate engine</span>
-          </div>
-          <span className="sb-foot-sub">data updated live</span>
+        {sidebarOpen && <RefreshTimer />}
+        <div className="sb-foot" style={!sidebarOpen ? { padding: "10px 0", alignItems: "center" } : {}}>
+          {sidebarOpen ? (
+            <>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span className="sb-dot" />
+                <span>Estimate engine</span>
+              </div>
+              <span className="sb-foot-sub">data updated live</span>
+            </>
+          ) : (
+            <span className="sb-dot" title="Estimate engine — live" />
+          )}
         </div>
       </aside>
 
-      {/* ── Main area ── */}
+      {/* ── Main content ─────────────────────────────── */}
       <div className="shell-main">
         <header className="topbar">
           <div className="topbar-head">
@@ -201,23 +238,14 @@ export function Dashboard({ data }: { data: DashboardData }) {
               href="https://yamarigroup.com"
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                fontSize: 11, fontWeight: 600, color: "var(--p-gold)",
-                textDecoration: "none", padding: "4px 10px",
-                border: "1px solid var(--p-gold-bd)", borderRadius: "var(--p-r1)",
-                background: "var(--p-gold-bg)",
-              }}
+              className="topbar-link"
             >yamarigroup.com ↗</a>
             {data.batch?.batch_date && (
-              <span className="batch-chip">
-                <Icon name="box" size={12} /> {data.batch.batch_date}
-              </span>
+              <span className="batch-chip"><Icon name="box" size={12} /> {data.batch.batch_date}</span>
             )}
-            <span className="batch-chip">
-              <Icon name="grid" size={12} /> {data.products.length} products
-            </span>
+            <span className="batch-chip"><Icon name="grid" size={12} /> {data.products.length} products</span>
             <span className="batch-chip est">
-              <span className="sb-dot" style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--p-green)", display: "inline-block", marginRight: 4 }} />
+              <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--p-green)", display: "inline-block", marginRight: 4, flexShrink: 0 }} />
               live
             </span>
           </div>
@@ -225,40 +253,11 @@ export function Dashboard({ data }: { data: DashboardData }) {
 
         <main className="content" key={tab}>
 
-          {tab === "warroom" && (
-            <>
-              <DirectorBadge tab="overview" data={data} />
-              <PnlWarRoom />
-            </>
-          )}
-
-          {tab === "agent" && (
-            <>
-              <DirectorBadge tab="overview" data={data} />
-              <AgentControlPanel />
-            </>
-          )}
-
-          {tab === "seo" && (
-            <>
-              <DirectorBadge tab="sourcing" data={data} />
-              <SeoCommandCenter />
-            </>
-          )}
-
-          {tab === "markets" && (
-            <>
-              <DirectorBadge tab="overview" data={data} />
-              <MultiMarketplace />
-            </>
-          )}
-
-          {tab === "livefeed" && (
-            <>
-              <DirectorBadge tab="products" data={data} />
-              <LiveProductFeed />
-            </>
-          )}
+          {tab === "warroom" && <><DirectorBadge tab="overview" data={data} /><PnlWarRoom /></>}
+          {tab === "agent"   && <><DirectorBadge tab="overview" data={data} /><AgentControlPanel /></>}
+          {tab === "seo"     && <><DirectorBadge tab="sourcing" data={data} /><SeoCommandCenter /></>}
+          {tab === "markets" && <><DirectorBadge tab="overview" data={data} /><MultiMarketplace /></>}
+          {tab === "livefeed"&& <><DirectorBadge tab="products" data={data} /><LiveProductFeed /></>}
 
           {tab === "overview" && (
             <>
@@ -271,26 +270,9 @@ export function Dashboard({ data }: { data: DashboardData }) {
             </>
           )}
 
-          {tab === "sourcing" && (
-            <>
-              <DirectorBadge tab="sourcing" data={data} />
-              <SourcingCommandCenter data={data} onOpen={open} />
-            </>
-          )}
-
-          {tab === "products" && (
-            <>
-              <DirectorBadge tab="products" data={data} />
-              <ProductGrid data={data} onOpen={open} />
-            </>
-          )}
-
-          {tab === "wholesale" && (
-            <>
-              <DirectorBadge tab="wholesale" data={data} />
-              <WholesaleFinder data={data} onOpen={open} />
-            </>
-          )}
+          {tab === "sourcing"  && <><DirectorBadge tab="sourcing"  data={data} /><SourcingCommandCenter data={data} onOpen={open} /></>}
+          {tab === "products"  && <><DirectorBadge tab="products"  data={data} /><ProductGrid data={data} onOpen={open} /></>}
+          {tab === "wholesale" && <><DirectorBadge tab="wholesale" data={data} /><WholesaleFinder data={data} onOpen={open} /></>}
 
           {tab === "details" && (
             <>
@@ -298,112 +280,42 @@ export function Dashboard({ data }: { data: DashboardData }) {
               <section>
                 <div className="tab-toolbar">
                   <h2 className="section-title" style={{ margin: 0 }}>Product Details</h2>
-                  <select
-                    value={detailId}
-                    onChange={(e) => setDetailId(e.target.value)}
-                    style={{
-                      background: "var(--p-card)", color: "var(--p-t1)",
-                      border: "1px solid var(--p-b2)", borderRadius: "var(--p-r1)",
-                      padding: "5px 10px", fontSize: 12,
-                    }}
-                  >
-                    {data.products.map((p) => (
+                  <select value={detailId} onChange={e => setDetailId(e.target.value)} className="p-select">
+                    {data.products.map(p => (
                       <option key={p.id} value={p.id}>[{p.grade?.grade}] {p.name}</option>
                     ))}
                   </select>
                 </div>
-                {detailProduct && (
-                  <ProductDetail product={detailProduct} marketing={marketingFor(detailProduct.id)} />
-                )}
+                {detailProduct && <ProductDetail product={detailProduct} marketing={marketingFor(detailProduct.id)} />}
               </section>
             </>
           )}
 
-          {tab === "suppliers" && (
-            <>
-              <DirectorBadge tab="suppliers" data={data} />
-              <SupplierCRM />
-            </>
-          )}
-
-          {tab === "verify" && (
-            <>
-              <DirectorBadge tab="verify" data={data} />
-              <SupplierVerification data={data} />
-            </>
-          )}
-
-          {tab === "live" && (
-            <>
-              <DirectorBadge tab="live" data={data} />
-              <LiveDataPanel data={data} />
-            </>
-          )}
-
-          {tab === "ppc" && (
-            <>
-              <DirectorBadge tab="ppc" data={data} />
-              <PpcManager data={data} />
-            </>
-          )}
-
-          {tab === "capital" && (
-            <>
-              <DirectorBadge tab="capital" data={data} />
-              <CapitalPlanner seed={data.capitalPlanner} />
-            </>
-          )}
-
-          {tab === "launch" && (
-            <>
-              <DirectorBadge tab="launch" data={data} />
-              <LaunchReadiness data={data} onOpen={open} />
-            </>
-          )}
-
-          {tab === "watchlist" && (
-            <>
-              <DirectorBadge tab="watchlist" data={data} />
-              <Watchlist data={data} onOpen={open} />
-            </>
-          )}
-
-          {tab === "rejected" && (
-            <>
-              <DirectorBadge tab="rejected" data={data} />
-              <RejectedPanel rejected={data.richRejected} />
-            </>
-          )}
-
-          {tab === "sources" && (
-            <>
-              <DirectorBadge tab="sources" data={data} />
-              <ApiUsagePanel data={data} />
-            </>
-          )}
-
-          {tab === "approvals" && (
-            <>
-              <DirectorBadge tab="verify" data={data} />
-              <ApprovalQueue />
-            </>
-          )}
-
-          {tab === "help" && (
-            <>
-              <DirectorBadge tab="help" data={data} />
-              <HelpCenter data={data} />
-            </>
-          )}
+          {tab === "suppliers" && <><DirectorBadge tab="suppliers" data={data} /><SupplierCRM /></>}
+          {tab === "verify"    && <><DirectorBadge tab="verify"    data={data} /><SupplierVerification data={data} /></>}
+          {tab === "live"      && <><DirectorBadge tab="live"      data={data} /><LiveDataPanel data={data} /></>}
+          {tab === "ppc"       && <><DirectorBadge tab="ppc"       data={data} /><PpcManager data={data} /></>}
+          {tab === "capital"   && <><DirectorBadge tab="capital"   data={data} /><CapitalPlanner seed={data.capitalPlanner} /></>}
+          {tab === "launch"    && <><DirectorBadge tab="launch"    data={data} /><LaunchReadiness data={data} onOpen={open} /></>}
+          {tab === "watchlist" && <><DirectorBadge tab="watchlist" data={data} /><Watchlist data={data} onOpen={open} /></>}
+          {tab === "rejected"  && <><DirectorBadge tab="rejected"  data={data} /><RejectedPanel rejected={data.richRejected} /></>}
+          {tab === "sources"   && <><DirectorBadge tab="sources"   data={data} /><ApiUsagePanel data={data} /></>}
+          {tab === "approvals" && <><DirectorBadge tab="verify"    data={data} /><ApprovalQueue /></>}
+          {tab === "help"      && <><DirectorBadge tab="help"      data={data} /><HelpCenter data={data} /></>}
 
           <footer className="dash-footer">
             <p className="muted small">
               {data.citations.length} citations across products. Estimate engine — not a replacement for
-              Seller Central checks, the Amazon Revenue Calculator, or live market validation.
+              Seller Central checks, Amazon Revenue Calculator, or live market validation.
             </p>
           </footer>
         </main>
       </div>
+
+      {/* ── Right: Agent Network Rail ─────────────── */}
+      <aside className="agent-rail">
+        <AgentNetwork />
+      </aside>
 
       <ProductDetailModal
         product={selected}
