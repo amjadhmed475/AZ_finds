@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { JarvisRings } from "./JarvisRings";
 
 const PARTICLES = 28;
 
@@ -45,11 +46,13 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
   }, [onDone]);
 
   const status =
-    progress < 25 ? "Connecting to data sources…" :
+    progress < 25 ? "Initializing intelligence systems…" :
     progress < 52 ? "Loading product catalog…" :
     progress < 80 ? "Analyzing market opportunities…" :
-    progress < 96 ? "Building your dashboard…" :
-    "Ready ✓";
+    progress < 96 ? "Building your command center…" :
+    "Systems online ✓";
+
+  const orbIntensity = progress / 100;
 
   return (
     <div className={`splash${fade ? " splash-fade" : ""}`}>
@@ -69,34 +72,43 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
 
       {/* Main content */}
       <div className="splash-body">
-        {/* Animated logo ring */}
-        <div className="splash-logo-wrap">
-          <div className="splash-ring splash-ring-1" />
-          <div className="splash-ring splash-ring-2" />
-          <div className="splash-ring splash-ring-3" />
-          <div className="splash-logomark">
-            <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="splashG1" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#f5a524" />
-                  <stop offset="100%" stopColor="#fdd068" />
-                </linearGradient>
-                <linearGradient id="splashG2" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#5b8cf5" />
-                  <stop offset="100%" stopColor="#7ba9ff" />
-                </linearGradient>
-              </defs>
-              {/* Arrow / finder mark */}
-              <path d="M28 10 L44 40 H12 Z" fill="none" stroke="url(#splashG1)" strokeWidth="2.5" strokeLinejoin="round" className="splash-path-draw" />
-              <path d="M21 33 L28 18 L35 33" fill="none" stroke="url(#splashG2)" strokeWidth="1.8" strokeLinejoin="round" className="splash-path-draw-inner" />
-              <circle cx="28" cy="30" r="3.5" fill="url(#splashG1)" className="splash-dot-pulse" />
-            </svg>
+
+        {/* ── Jarvis Arc Reactor ── */}
+        <div style={{ position: "relative", width: 220, height: 220, margin: "0 auto 8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {/* Outer ambient rings behind everything */}
+          <div className="splash-j-ring" style={{ opacity: orbIntensity * 0.6 }} />
+          <div className="splash-j-ring-2" style={{ opacity: orbIntensity * 0.4 }} />
+
+          {/* The main Jarvis arc reactor */}
+          <div className="splash-j-orb" style={{ opacity: Math.max(0.15, orbIntensity) }}>
+            <JarvisRings size={220} intensity={orbIntensity} />
+          </div>
+
+          {/* Logo overlaid on center of orb */}
+          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div className="splash-logomark" style={{ width: 52, height: 52, zIndex: 10 }}>
+              <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 52, height: 52 }}>
+                <defs>
+                  <linearGradient id="splashG1" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#f5a524" />
+                    <stop offset="100%" stopColor="#fdd068" />
+                  </linearGradient>
+                  <linearGradient id="splashG2" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#5b8cf5" />
+                    <stop offset="100%" stopColor="#7ba9ff" />
+                  </linearGradient>
+                </defs>
+                <path d="M28 10 L44 40 H12 Z" fill="none" stroke="url(#splashG1)" strokeWidth="2.5" strokeLinejoin="round" className="splash-path-draw" />
+                <path d="M21 33 L28 18 L35 33" fill="none" stroke="url(#splashG2)" strokeWidth="1.8" strokeLinejoin="round" className="splash-path-draw-inner" />
+                <circle cx="28" cy="30" r="3.5" fill="url(#splashG1)" className="splash-dot-pulse" />
+              </svg>
+            </div>
           </div>
         </div>
 
         {/* Brand text */}
-        <div className="splash-brand-block">
-          <h1 className="splash-title">AZ Finds</h1>
+        <div className="splash-brand-block" style={{ marginTop: 4 }}>
+          <h1 className="splash-title j-glow-text">AZ Finds</h1>
           <p className="splash-sub">Amazon Seller Research Platform</p>
           <p className="splash-by">by Yamari Group</p>
         </div>

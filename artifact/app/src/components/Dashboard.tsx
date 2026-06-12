@@ -40,6 +40,8 @@ import { AgentControlPanel } from "./AgentControlPanel";
 import { SeoCommandCenter } from "./SeoCommandCenter";
 import { MultiMarketplace } from "./MultiMarketplace";
 import { LiveProductFeed } from "./LiveProductFeed";
+import { JarvisRings } from "./JarvisRings";
+import { NeuralBackground } from "./NeuralBackground";
 
 type Tab = "warroom" | "agent" | "seo" | "markets" | "livefeed" | "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "approvals" | "help";
 
@@ -134,13 +136,17 @@ export function Dashboard({ data }: { data: DashboardData }) {
 
   return (
     <div className="shell">
+      <NeuralBackground />
+      <div className="j-scan-overlay" aria-hidden />
       <StarField />
       <CommandPalette onTab={(t) => setTab(t as Tab)} />
       <NotificationBus />
       <aside className="sidebar">
         <div className="sb-brand">
-          <LogoMark />
-          <div><div className="sb-name">AZ Finds</div><div className="sb-sub">Seller Research</div></div>
+          <div className="sb-brand-orb">
+            <JarvisRings size={38} intensity={0.9} />
+          </div>
+          <div><div className="sb-name j-glow-text">AZ Finds</div><div className="sb-sub">Seller Research</div></div>
         </div>
         <nav className="sb-nav">
           {tabs.map(([id, label, icon]) => (
@@ -159,7 +165,8 @@ export function Dashboard({ data }: { data: DashboardData }) {
       </aside>
 
       <div className="shell-main">
-        <header className="topbar">
+        <header className="topbar" style={{ position: "relative" }}>
+          <div className="topbar-j-line" aria-hidden />
           <div className="topbar-head">
             <p className="eyebrow">Amazon seller command center · by Yamari Group</p>
             <h1>{currentTitle}</h1>
