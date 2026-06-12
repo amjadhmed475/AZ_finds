@@ -30,11 +30,11 @@ import { draftSupplierEmail } from "./services/emailDrafter.js";
 import { generatePO } from "./services/poGenerator.js";
 import { requireAuth, requireRole, signToken } from "./middleware/auth.js";
 import { startAutonomousScheduler, getSchedulerStatus, triggerTask, getAgentRunHistory } from "./services/autonomousScheduler.js";
-import { routeMessage, streamTeamResponse, AGENTS } from "./agents/teamAgents.js";
 import { runProductDiscovery, getDiscoveredProducts, getDiscoveryStats, getAllCategories } from "./services/liveResearchAgent.js";
 import { auditListing, findKeywordOpportunities, generateSEOReport, monitorYamariGroup, getSEOHistory } from "./services/seoEngine.js";
 import { analyzePPC, applyBidChange, getPPCHistory } from "./services/ppcAutomation.js";
 import { getMarketplaceStatuses, getCrossListingCandidates, listProductOnWalmart, listProductOnTikTok, getMarketplaceListings } from "./services/multiMarketplaceService.js";
+import { AGENTS, streamTeamResponse } from "./agents/teamAgents.js";
 
 const app    = express();
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -93,47 +93,49 @@ app.get("/api/batch/latest", (_req, res) => {
 
 /* ── MAXIMUS Team — Multi-Agent SSE Streaming ───────────── */
 app.post("/api/maximus", async (req, res) => {
-  const { message, history = [], agentId: forcedAgent } = req.body as {
+  const { message, history = [], agentId } = req.body as {
     message?: string;
     history?: Array<{ role: "user" | "assistant"; content: string }>;
     agentId?: string;
   };
 
-  if (!message?.trim()) return res.status(400).json({ error: "message is required" });
+  if (!message?.trim()) {
+    return res.status(400).json({ error: "message is required" });
+  }
 
   res.setHeader("Content-Type",      "text/event-stream");
   res.setHeader("Cache-Control",     "no-cache");
   res.setHeader("Connection",        "keep-alive");
   res.setHeader("X-Accel-Buffering", "no");
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    res.write(`data: ${JSON.stringify({ type: "agent", id: "MAXIMUS", name: "MAXIMUS", role: "Chief of Staff", color: "#06b6d4", emoji: "⚡" })}\n\n`);
-    res.write(`data: ${JSON.stringify({ type: "delta", delta: "⚠️ ANTHROPIC_API_KEY not configured. Add it to your .env file to activate the AI team." })}\n\n`);
+  if (!process.env.ANTHROPIC_API_KEY) {
+    res.write(`data: ${JSON.stringify({ type: "agent", id: "MAXIMUS", name: "MAXIMUS", role: "Chief Intelligence Officer", color: "#06b6d4", emoji: "⚡" })}\n\n`);
+    res.write(`data: ${JSON.stringify({ type: "delta", delta: "ANTHROPIC_API_KEY not configured. Add it to your .env file to activate the AI team." })}\n\n`);
     res.write("data: [DONE]\n\n");
     return res.end();
   }
 
-  const agentId = (forcedAgent && AGENTS[forcedAgent as keyof typeof AGENTS])
-    ? (forcedAgent as keyof typeof AGENTS)
-    : routeMessage(message.trim());
-
   try {
-    const gen = streamTeamResponse(agentId, message.trim(), history as any, apiKey);
+    const gen = streamTeamResponse(client, message.trim(), history, agentId as any);
     for await (const chunk of gen) {
       res.write(`data: ${JSON.stringify(chunk)}\n\n`);
     }
     res.write("data: [DONE]\n\n");
     res.end();
   } catch (err: any) {
-    res.write(`data: ${JSON.stringify({ type: "delta", delta: `Team error: ${err.message}` })}\n\n`);
+    res.write(`data: ${JSON.stringify({ type: "delta", delta: `Intelligence team error: ${err.message}` })}\n\n`);
     res.write("data: [DONE]\n\n");
     res.end();
   }
 });
 
+/* ── MAXIMUS Agent Roster ───────────────────────────────── */
 app.get("/api/maximus/agents", (_req, res) => {
-  res.json({ agents: Object.values(AGENTS).map(({ id, name, role, color, emoji }) => ({ id, name, role, color, emoji })) });
+  res.json({
+    agents: Object.values(AGENTS).map(({ id, name, role, color, emoji }) => ({
+      id, name, role, color, emoji,
+    })),
+  });
 });
 
 /* ── P&L War Room ───────────────────────────────────────── */
