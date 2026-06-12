@@ -550,6 +550,96 @@ server.tool(
   }
 );
 
+// 23) get_pnl_summary
+server.tool(
+  "get_pnl_summary",
+  "Get live P&L summary: revenue, ad spend, FBA fees, COGS, net profit, ACOS, ROAS, units sold, daily breakdown, per-ASIN performance, and inventory alerts. Uses SP-API if connected, otherwise returns estimate-level data.",
+  { days: z.number().optional().default(30) },
+  async (args) => {
+    try {
+      const { getPnlSummary } = await import("./services/spApiService.js");
+      return ok(await getPnlSummary(args.days));
+    } catch (e) { return fail(`get_pnl_summary failed: ${(e as Error).message}`); }
+  }
+);
+
+// 24) get_inventory_health
+server.tool(
+  "get_inventory_health",
+  "Get inventory health: days of supply per ASIN, reorder recommendations ranked by urgency, estimated reorder costs.",
+  {},
+  async () => {
+    try {
+      const { getReorderRecommendations } = await import("./services/reorderEngine.js");
+      return ok(getReorderRecommendations());
+    } catch (e) { return fail(`get_inventory_health failed: ${(e as Error).message}`); }
+  }
+);
+
+// 25) get_intelligence_alerts
+server.tool(
+  "get_intelligence_alerts",
+  "Get MAXIMUS intelligence alerts: inventory stockouts, PPC spikes, competitor moves, and opportunities. Returns severity-ranked list with recommendations.",
+  { limit: z.number().optional().default(20) },
+  async (args) => {
+    try {
+      const { getAlerts, getUnreadCount } = await import("./services/intelligenceEngine.js");
+      return ok({ alerts: getAlerts(args.limit), unread: getUnreadCount() });
+    } catch (e) { return fail(`get_intelligence_alerts failed: ${(e as Error).message}`); }
+  }
+);
+
+// 26) get_supplier_list
+server.tool(
+  "get_supplier_list",
+  "List all suppliers in the CRM with product count, order history, and last order date.",
+  {},
+  async () => {
+    try {
+      const { db } = await import("./db/database.js");
+      const suppliers = db.prepare("SELECT s.*, COUNT(DISTINCT sp.id) as product_count FROM suppliers s LEFT JOIN supplier_products sp ON sp.supplier_id = s.id WHERE s.active = 1 GROUP BY s.id").all();
+      return ok(suppliers);
+    } catch (e) { return fail(`get_supplier_list failed: ${(e as Error).message}`); }
+  }
+);
+
+// 27) get_reorder_recommendations
+server.tool(
+  "get_reorder_recommendations",
+  "Get AI-powered reorder recommendations: which ASINs need restocking, recommended quantities, urgency levels, best suppliers, and estimated costs.",
+  {},
+  async () => {
+    try {
+      const { getReorderRecommendations } = await import("./services/reorderEngine.js");
+      return ok(getReorderRecommendations());
+    } catch (e) { return fail(`get_reorder_recommendations failed: ${(e as Error).message}`); }
+  }
+);
+
+// 28) draft_supplier_email
+server.tool(
+  "draft_supplier_email",
+  "AI-draft a supplier email using claude-fable-5. Types: reorder, negotiate, quality. Returns ready-to-send email text.",
+  {
+    type: z.enum(["reorder","negotiate","quality"]),
+    supplier_name: z.string(),
+    contact_name: z.string().optional(),
+    product_name: z.string(),
+    qty: z.number().optional(),
+    current_price: z.number().optional(),
+    target_price: z.number().optional(),
+    delivery_date: z.string().optional(),
+    issue: z.string().optional(),
+  },
+  async (args) => {
+    try {
+      const { draftSupplierEmail } = await import("./services/emailDrafter.js");
+      const draft = await draftSupplierEmail(args as any);
+      return ok({ draft });
+    } catch (e) { return fail(`draft_supplier_email failed: ${(e as Error).message}`); }
+  }
+);
+
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
