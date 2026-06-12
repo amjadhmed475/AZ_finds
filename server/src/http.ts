@@ -30,6 +30,7 @@ import { draftSupplierEmail } from "./services/emailDrafter.js";
 import { generatePO } from "./services/poGenerator.js";
 import { requireAuth, requireRole, signToken } from "./middleware/auth.js";
 import { startAutonomousScheduler, getSchedulerStatus, triggerTask, getAgentRunHistory } from "./services/autonomousScheduler.js";
+import { routeMessage, streamTeamResponse, AGENTS } from "./agents/teamAgents.js";
 import { runProductDiscovery, getDiscoveredProducts, getDiscoveryStats, getAllCategories } from "./services/liveResearchAgent.js";
 import { auditListing, findKeywordOpportunities, generateSEOReport, monitorYamariGroup, getSEOHistory } from "./services/seoEngine.js";
 import { analyzePPC, applyBidChange, getPPCHistory } from "./services/ppcAutomation.js";
@@ -90,76 +91,49 @@ app.get("/api/batch/latest", (_req, res) => {
   res.status(404).json({ error: "No batch data found" });
 });
 
-/* ── MAXIMUS chat — SSE streaming ──────────────────────── */
-const MAXIMUS_SYSTEM = `You are MAXIMUS — Chief Intelligence Officer of Yamari Group's Amazon FBA Intelligence Division.
-You are the definitive intersection of JARVIS-class AI reasoning and deep Amazon marketplace mastery.
-
-Mission:
-- Provide strategic intelligence on FBA product opportunities, supplier chains, pricing, and market dynamics
-- Analyse products, competition, and profit with precision using data from the AZ Finds dashboard
-- Give actionable, capital-efficient, execution-ready recommendations
-- Think several moves ahead — risk-adjusted, always honest about estimate-level data
-
-Character:
-- Speak with authority, clarity, and strategic depth — like a world-class CIO briefing the board
-- Concise but never shallow. Dense with insight.
-- Use structured formatting (bullets, headers) when it improves comprehension
-- Never refuse relevant Amazon, commerce, sourcing, or market questions
-- Distinguish clearly between live data and estimates
-
-Context: The user runs AZ Finds — a React dashboard showing Amazon FBA product research graded A5–D1,
-with supplier sourcing, PPC, capital planning, and market analysis. An MCP server with 20 research tools
-powers the intelligence pipeline.`;
-
+/* ── MAXIMUS Team — Multi-Agent SSE Streaming ───────────── */
 app.post("/api/maximus", async (req, res) => {
-  const { message, history = [] } = req.body as {
+  const { message, history = [], agentId: forcedAgent } = req.body as {
     message?: string;
     history?: Array<{ role: "user" | "assistant"; content: string }>;
+    agentId?: string;
   };
 
-  if (!message?.trim()) {
-    return res.status(400).json({ error: "message is required" });
-  }
-
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    res.setHeader("Content-Type", "text/event-stream");
-    res.write(`data: ${JSON.stringify({ error: "ANTHROPIC_API_KEY not set — add it to your root .env file" })}\n\n`);
-    return res.end();
-  }
+  if (!message?.trim()) return res.status(400).json({ error: "message is required" });
 
   res.setHeader("Content-Type",      "text/event-stream");
   res.setHeader("Cache-Control",     "no-cache");
   res.setHeader("Connection",        "keep-alive");
   res.setHeader("X-Accel-Buffering", "no");
 
-  const messages: Anthropic.MessageParam[] = [
-    ...((history as any[]).slice(-12)),
-    { role: "user", content: message.trim() },
-  ];
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    res.write(`data: ${JSON.stringify({ type: "agent", id: "MAXIMUS", name: "MAXIMUS", role: "Chief of Staff", color: "#06b6d4", emoji: "⚡" })}\n\n`);
+    res.write(`data: ${JSON.stringify({ type: "delta", delta: "⚠️ ANTHROPIC_API_KEY not configured. Add it to your .env file to activate the AI team." })}\n\n`);
+    res.write("data: [DONE]\n\n");
+    return res.end();
+  }
+
+  const agentId = (forcedAgent && AGENTS[forcedAgent as keyof typeof AGENTS])
+    ? (forcedAgent as keyof typeof AGENTS)
+    : routeMessage(message.trim());
 
   try {
-    const stream = await client.messages.stream({
-      model:      "claude-fable-5",
-      max_tokens: 2048,
-      system:     MAXIMUS_SYSTEM,
-      messages,
-    });
-
-    for await (const event of stream) {
-      if (
-        event.type === "content_block_delta" &&
-        event.delta.type === "text_delta"
-      ) {
-        res.write(`data: ${JSON.stringify({ delta: event.delta.text })}\n\n`);
-      }
+    const gen = streamTeamResponse(agentId, message.trim(), history as any, apiKey);
+    for await (const chunk of gen) {
+      res.write(`data: ${JSON.stringify(chunk)}\n\n`);
     }
     res.write("data: [DONE]\n\n");
     res.end();
   } catch (err: any) {
-    res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
+    res.write(`data: ${JSON.stringify({ type: "delta", delta: `Team error: ${err.message}` })}\n\n`);
+    res.write("data: [DONE]\n\n");
     res.end();
   }
+});
+
+app.get("/api/maximus/agents", (_req, res) => {
+  res.json({ agents: Object.values(AGENTS).map(({ id, name, role, color, emoji }) => ({ id, name, role, color, emoji })) });
 });
 
 /* ── P&L War Room ───────────────────────────────────────── */
