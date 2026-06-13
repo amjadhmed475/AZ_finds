@@ -34,8 +34,12 @@ import { MultiMarketplace } from "./MultiMarketplace";
 import { LiveProductFeed } from "./LiveProductFeed";
 import { ChartsGrid } from "./TrendCharts";
 import { AgentNetwork } from "./AgentNetwork";
+import { FbmCommandCenter } from "./FbmCommandCenter";
+import { BuyBoxTracker } from "./BuyBoxTracker";
+import { AccountHealthMonitor } from "./AccountHealthMonitor";
+import { OrderOpsHub } from "./OrderOpsHub";
 
-type Tab = "warroom" | "agent" | "seo" | "markets" | "livefeed" | "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "approvals" | "help";
+type Tab = "warroom" | "agent" | "seo" | "markets" | "livefeed" | "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "approvals" | "help" | "fbm" | "buybox" | "orders" | "health";
 
 type NavGroup = { label: string; items: Array<[Tab, string, string]> };
 
@@ -136,6 +140,12 @@ export function Dashboard({ data }: { data: DashboardData }) {
       ["ppc",     "PPC Manager",    "megaphone"],
       ["markets", "Markets",        "external"],
       ["launch",  "Launch",         "rocket"],
+    ]},
+    { label: "FBM Seller", items: [
+      ["fbm",    "FBM Center",     "target"],
+      ["buybox", "Buy Box",        "activity"],
+      ["orders", "Order Ops",      "truck"],
+      ["health", "Account Health", "shield"],
     ]},
     { label: "Operations", items: [
       ["suppliers", "Suppliers",       "truck"],
@@ -300,6 +310,11 @@ export function Dashboard({ data }: { data: DashboardData }) {
               </section>
             </>
           )}
+
+          {tab === "fbm"     && <><DirectorBadge tab="overview"  data={data} /><FbmCommandCenter data={data} /></>}
+          {tab === "buybox"  && <><DirectorBadge tab="overview"  data={data} /><BuyBoxTracker data={data} /></>}
+          {tab === "orders"  && <><DirectorBadge tab="overview"  data={data} /><OrderOpsHub /></>}
+          {tab === "health"  && <><DirectorBadge tab="overview"  data={data} /><AccountHealthMonitor /></>}
 
           {tab === "suppliers" && <><DirectorBadge tab="suppliers" data={data} /><SupplierCRM /></>}
           {tab === "verify"    && <><DirectorBadge tab="verify"    data={data} /><SupplierVerification data={data} /></>}
