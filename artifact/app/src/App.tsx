@@ -60,9 +60,7 @@ function AppInner() {
   }
 
   if (data) {
-    return isMobile
-      ? <MobileWarRoom data={data} />
-      : <Dashboard data={data} />;
+    return <Dashboard data={data} />;
   }
 
   if (!showLoader) return null;

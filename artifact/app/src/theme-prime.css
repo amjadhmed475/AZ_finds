@@ -968,7 +968,10 @@ input:focus, select:focus, textarea:focus {
   .cat-treemap { grid-template-columns: repeat(2, 1fr) !important; }
   .status-bar { font-size: 10px !important; gap: 8px !important; padding: 0 12px !important; }
   .sidebar { width: min(80vw, 300px) !important; }
-  .sb-item { padding: 9px 12px !important; font-size: 13px !important; }
+  /* Restore full labels in mobile overlay drawer */
+  .sb-name, .sb-sub, .sb-label, .sb-group { display: block !important; }
+  .sb-foot { display: flex !important; flex-direction: column !important; }
+  .sb-item { padding: 9px 12px !important; font-size: 13px !important; justify-content: flex-start !important; gap: 9px !important; }
   table { font-size: 11px !important; }
   .tab-toolbar { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
   .tab-toolbar select, .p-select { width: 100% !important; }
