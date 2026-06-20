@@ -137,7 +137,7 @@ export function AccountHealthMonitor() {
       <div style={{ background: "var(--p-card)", border: "1px solid var(--p-b1)", borderRadius: 12, padding: 20 }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: "var(--p-t1)", marginBottom: 4 }}>Performance Metrics</div>
         <div style={{ fontSize: 11, color: "var(--p-t3)", marginBottom: 20 }}>Live account health gauges — thresholds set by Amazon</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 12 }}>
+        <div className="fbm-grid-6" style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 12 }}>
           {METRICS.map(m => <ArcGauge key={m.key} m={m} />)}
         </div>
         {/* Legend */}
@@ -207,7 +207,7 @@ export function AccountHealthMonitor() {
       <div style={{ background: "var(--p-card)", border: "1px solid var(--p-b1)", borderRadius: 12, padding: 20 }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: "var(--p-t1)", marginBottom: 4 }}>Seller Fulfilled Prime (SFP) Readiness</div>
         <div style={{ fontSize: 11, color: "var(--p-t3)", marginBottom: 14 }}>Requirements to earn the Prime badge on FBM listings</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+        <div className="fbm-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
           {SFP.map(s => {
             const ok = s.low
               ? s.current <= s.required

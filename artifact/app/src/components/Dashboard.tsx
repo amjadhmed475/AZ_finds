@@ -34,15 +34,41 @@ import { MultiMarketplace } from "./MultiMarketplace";
 import { LiveProductFeed } from "./LiveProductFeed";
 import { ChartsGrid } from "./TrendCharts";
 import { AgentNetwork } from "./AgentNetwork";
-import { ChineseSupplierFinder } from "./ChineseSupplierFinder";
 import { FbmCommandCenter } from "./FbmCommandCenter";
 import { BuyBoxTracker } from "./BuyBoxTracker";
 import { AccountHealthMonitor } from "./AccountHealthMonitor";
 import { OrderOpsHub } from "./OrderOpsHub";
 
-type Tab = "warroom" | "agent" | "seo" | "markets" | "livefeed" | "sourcing" | "overview" | "products" | "wholesale" | "china" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "approvals" | "help" | "fbm" | "buybox" | "orders" | "health";
+type Tab = "warroom" | "agent" | "seo" | "markets" | "livefeed" | "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "approvals" | "help" | "fbm" | "buybox" | "orders" | "health";
 
 type NavGroup = { label: string; items: Array<[Tab, string, string]> };
+
+/* ── Mobile bottom nav ──────────────────────────────────── */
+function MobileNav({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
+  const items: Array<[Tab, string, string]> = [
+    ["overview",  "Home",      "M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z M9 22V12h6v10"],
+    ["products",  "Products",  "M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"],
+    ["fbm",       "FBM",       "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"],
+    ["warroom",   "War Room",  "M22 12h-4l-3 9L9 3l-3 9H2"],
+    ["suppliers", "Suppliers", "M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3m-3 4h7a2 2 0 012 2v3a2 2 0 01-2 2h-7a2 2 0 01-2-2v-3a2 2 0 012-2z"],
+  ];
+  return (
+    <nav className="mobile-bottom-nav">
+      {items.map(([id, label, path]) => (
+        <button
+          key={id}
+          className={`mnav-item${tab === id ? " active" : ""}`}
+          onClick={() => setTab(id)}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            {path.split("M").filter(Boolean).map((p, i) => <path key={i} d={`M${p}`} />)}
+          </svg>
+          <span>{label}</span>
+        </button>
+      ))}
+    </nav>
+  );
+}
 
 /* ── Hamburger icon ─────────────────────────────────────── */
 function HamburgerIcon({ open }: { open: boolean }) {
@@ -132,7 +158,6 @@ export function Dashboard({ data }: { data: DashboardData }) {
       ["sourcing",  "Sourcing",                  "target"],
       ["products",  `Products (${data.products.length})`, "grid"],
       ["wholesale", "Wholesale Finder",           "box"],
-      ["china",    "Chinese Suppliers", "search"],
       ["details",   "Product Details",            "list"],
       ["watchlist", "Watchlist",                  "star"],
     ]},
@@ -295,7 +320,6 @@ export function Dashboard({ data }: { data: DashboardData }) {
           {tab === "sourcing"  && <><DirectorBadge tab="sourcing"  data={data} /><SourcingCommandCenter data={data} onOpen={open} /></>}
           {tab === "products"  && <><DirectorBadge tab="products"  data={data} /><ProductGrid data={data} onOpen={open} /></>}
           {tab === "wholesale" && <><DirectorBadge tab="wholesale" data={data} /><WholesaleFinder data={data} onOpen={open} /></>}
-          {tab === "china"    && <><DirectorBadge tab="sourcing"  data={data} /><ChineseSupplierFinder data={data} /></>}
 
           {tab === "details" && (
             <>
@@ -354,6 +378,7 @@ export function Dashboard({ data }: { data: DashboardData }) {
 
       <MaximusPanel />
       <StatusBar data={data} tab={tab} />
+      <MobileNav tab={tab} setTab={setTab} />
     </div>
   );
 }

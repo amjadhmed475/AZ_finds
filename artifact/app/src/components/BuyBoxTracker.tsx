@@ -123,7 +123,7 @@ export function BuyBoxTracker({ data: _data }: { data: Dashboard }) {
             style={{ padding: "6px 12px", borderRadius: 7, border: "1px solid var(--p-b2)", background: "var(--p-raised)", color: "var(--p-t1)", fontSize: 12, outline: "none", width: 200 }}
           />
         </div>
-        <div style={{ overflowX: "auto" }}>
+        <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
             <thead>
               <tr style={{ borderBottom: "1px solid var(--p-b1)" }}>

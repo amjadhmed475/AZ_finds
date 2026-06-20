@@ -355,14 +355,14 @@ export function FbmCommandCenter({ data }: { data: Dashboard }) {
       <GoalTracker products={data.products} />
 
       {/* Row: Buy Box + Account Health + Shipping */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+      <div className="fbm-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
         <BuyBoxPulse />
         <AccountHealth />
         <ShippingZones />
       </div>
 
       {/* Row: FBM vs FBA + Top products */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 16 }}>
+      <div className="fbm-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 16 }}>
         <MarginComparison products={data.products} />
         <TopFbmProducts   products={data.products} />
       </div>
