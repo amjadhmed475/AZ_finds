@@ -34,12 +34,13 @@ import { MultiMarketplace } from "./MultiMarketplace";
 import { LiveProductFeed } from "./LiveProductFeed";
 import { ChartsGrid } from "./TrendCharts";
 import { AgentNetwork } from "./AgentNetwork";
+import { ChineseSupplierFinder } from "./ChineseSupplierFinder";
 import { FbmCommandCenter } from "./FbmCommandCenter";
 import { BuyBoxTracker } from "./BuyBoxTracker";
 import { AccountHealthMonitor } from "./AccountHealthMonitor";
 import { OrderOpsHub } from "./OrderOpsHub";
 
-type Tab = "warroom" | "agent" | "seo" | "markets" | "livefeed" | "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "approvals" | "help" | "fbm" | "buybox" | "orders" | "health";
+type Tab = "warroom" | "agent" | "seo" | "markets" | "livefeed" | "sourcing" | "overview" | "products" | "wholesale" | "china" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "approvals" | "help" | "fbm" | "buybox" | "orders" | "health";
 
 type NavGroup = { label: string; items: Array<[Tab, string, string]> };
 
@@ -131,6 +132,7 @@ export function Dashboard({ data }: { data: DashboardData }) {
       ["sourcing",  "Sourcing",                  "target"],
       ["products",  `Products (${data.products.length})`, "grid"],
       ["wholesale", "Wholesale Finder",           "box"],
+      ["china",    "Chinese Suppliers", "search"],
       ["details",   "Product Details",            "list"],
       ["watchlist", "Watchlist",                  "star"],
     ]},
@@ -293,6 +295,7 @@ export function Dashboard({ data }: { data: DashboardData }) {
           {tab === "sourcing"  && <><DirectorBadge tab="sourcing"  data={data} /><SourcingCommandCenter data={data} onOpen={open} /></>}
           {tab === "products"  && <><DirectorBadge tab="products"  data={data} /><ProductGrid data={data} onOpen={open} /></>}
           {tab === "wholesale" && <><DirectorBadge tab="wholesale" data={data} /><WholesaleFinder data={data} onOpen={open} /></>}
+          {tab === "china"    && <><DirectorBadge tab="sourcing"  data={data} /><ChineseSupplierFinder data={data} /></>}
 
           {tab === "details" && (
             <>
