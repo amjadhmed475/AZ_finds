@@ -1,0 +1,13 @@
+{
+  "name": "AZ Finds",
+  "short_name": "AZ Finds",
+  "description": "Amazon Seller Command Center by Yamari Group",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080c14",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,45 @@
+# ════════════════════════════════════════════════════════════
+#  AZ FINDS + MAXIMUS  ·  Netlify Deployment Config
+#
+#  Production env vars to set in Netlify dashboard:
+#    ANTHROPIC_API_KEY  (required — never in git)
+#    RETAILERAPI_KEY    (optional)
+#    KEEPA_API_KEY      (optional)
+# ════════════════════════════════════════════════════════════
+
+[build]
+  base            = "artifact/app"
+  command         = "npm run build"
+  publish         = "artifact/app/dist"
+  edge_functions  = "netlify/edge-functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# ── MAXIMUS AI streaming (Edge Function — Deno, server-less) ─
+[[edge_functions]]
+  path     = "/api/maximus"
+  function = "maximus"
+
+# ── SPA routing — non-API paths serve index.html ─────────────
+[[redirects]]
+  from   = "/api/*"
+  to     = "/api/:splat"
+  status = 200
+  force  = false
+
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# ── Security headers ──────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options   = "nosniff"
+    X-XSS-Protection         = "1; mode=block"
+    Referrer-Policy          = "strict-origin-when-cross-origin"
+    Permissions-Policy       = "camera=(), microphone=(), geolocation=()"
+    # Allow the app to call its own /api/* edge functions
+    Content-Security-Policy  = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https:; connect-src 'self' https://api.anthropic.com"
