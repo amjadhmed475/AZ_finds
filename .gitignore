@@ -48,3 +48,6 @@ AZ_Finds_Daily_Top5.csv
 .netlify/
 .vscode/
 Thumbs.db
+
+# Claude Code agent worktrees (ephemeral sandbox dirs)
+.claude/worktrees/
