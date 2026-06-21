@@ -26,17 +26,19 @@ import { pct } from "../lib/formatters";
 
 type Tab = "sourcing" | "overview" | "products" | "wholesale" | "details" | "suppliers" | "verify" | "live" | "ppc" | "capital" | "launch" | "watchlist" | "rejected" | "sources" | "help";
 
+const PRIMARY_TABS: Tab[] = ["sourcing", "products", "wholesale", "launch", "help"];
+
 export function Dashboard({ data }: { data: DashboardData }) {
   const [tab, setTab] = useState<Tab>("sourcing");
   const [selected, setSelected] = useState<DashProduct | null>(null);
   const [openTab, setOpenTab] = useState<string | undefined>(undefined);
   const [detailId, setDetailId] = useState<string>(data.products[0]?.id ?? "");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const marketingFor = (id: string) => data.marketingStrategies?.find((m) => m.product_candidate_id === id);
   const open = (p: DashProduct, t?: string) => { setSelected(p); setOpenTab(t); };
   const detailProduct = data.products.find((p) => p.id === detailId) ?? data.products[0];
 
-  const s = data.summary;
   const tabs: Array<[Tab, string, string]> = [
     ["sourcing", "Sourcing", "target"],
     ["overview", "Overview", "dashboard"],
@@ -61,98 +63,156 @@ export function Dashboard({ data }: { data: DashboardData }) {
     [data]
   );
 
+  const primaryTabData = tabs.filter(([id]) => PRIMARY_TABS.includes(id as Tab));
+  const isInMore = !PRIMARY_TABS.includes(tab);
+  const switchTab = (t: Tab) => { setTab(t); setMobileMenuOpen(false); };
+
   return (
-    <div className="shell">
-      <aside className="sidebar">
-        <div className="sb-brand">
-          <LogoMark />
-          <div><div className="sb-name">AZ Finds</div><div className="sb-sub">Seller Research</div></div>
-        </div>
-        <nav className="sb-nav">
-          {tabs.map(([id, label, icon]) => (
-            <button key={id} className={`sb-item${tab === id ? " active" : ""}`} onClick={() => setTab(id)}>
-              <Icon name={icon} size={18} />
-              <span className="sb-label">{label}</span>
+    <>
+      <div className="shell">
+        <aside className="sidebar">
+          <div className="sb-brand">
+            <LogoMark />
+            <div><div className="sb-name">AZ Finds</div><div className="sb-sub">Seller Research</div></div>
+          </div>
+          <nav className="sb-nav">
+            {tabs.map(([id, label, icon]) => (
+              <button key={id} className={`sb-item${tab === id ? " active" : ""}`} onClick={() => setTab(id as Tab)}>
+                <Icon name={icon} size={18} />
+                <span className="sb-label">{label}</span>
+              </button>
+            ))}
+          </nav>
+          <RefreshTimer />
+          <div className="sb-foot">
+            <span className="sb-dot" /> Estimate engine
+            <span className="sb-foot-sub">live sources locked</span>
+          </div>
+        </aside>
+
+        <div className="shell-main">
+          <header className="mob-header">
+            <LogoMark />
+            <span className="mob-title">{currentTitle}</span>
+            <button className="mob-more-btn" onClick={() => setMobileMenuOpen(true)} aria-label="All tabs">
+              <Icon name="list" size={20} />
             </button>
-          ))}
-        </nav>
-        <RefreshTimer />
-        <div className="sb-foot">
-          <span className="sb-dot" /> Estimate engine
-          <span className="sb-foot-sub">live sources locked</span>
+          </header>
+
+          <header className="topbar">
+            <div className="topbar-head">
+              <p className="eyebrow">Amazon seller command center · by Yamari Group</p>
+              <h1>{currentTitle}</h1>
+            </div>
+            <div className="topbar-right">
+              <span className="founders-badge"><span className="fb-label">Founders</span><b>Yamari Group</b></span>
+              {data.batch?.batch_date && <span className="batch-chip"><Icon name="box" size={14} /> {data.batch.batch_date}</span>}
+              <span className="batch-chip"><Icon name="grid" size={14} /> {data.products.length} products</span>
+              <span className="batch-chip est"><span className="sb-dot" /> estimate-level</span>
+            </div>
+          </header>
+
+          <main className="content">
+            {tab === "sourcing" && <SourcingCommandCenter data={data} onOpen={open} />}
+
+            {tab === "overview" && (
+              <>
+                <BatchHeader data={data} />
+                <Widgets data={data} onOpen={open} />
+                <section><h2 className="section-title">Visual analysis</h2><ChartsGrid d={data} /></section>
+              </>
+            )}
+
+            {tab === "products" && <ProductGrid data={data} onOpen={open} />}
+
+            {tab === "wholesale" && <WholesaleFinder data={data} onOpen={open} />}
+
+            {tab === "details" && (
+              <section>
+                <div className="tab-toolbar">
+                  <h2 className="section-title" style={{ margin: 0 }}>Product Details</h2>
+                  <select value={detailId} onChange={(e) => setDetailId(e.target.value)}>
+                    {data.products.map((p) => <option key={p.id} value={p.id}>[{p.grade?.grade}] {p.name}</option>)}
+                  </select>
+                </div>
+                {detailProduct && <ProductDetail product={detailProduct} marketing={marketingFor(detailProduct.id)} />}
+              </section>
+            )}
+
+            {tab === "suppliers" && (
+              <section>
+                <h2 className="section-title">Supplier comparison ({allSuppliers.length})</h2>
+                <p className="muted small" style={{ marginBottom: 10 }}>Top supplier matches across displayed products. Open a product for its full supplier table.</p>
+                <SupplierComparison suppliers={allSuppliers as any} />
+              </section>
+            )}
+
+            {tab === "verify" && <SupplierVerification data={data} />}
+            {tab === "live" && <LiveDataPanel data={data} />}
+            {tab === "ppc" && <PpcManager data={data} />}
+            {tab === "capital" && <CapitalPlanner seed={data.capitalPlanner} />}
+            {tab === "launch" && <LaunchReadiness data={data} onOpen={open} />}
+            {tab === "watchlist" && <Watchlist data={data} onOpen={open} />}
+            {tab === "rejected" && <RejectedPanel rejected={data.richRejected} />}
+            {tab === "sources" && <ApiUsagePanel data={data} />}
+            {tab === "help" && <HelpCenter data={data} />}
+
+            <footer className="dash-footer">
+              <p className="muted small">
+                {data.citations.length} citations across products. The estimate engine ranks and organizes opportunities but does not replace
+                Seller Central checks, the Amazon Revenue Calculator, supplier samples, or live market validation. Fees and gating drift over time.
+              </p>
+            </footer>
+          </main>
         </div>
-      </aside>
-
-      <div className="shell-main">
-        <header className="topbar">
-          <div className="topbar-head">
-            <p className="eyebrow">Amazon seller command center · by Yamari Group</p>
-            <h1>{currentTitle}</h1>
-          </div>
-          <div className="topbar-right">
-            <span className="founders-badge"><span className="fb-label">Founders</span><b>Yamari Group</b></span>
-            {data.batch?.batch_date && <span className="batch-chip"><Icon name="box" size={14} /> {data.batch.batch_date}</span>}
-            <span className="batch-chip"><Icon name="grid" size={14} /> {data.products.length} products</span>
-            <span className="batch-chip est"><span className="sb-dot" /> estimate-level</span>
-          </div>
-        </header>
-
-        <main className="content">
-
-      {tab === "sourcing" && <SourcingCommandCenter data={data} onOpen={open} />}
-
-      {tab === "overview" && (
-        <>
-          <BatchHeader data={data} />
-          <Widgets data={data} onOpen={open} />
-          <section><h2 className="section-title">Visual analysis</h2><ChartsGrid d={data} /></section>
-        </>
-      )}
-
-      {tab === "products" && <ProductGrid data={data} onOpen={open} />}
-
-      {tab === "wholesale" && <WholesaleFinder data={data} onOpen={open} />}
-
-      {tab === "details" && (
-        <section>
-          <div className="tab-toolbar">
-            <h2 className="section-title" style={{ margin: 0 }}>Product Details</h2>
-            <select value={detailId} onChange={(e) => setDetailId(e.target.value)}>
-              {data.products.map((p) => <option key={p.id} value={p.id}>[{p.grade?.grade}] {p.name}</option>)}
-            </select>
-          </div>
-          {detailProduct && <ProductDetail product={detailProduct} marketing={marketingFor(detailProduct.id)} />}
-        </section>
-      )}
-
-      {tab === "suppliers" && (
-        <section>
-          <h2 className="section-title">Supplier comparison ({allSuppliers.length})</h2>
-          <p className="muted small" style={{ marginBottom: 10 }}>Top supplier matches across displayed products. Open a product for its full supplier table.</p>
-          <SupplierComparison suppliers={allSuppliers as any} />
-        </section>
-      )}
-
-      {tab === "verify" && <SupplierVerification data={data} />}
-      {tab === "live" && <LiveDataPanel data={data} />}
-      {tab === "ppc" && <PpcManager data={data} />}
-      {tab === "capital" && <CapitalPlanner seed={data.capitalPlanner} />}
-      {tab === "launch" && <LaunchReadiness data={data} onOpen={open} />}
-      {tab === "watchlist" && <Watchlist data={data} onOpen={open} />}
-      {tab === "rejected" && <RejectedPanel rejected={data.richRejected} />}
-      {tab === "sources" && <ApiUsagePanel data={data} />}
-      {tab === "help" && <HelpCenter data={data} />}
-
-      <footer className="dash-footer">
-        <p className="muted small">
-          {data.citations.length} citations across products. The estimate engine ranks and organizes opportunities but does not replace
-          Seller Central checks, the Amazon Revenue Calculator, supplier samples, or live market validation. Fees and gating drift over time.
-        </p>
-      </footer>
-        </main>
       </div>
 
+      <nav className="mob-nav" aria-label="Primary navigation">
+        {primaryTabData.map(([id, label, icon]) => (
+          <button
+            key={id}
+            className={`mob-nav-item${tab === id ? " active" : ""}`}
+            onClick={() => switchTab(id as Tab)}
+          >
+            <Icon name={icon} size={22} />
+            <span>{label.replace(/\s*\(.*\)/, "")}</span>
+          </button>
+        ))}
+        <button
+          className={`mob-nav-item${isInMore ? " active" : ""}`}
+          onClick={() => setMobileMenuOpen(true)}
+          aria-label="More tabs"
+        >
+          <Icon name="list" size={22} />
+          <span>More</span>
+        </button>
+      </nav>
+
+      {mobileMenuOpen && (
+        <div className="mob-sheet-overlay" onClick={() => setMobileMenuOpen(false)}>
+          <div className="mob-sheet" onClick={(e) => e.stopPropagation()}>
+            <div className="mob-sheet-head">
+              <span className="mob-sheet-title">All Sections</span>
+              <button className="mob-sheet-close" onClick={() => setMobileMenuOpen(false)} aria-label="Close">✕</button>
+            </div>
+            <div className="mob-sheet-tabs">
+              {tabs.map(([id, label, icon]) => (
+                <button
+                  key={id}
+                  className={`mob-sheet-item${tab === id ? " active" : ""}`}
+                  onClick={() => switchTab(id as Tab)}
+                >
+                  <span className="mob-sheet-ic"><Icon name={icon} size={18} /></span>
+                  <span className="mob-sheet-label">{label}</span>
+                  {tab === id && <span className="mob-sheet-check">✓</span>}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       <ProductDetailModal product={selected} marketing={selected ? marketingFor(selected.id) : undefined} initialTab={openTab} onClose={() => setSelected(null)} />
-    </div>
+    </>
   );
 }
