@@ -1,0 +1,9 @@
+[build]
+  base    = "artifact/app"
+  command = "npm run build"
+  publish = "artifact/app/dist"
+
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
