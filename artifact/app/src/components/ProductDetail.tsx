@@ -15,6 +15,7 @@ import { Icon } from "./Icon";
 import { amazonUrl, heliumStats, validatedSource } from "../lib/amazon";
 import { isWatched, toggleWatch, setState } from "../lib/watchlist";
 import { decisionFor } from "../lib/decision";
+import { DirectSupplierLeads } from "./DirectSupplierLeads";
 
 const TABS = ["Overview", "Profit", "Suppliers", "PPC", "Keywords", "Risk", "Checks", "Citations"] as const;
 type Tab = typeof TABS[number];
@@ -115,7 +116,17 @@ export function ProductDetail({ product, marketing, initialTab }: { product: Das
         </div>
       )}
 
-      {tab === "Suppliers" && <SupplierComparison suppliers={p.suppliers} />}
+      {tab === "Suppliers" && (
+        <>
+          <DirectSupplierLeads product={p} />
+          <div className="dsup-sep">
+            <div className="dsup-sep-line" />
+            <span className="dsup-sep-label">Estimated price benchmarks</span>
+            <div className="dsup-sep-line" />
+          </div>
+          <SupplierComparison suppliers={p.suppliers} />
+        </>
+      )}
 
       {tab === "PPC" && (
         <div>
